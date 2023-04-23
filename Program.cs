@@ -1,7 +1,14 @@
+using HELMo_bilite.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//ajout de la configuration de la base de données
+builder.Services.AddDbContext<DeliveryDbContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb; Database-Delivery; Trusted_Connection-True;)"));
+
 
 var app = builder.Build();
 
