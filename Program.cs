@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //ajout de la configuration de la base de données
-builder.Services.AddDbContext<DeliveryDbContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb; Database-Delivery; Trusted_Connection-True;)"));
+builder.Services.AddDbContext<DeliveryDbContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Delivery;Encrypt=True;TrustServerCertificate=True;Trusted_Connection=True;"));
 
 
 var app = builder.Build();
