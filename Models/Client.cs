@@ -1,8 +1,12 @@
-﻿namespace HELMo_bilite.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HELMo_bilite.Models;
+
+public class Client : User
 {
-    public class Client : User
-    {
-        public string CompanyName { get; set; }
-        public Adress CompanyAdress { get; set; }
-    }
+    [Required]
+    public string CompanyName { get; set; }
+    [Required]
+    public Address CompanyAdress { get; set; }
+    public string Number { get; set; }
 }

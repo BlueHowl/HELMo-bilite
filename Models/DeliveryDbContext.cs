@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace HELMo_bilite.Models
+namespace HELMo_bilite.Models;
+
+public class DeliveryDbContext : DbContext
 {
-    public class DeliveryDbContext : DbContext
-    {
-        public DeliveryDbContext(DbContextOptions<DeliveryDbContext> options) : base(options)
-        {
-        }
+    public DeliveryDbContext(DbContextOptions<DeliveryDbContext> options) : base(options){}
 
-        DbSet<Delivery> Deliveries { get; set; }
-       
+    DbSet<Delivery> Deliveries { get; set; }
+   
 
-    }
 }

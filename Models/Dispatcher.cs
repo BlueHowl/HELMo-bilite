@@ -1,7 +1,9 @@
-﻿namespace HELMo_bilite.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HELMo_bilite.Models;
+
+public class Dispatcher : User
 {
-    public class Dispatcher
-    {
-        public List<string> Certifications { get; set; }
-    }
+    //[NotMapped]
+    public List<Certification> Certifications { get; set; }
 }

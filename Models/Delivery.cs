@@ -1,16 +1,37 @@
-﻿namespace HELMo_bilite.Models
-{
-    public class Delivery
-    {
-        public string Id { get; set; }
-        public string ClientId { get; set; }
-        public string DispatcherId { get; set; }
-        public string DriverId { get; set; }
-        public string Content { get; set; }
-        public Adress LoadAdress { get; set; }
-        public Adress UnloadingAdress { get; set; }
-        public DateTime LoadDate { get; set; }
-        public DateTime UnloadingDate { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
 
-    }
+namespace HELMo_bilite.Models;
+
+public class Delivery
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public Client ClientId { get; set; }
+
+    [Required]
+    public Dispatcher DispatcherId { get; set; }
+    
+    public Driver Driver { get; set; }
+
+    [Required]
+    public string Content { get; set; }
+
+    [Required]
+    public Address LoadAdress { get; set; }
+
+    [Required]
+    public Address UnloadingAdress { get; set; }
+
+    [Required]
+    public DateTime LoadDate { get; set; }
+
+    [Required]
+    public DateTime UnloadingDate { get; set; }
+
+    [Required]
+    public string status { get; set; }
+
+
 }
