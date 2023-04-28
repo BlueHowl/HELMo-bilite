@@ -9,7 +9,6 @@ public class User
     /// TODO: demander au prof si le client a un matricule
     /// </summary>
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string matricule { get; set; }
     [Required]
     public string Name { get; set; }

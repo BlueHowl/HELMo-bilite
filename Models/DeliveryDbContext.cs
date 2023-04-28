@@ -6,7 +6,10 @@ public class DeliveryDbContext : DbContext
 {
     public DeliveryDbContext(DbContextOptions<DeliveryDbContext> options) : base(options){}
 
-    DbSet<Delivery> Deliveries { get; set; }
    
+    public DbSet<Driver> Drivers { get; set; }
+    //public DbSet<Delivery> Deliveries { get; set; }
+
+
 
 }

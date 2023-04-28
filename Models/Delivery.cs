@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
 
@@ -8,10 +9,9 @@ public class Delivery
     public int Id { get; set; }
 
     [Required]
-    public Client ClientId { get; set; }
+    public Client Client { get; set; }
 
-    [Required]
-    public Dispatcher DispatcherId { get; set; }
+    public Dispatcher Dispatcher { get; set; }
     
     public Driver Driver { get; set; }
 
@@ -32,6 +32,7 @@ public class Delivery
 
     [Required]
     public string status { get; set; }
+
 
 
 }
