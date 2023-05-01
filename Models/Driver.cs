@@ -1,5 +1,8 @@
-﻿namespace HELMo_bilite.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace HELMo_bilite.Models;
+
+[Table("DEV.WEB.AVC.Driver")]
 public class Driver : User
 {
     /// <summary>

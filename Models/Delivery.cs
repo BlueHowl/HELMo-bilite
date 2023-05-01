@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
-
+[Table("DEV.WEB.AVC.Delivery")]
 public class Delivery
 {
     [Key]
