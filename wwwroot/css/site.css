@@ -16,3 +16,15 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+footer {
+    text-align: center;
+}
+
+nav {
+    background-color: #fccf34;
+}
+
+#img-cover {
+    width: 100%;
+}
