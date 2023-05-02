@@ -1,22 +1,27 @@
-using HELMo_bilite.Models;
+using HELMo_bilite.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
-//ajout de la configuration de la base de données
-/*builder.Services.AddDbContext<DeliveryDbContext>(options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Delivery;Encrypt=True;TrustServerCertificate=True;Trusted_Connection=True;"));
-*/
-builder.Services.AddDbContext<DeliveryDbContext>(options =>
-    options.UseSqlServer("Server=192.168.128.18;Database=in21b10093;User Id=in21b10093;Password=0093;Encrypt=true;TrustServerCertificate=true"));
-
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -28,10 +33,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();
