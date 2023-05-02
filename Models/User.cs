@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
@@ -11,6 +12,7 @@ public class User
     /// TODO: demander au prof si le client a un matricule
     /// </summary>
     [Key]
+    [Required]
     public string matricule { get; set; }
     [Required]
     public string Name { get; set; }

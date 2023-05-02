@@ -1,4 +1,5 @@
 using HELMo_bilite.Data;
+using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
