@@ -22,6 +22,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Utilisateur</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -30,44 +33,7 @@
     </header>
     <div>
         <main role="main" class="pb-3">
-            <section id="cover">
-                <h1>HELMo - bilité</h1>
-                <img src="~/images/trucks-sunset.png">
-            </section>
-
-            <section id="second-section">
-                <div>
-                    <h2>La flotte de camions de helmo-bilité roule maintenant à 100% au gaz naturel,
-                        En route vers une meilleure éco-responsabilité !
-                    </h2>
-
-                    <img src="~/images/eco-leaf.png">
-                </div>
-                <img src="~/images/cng-trucks.png">
-            </section>
-
-            <section id="third-section">
-                <h3>
-                    Nos clients les plus fidèles
-                </h3>
-
-                <div>
-                    <article>
-                        <img src="~/images/partners/vanherf.png" />
-                    </article>
-                     <article>
-                        <img src="~/images/partners/sileane.png" />
-                    </article>
-                    <article>
-                        <img src="~/images/partners/such.png" />
-                    </article>
-                    <article>
-                        <img src="~/images/partners/saintjames.png" />
-                    </article>
-                </div>
-            </section>
-
-            <!--@RenderBody()-->
+            @RenderBody()
         </main>
     </div>
 
