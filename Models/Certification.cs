@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
-[Table("DEV.WEB.AVC.Certification")]
 public class Certification
 {
     [Key]
