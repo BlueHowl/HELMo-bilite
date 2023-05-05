@@ -6,7 +6,8 @@ public class Client : User
 {
     [Required]
     public string CompanyName { get; set; }
-    /*[Required]
-    public Address CompanyAdress { get; set; }*/
+    public Address CompanyAddress { get; set; }
+    [ForeignKey("CompanyAddress")]
+    public string CompanyAddressId { get; set; }
     public string Number { get; set; }
 }
