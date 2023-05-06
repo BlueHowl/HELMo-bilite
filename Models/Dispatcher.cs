@@ -3,6 +3,6 @@
 namespace HELMo_bilite.Models;
 public class Dispatcher : User
 {
-    //[NotMapped]
-    public List<Certification> Certifications { get; set; }
+    
+    public ICollection<Certification> Certifications { get; set; } = new List<Certification>();
 }
