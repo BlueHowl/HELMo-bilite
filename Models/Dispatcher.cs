@@ -3,6 +3,7 @@
 namespace HELMo_bilite.Models;
 public class Dispatcher : User
 {
-    
-    public ICollection<Certification> Certifications { get; set; } = new List<Certification>();
+    [ForeignKey(nameof(Certification))]
+    public int IdCertification { get; set; }
+    public Certification Certification { get; set; }
 }

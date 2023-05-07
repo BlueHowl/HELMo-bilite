@@ -4,6 +4,7 @@ using HELMo_bilite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HELMo_bilite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230507205302_TruckDatageneration")]
+    partial class TruckDatageneration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +66,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("IdAddress");
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("Address");
 
                     b.HasData(
                         new
@@ -173,7 +175,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Certifications", (string)null);
+                    b.ToTable("Certifications");
 
                     b.HasData(
                         new
@@ -207,7 +209,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Licenses", (string)null);
+                    b.ToTable("Licenses");
 
                     b.HasData(
                         new
@@ -285,7 +287,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasIndex("IdLicenses");
 
-                    b.ToTable("Trucks", (string)null);
+                    b.ToTable("Trucks");
 
                     b.HasData(
                         new

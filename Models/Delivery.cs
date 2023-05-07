@@ -9,19 +9,22 @@ public class Delivery
 
     [Required]
     public Client Client { get; set; }
+    [Required]
+    [ForeignKey(nameof(Client))]
+    public string IdClient { get; set; }
 
     public Dispatcher Dispatcher { get; set; }
+    [ForeignKey(nameof(Dispatcher))]
+    public string IdDispatcher { get; set; }
     
     public Driver Driver { get; set; }
+    [ForeignKey(nameof(Driver))]
+    public string IdDriver { get; set; }
 
     [Required]
     public string Content { get; set; }
 
-    [Required]
-    public Address LoadAdress { get; set; }
-
-    [Required]
-    public Address UnloadingAdress { get; set; }
+    
 
     [Required]
     public DateTime LoadDate { get; set; }

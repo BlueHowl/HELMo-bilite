@@ -4,21 +4,17 @@
 
 namespace HELMo_bilite.Data.Migrations
 {
-    public partial class DataGeneration : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_DEV.WEB.AVC.Certification_DEV.WEB.AVC.Dispatcher_DispatcherId",
+                name: "FK_DEV.WEB.AVC.Certification_DEV.WEB.AVC.Dispatcher_Dispatchermatricule",
                 table: "DEV.WEB.AVC.Certification");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_DEV.WEB.AVC.License_DEV.WEB.AVC.Driver_DriverId",
+                name: "FK_DEV.WEB.AVC.License_DEV.WEB.AVC.Driver_Drivermatricule",
                 table: "DEV.WEB.AVC.License");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_DEV.WEB.AVC.User_AspNetUsers_Id",
-                table: "DEV.WEB.AVC.User");
 
             migrationBuilder.DropTable(
                 name: "DEV.WEB.AVC.Client");
@@ -37,6 +33,10 @@ namespace HELMo_bilite.Data.Migrations
                 name: "PK_DEV.WEB.AVC.License",
                 table: "DEV.WEB.AVC.License");
 
+            migrationBuilder.DropIndex(
+                name: "IX_DEV.WEB.AVC.License_Drivermatricule",
+                table: "DEV.WEB.AVC.License");
+
             migrationBuilder.DropPrimaryKey(
                 name: "PK_DEV.WEB.AVC.Certification",
                 table: "DEV.WEB.AVC.Certification");
@@ -46,12 +46,12 @@ namespace HELMo_bilite.Data.Migrations
                 table: "DEV.WEB.AVC.Address");
 
             migrationBuilder.DropColumn(
-                name: "Id",
+                name: "Status",
                 table: "DEV.WEB.AVC.User");
 
             migrationBuilder.DropColumn(
-                name: "Status",
-                table: "DEV.WEB.AVC.User");
+                name: "Drivermatricule",
+                table: "DEV.WEB.AVC.License");
 
             migrationBuilder.DropColumn(
                 name: "Id",
@@ -63,15 +63,15 @@ namespace HELMo_bilite.Data.Migrations
 
             migrationBuilder.RenameTable(
                 name: "DEV.WEB.AVC.License",
-                newName: "License");
+                newName: "Licenses");
 
             migrationBuilder.RenameTable(
                 name: "DEV.WEB.AVC.Certification",
-                newName: "Certification");
+                newName: "Certifications");
 
             migrationBuilder.RenameTable(
                 name: "DEV.WEB.AVC.Address",
-                newName: "Address");
+                newName: "Addresses");
 
             migrationBuilder.RenameColumn(
                 name: "matricule",
@@ -79,32 +79,14 @@ namespace HELMo_bilite.Data.Migrations
                 newName: "Matricule");
 
             migrationBuilder.RenameColumn(
-                name: "DriverId",
-                table: "License",
-                newName: "DriverMatricule");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_DEV.WEB.AVC.License_DriverId",
-                table: "License",
-                newName: "IX_License_DriverMatricule");
-
-            migrationBuilder.RenameColumn(
-                name: "DispatcherId",
-                table: "Certification",
+                name: "Dispatchermatricule",
+                table: "Certifications",
                 newName: "DispatcherMatricule");
 
             migrationBuilder.RenameIndex(
-                name: "IX_DEV.WEB.AVC.Certification_DispatcherId",
-                table: "Certification",
-                newName: "IX_Certification_DispatcherMatricule");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Matricule",
-                table: "User",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                name: "IX_DEV.WEB.AVC.Certification_Dispatchermatricule",
+                table: "Certifications",
+                newName: "IX_Certifications_DispatcherMatricule");
 
             migrationBuilder.AddColumn<string>(
                 name: "CompanyAddressId",
@@ -117,13 +99,6 @@ namespace HELMo_bilite.Data.Migrations
                 table: "User",
                 type: "nvarchar(max)",
                 nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Email",
-                table: "User",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "Number",
@@ -140,7 +115,7 @@ namespace HELMo_bilite.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "LocalityCode",
-                table: "Address",
+                table: "Addresses",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(int),
@@ -148,14 +123,14 @@ namespace HELMo_bilite.Data.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "IdAddress",
-                table: "Address",
+                table: "Addresses",
                 type: "nvarchar(450)",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
                 name: "Country",
-                table: "Address",
+                table: "Addresses",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -166,35 +141,92 @@ namespace HELMo_bilite.Data.Migrations
                 column: "Matricule");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_License",
-                table: "License",
+                name: "PK_Licenses",
+                table: "Licenses",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Certification",
-                table: "Certification",
+                name: "PK_Certifications",
+                table: "Certifications",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_Address",
-                table: "Address",
+                name: "PK_Addresses",
+                table: "Addresses",
                 column: "IdAddress");
 
+            migrationBuilder.CreateTable(
+                name: "DriverLicense",
+                columns: table => new
+                {
+                    DriversMatricule = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LicensesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DriverLicense", x => new { x.DriversMatricule, x.LicensesId });
+                    table.ForeignKey(
+                        name: "FK_DriverLicense_Licenses_LicensesId",
+                        column: x => x.LicensesId,
+                        principalTable: "Licenses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DriverLicense_User_DriversMatricule",
+                        column: x => x.DriversMatricule,
+                        principalTable: "User",
+                        principalColumn: "Matricule",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trucks",
+                columns: table => new
+                {
+                    Plate = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LicensesId = table.Column<int>(type: "int", nullable: false),
+                    IdLicenses = table.Column<int>(type: "int", nullable: false),
+                    Payload = table.Column<int>(type: "int", nullable: false),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trucks", x => x.Plate);
+                    table.ForeignKey(
+                        name: "FK_Trucks_Licenses_LicensesId",
+                        column: x => x.LicensesId,
+                        principalTable: "Licenses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
-                table: "Address",
+                table: "Addresses",
                 columns: new[] { "IdAddress", "Country", "Locality", "LocalityCode", "Number", "Street" },
                 values: new object[,]
                 {
-                    { "60", "Turks and Caicos Islands", "Christiansenstad", "77483-3165", "532", "Carson Path" },
-                    { "61", "Hungary", "Mayertburgh", "73379-5426", "364", "Dickinson Greens" },
-                    { "62", "Liechtenstein", "Hellerburgh", "43568-6742", "188", "Strosin Port" },
-                    { "63", "Sudan", "New Aylaside", "90207", "0330", "Huels Vista" },
-                    { "64", "Belgium", "Port Orvilleburgh", "19788-9089", "029", "Walter Squares" },
-                    { "65", "Grenada", "North Zachariahburgh", "42104-9162", "6746", "Lily Path" },
-                    { "66", "Turkmenistan", "Mayershire", "64520-8518", "20832", "Elna Passage" },
-                    { "67", "South Georgia and the South Sandwich Islands", "Lake Susannahaven", "68023", "292", "O'Kon Freeway" },
-                    { "68", "Belarus", "South Woodrowstad", "77660-0667", "55172", "Dickens Freeway" },
-                    { "69", "Indonesia", "West Greysonton", "27512", "6717", "Morar River" }
+                    { "60", "Suriname", "South Ernestina", "28387-6071", "42849", "Berge Shores" },
+                    { "61", "American Samoa", "Catharinemouth", "89588", "7877", "Emiliano Cove" },
+                    { "62", "Myanmar", "South Tinaville", "96975", "315", "Gottlieb Corners" },
+                    { "63", "Equatorial Guinea", "East Eldonshire", "52809-3498", "8999", "Richmond Haven" },
+                    { "64", "Malawi", "South Susanna", "87414", "234", "Timmy Viaduct" },
+                    { "65", "Qatar", "Bernhardland", "64338", "554", "Buckridge Dam" },
+                    { "66", "Kenya", "Mattiemouth", "18117", "9444", "Madisyn Ridges" },
+                    { "67", "Suriname", "O'Haramouth", "09276", "02406", "Kemmer Cliffs" },
+                    { "68", "Denmark", "Bernieceland", "99682", "216", "Bernhard Mountain" },
+                    { "69", "Seychelles", "New Gonzalo", "50883", "7027", "Mayer Wall" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Licenses",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "B" },
+                    { 2, "C" },
+                    { 3, "CE" }
                 });
 
             migrationBuilder.InsertData(
@@ -203,26 +235,26 @@ namespace HELMo_bilite.Data.Migrations
                 values: new object[,]
                 {
                     { "-1", "admin@admin.com", "Admin", "Admin", "admin", "Admin" },
-                    { "50", "Vladimir.Paucek55@hotmail.com", "Merlin", "Mueller", "oZ8vKVYEbx", "Dispatcher" },
-                    { "51", "Ursula41@hotmail.com", "Deangelo", "Wiegand", "TlztgutH4k", "Dispatcher" },
-                    { "52", "Rolando.Turner95@hotmail.com", "Treva", "Purdy", "KJUn9mxYco", "Dispatcher" },
-                    { "53", "Maryse47@hotmail.com", "Myrtice", "Shanahan", "1pIMkFicl2", "Dispatcher" },
-                    { "54", "Laurie.Sawayn@gmail.com", "Coleman", "Turner", "HiZXm1RPgo", "Dispatcher" },
-                    { "55", "Tatyana.Champlin@gmail.com", "Kariane", "Marvin", "TFnxu6_3KO", "Dispatcher" },
-                    { "56", "Andreanne53@hotmail.com", "Citlalli", "Gorczany", "H_YSn1M_70", "Dispatcher" },
-                    { "57", "Nakia21@gmail.com", "Cale", "Considine", "hqbG0MO5pe", "Dispatcher" },
-                    { "58", "Derrick17@yahoo.com", "Zetta", "Tillman", "ry8gkNk9B0", "Dispatcher" },
-                    { "59", "Laurie.Botsford@yahoo.com", "Paul", "Ryan", "XA4bdNojcW", "Dispatcher" },
-                    { "40", "Theo.Kunde87@hotmail.com", "Arthur", "Windler", "idliFpfOAa", "Driver" },
-                    { "41", "Sylvan.Terry80@yahoo.com", "Kiera", "Mueller", "EQBEfpuHCG", "Driver" },
-                    { "42", "Jerome.Rohan80@gmail.com", "Alessia", "Cole", "zaa67ZA_PR", "Driver" },
-                    { "43", "Delilah.Bashirian4@gmail.com", "Nelson", "Kiehn", "tSL2tJgDIq", "Driver" },
-                    { "44", "Sheridan21@gmail.com", "Lina", "Wisozk", "L4ly8KWHIB", "Driver" },
-                    { "45", "Arnold55@hotmail.com", "Art", "Mann", "VV9XcmttgB", "Driver" },
-                    { "46", "Daphne.Bruen54@hotmail.com", "Arvel", "D'Amore", "vjyoTiST47", "Driver" },
-                    { "47", "Luella.Kirlin@hotmail.com", "Ethan", "Wiegand", "DumzDVWqa_", "Driver" },
-                    { "48", "Wilfrid.Grant28@hotmail.com", "Chanelle", "Kreiger", "L7YFAjRpm2", "Driver" },
-                    { "49", "Audreanne52@hotmail.com", "Gilbert", "Johnston", "7U3Q3S1fxh", "Driver" }
+                    { "50", "Alene70@gmail.com", "Ronaldo", "Bergnaum", "MkGwzQmnxg", "Dispatcher" },
+                    { "51", "Abbie.Durgan@yahoo.com", "Clifton", "Schmeler", "NPSn7Mf8x9", "Dispatcher" },
+                    { "52", "Elyse_Kohler@hotmail.com", "Lionel", "Bins", "Z1yPMOCJog", "Dispatcher" },
+                    { "53", "Mafalda_Bergstrom13@gmail.com", "Dominique", "Marks", "Jm2IcbiGR1", "Dispatcher" },
+                    { "54", "Garett.Schuppe@yahoo.com", "Tierra", "Bauch", "TSEukDRJre", "Dispatcher" },
+                    { "55", "Brionna.Sauer39@gmail.com", "Emory", "Hirthe", "tpMcyrJZD3", "Dispatcher" },
+                    { "56", "Vince_Senger9@hotmail.com", "Tod", "Heathcote", "2G_be6cBNs", "Dispatcher" },
+                    { "57", "Gia_Lynch28@hotmail.com", "Giovani", "Wilkinson", "zcVZ77TycI", "Dispatcher" },
+                    { "58", "Randy58@yahoo.com", "Gudrun", "Muller", "vToaTB9C_5", "Dispatcher" },
+                    { "59", "Sylvan26@gmail.com", "Dennis", "Kirlin", "bFW9tWuMMG", "Dispatcher" },
+                    { "40", "Taylor.Shanahan99@gmail.com", "Camden", "Ryan", "pJl4rbrfNA", "Driver" },
+                    { "41", "Andre.Kessler36@hotmail.com", "Anjali", "Mohr", "GG5jdeVZtM", "Driver" },
+                    { "42", "Kassandra_Dicki82@yahoo.com", "Gianni", "Predovic", "VWtt3ZOjYu", "Driver" },
+                    { "43", "Hobart.Mayer@yahoo.com", "Jeanette", "Olson", "TZ6VsNmKzL", "Driver" },
+                    { "44", "Joel.Goodwin55@yahoo.com", "Jannie", "Reilly", "UlxyLXZJQj", "Driver" },
+                    { "45", "Trey_Roob@hotmail.com", "Lori", "Baumbach", "rVOGUDsLol", "Driver" },
+                    { "46", "Van96@hotmail.com", "Joey", "Leuschke", "zRYzU5UqJ1", "Driver" },
+                    { "47", "Anibal74@yahoo.com", "Creola", "Streich", "qJhKuWBpiX", "Driver" },
+                    { "48", "Liana11@gmail.com", "Rachael", "Veum", "YTdZ5wlFUP", "Driver" },
+                    { "49", "Kattie_Spencer@gmail.com", "Kevon", "Kuvalis", "xn1TMgdsFB", "Driver" }
                 });
 
             migrationBuilder.InsertData(
@@ -230,16 +262,16 @@ namespace HELMo_bilite.Data.Migrations
                 columns: new[] { "Matricule", "CompanyAddressId", "CompanyName", "Email", "FirstName", "Name", "Number", "Password", "Role" },
                 values: new object[,]
                 {
-                    { "70", "60", "Rodriguez Inc", "Erin.Parker@yahoo.com", "Jesus", "Bechtelar", "486-250-8053", "TW97iADotQ", "Client" },
-                    { "71", "61", "Abernathy and Sons", "Cathy_Schowalter@gmail.com", "Brennan", "O'Keefe", "578-899-7693", "oaTyKK0H6U", "Client" },
-                    { "72", "62", "Schmitt and Sons", "Maryam_Grady@gmail.com", "Hilda", "Jacobs", "350-348-4779", "mrZc7oi2yj", "Client" },
-                    { "73", "63", "Hartmann LLC", "Lola_Quigley@gmail.com", "Jamel", "Bauch", "574-848-3083", "AREp7pgU2j", "Client" },
-                    { "74", "64", "Kuhic - Effertz", "Anna_Larson13@gmail.com", "Adalberto", "Frami", "587-514-4357", "DWmnuVM6aM", "Client" },
-                    { "75", "65", "Hagenes Inc", "Jarrett16@hotmail.com", "Delia", "Effertz", "383-449-8923", "xOjnmx9JMI", "Client" },
-                    { "76", "66", "Orn Inc", "Akeem2@yahoo.com", "Brandyn", "D'Amore", "435-358-9142", "hQl0f4aadZ", "Client" },
-                    { "77", "67", "Kuhn and Sons", "Arianna.Langosh41@gmail.com", "Edmond", "Durgan", "898-586-3625", "68s4RJSpfM", "Client" },
-                    { "78", "68", "Osinski - Franecki", "Cristal97@yahoo.com", "Daphne", "Feeney", "796-774-2920", "9KgthYQCaB", "Client" },
-                    { "79", "69", "Daniel, Kilback and Berge", "Sandra_Fay24@yahoo.com", "Oral", "Wyman", "922-565-1752", "zib2jDUkBc", "Client" }
+                    { "70", "60", "Larkin and Sons", "Mike.Thompson39@gmail.com", "Darrin", "Emard", "539-863-4533", "Xgw7zR1yxC", "Client" },
+                    { "71", "61", "Leannon Group", "Linnie3@hotmail.com", "Dovie", "Boyle", "741-716-4122", "yE6Ckxo0EI", "Client" },
+                    { "72", "62", "Cronin, Mayert and Ullrich", "Shawna.Breitenberg24@yahoo.com", "Michelle", "Mayer", "621-567-3328", "abKt5Dl1Qe", "Client" },
+                    { "73", "63", "Moore Inc", "Marietta.Muller@yahoo.com", "Roosevelt", "Mitchell", "400-883-1300", "T_oyCv8C6y", "Client" },
+                    { "74", "64", "Quigley, O'Keefe and Rath", "Reina75@hotmail.com", "Gianni", "Effertz", "781-208-4655", "___4f5iAgk", "Client" },
+                    { "75", "65", "Waters - Sipes", "Olin.Yundt90@hotmail.com", "Margarette", "Crist", "303-424-0192", "BR6dkuxfvP", "Client" },
+                    { "76", "66", "Fritsch and Sons", "Emmet.Kulas@gmail.com", "Lizeth", "Ullrich", "870-448-2595", "EMDwIttWd1", "Client" },
+                    { "77", "67", "Hilpert LLC", "Adell_Becker@gmail.com", "Tito", "Krajcik", "994-333-0350", "NXUbh8v6B_", "Client" },
+                    { "78", "68", "Mills - Leannon", "Antone_Lemke24@gmail.com", "Giuseppe", "Wuckert", "403-976-9428", "UqeXtidOZG", "Client" },
+                    { "79", "69", "Hills, Morissette and McKenzie", "Frankie_Lind28@yahoo.com", "Stephan", "Purdy", "267-694-5476", "P5er5vGDpg", "Client" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -247,25 +279,28 @@ namespace HELMo_bilite.Data.Migrations
                 table: "User",
                 column: "CompanyAddressId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverLicense_LicensesId",
+                table: "DriverLicense",
+                column: "LicensesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trucks_LicensesId",
+                table: "Trucks",
+                column: "LicensesId");
+
             migrationBuilder.AddForeignKey(
-                name: "FK_Certification_User_DispatcherMatricule",
-                table: "Certification",
+                name: "FK_Certifications_User_DispatcherMatricule",
+                table: "Certifications",
                 column: "DispatcherMatricule",
                 principalTable: "User",
                 principalColumn: "Matricule");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_License_User_DriverMatricule",
-                table: "License",
-                column: "DriverMatricule",
-                principalTable: "User",
-                principalColumn: "Matricule");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_User_Address_CompanyAddressId",
+                name: "FK_User_Addresses_CompanyAddressId",
                 table: "User",
                 column: "CompanyAddressId",
-                principalTable: "Address",
+                principalTable: "Addresses",
                 principalColumn: "IdAddress",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -273,16 +308,18 @@ namespace HELMo_bilite.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Certification_User_DispatcherMatricule",
-                table: "Certification");
+                name: "FK_Certifications_User_DispatcherMatricule",
+                table: "Certifications");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_License_User_DriverMatricule",
-                table: "License");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_User_Address_CompanyAddressId",
+                name: "FK_User_Addresses_CompanyAddressId",
                 table: "User");
+
+            migrationBuilder.DropTable(
+                name: "DriverLicense");
+
+            migrationBuilder.DropTable(
+                name: "Trucks");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_User",
@@ -293,16 +330,31 @@ namespace HELMo_bilite.Data.Migrations
                 table: "User");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_License",
-                table: "License");
+                name: "PK_Licenses",
+                table: "Licenses");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Certification",
-                table: "Certification");
+                name: "PK_Certifications",
+                table: "Certifications");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Address",
-                table: "Address");
+                name: "PK_Addresses",
+                table: "Addresses");
+
+            migrationBuilder.DeleteData(
+                table: "Licenses",
+                keyColumn: "Id",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Licenses",
+                keyColumn: "Id",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "Licenses",
+                keyColumn: "Id",
+                keyValue: 3);
 
             migrationBuilder.DeleteData(
                 table: "User",
@@ -460,61 +512,61 @@ namespace HELMo_bilite.Data.Migrations
                 keyValue: "49");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "60");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "61");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "62");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "63");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "64");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "65");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "66");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "67");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "68");
 
             migrationBuilder.DeleteData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyColumnType: "nvarchar(450)",
                 keyValue: "69");
@@ -528,10 +580,6 @@ namespace HELMo_bilite.Data.Migrations
                 table: "User");
 
             migrationBuilder.DropColumn(
-                name: "Email",
-                table: "User");
-
-            migrationBuilder.DropColumn(
                 name: "Number",
                 table: "User");
 
@@ -541,26 +589,26 @@ namespace HELMo_bilite.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "IdAddress",
-                table: "Address");
+                table: "Addresses");
 
             migrationBuilder.DropColumn(
                 name: "Country",
-                table: "Address");
+                table: "Addresses");
 
             migrationBuilder.RenameTable(
                 name: "User",
                 newName: "DEV.WEB.AVC.User");
 
             migrationBuilder.RenameTable(
-                name: "License",
+                name: "Licenses",
                 newName: "DEV.WEB.AVC.License");
 
             migrationBuilder.RenameTable(
-                name: "Certification",
+                name: "Certifications",
                 newName: "DEV.WEB.AVC.Certification");
 
             migrationBuilder.RenameTable(
-                name: "Address",
+                name: "Addresses",
                 newName: "DEV.WEB.AVC.Address");
 
             migrationBuilder.RenameColumn(
@@ -569,39 +617,14 @@ namespace HELMo_bilite.Data.Migrations
                 newName: "matricule");
 
             migrationBuilder.RenameColumn(
-                name: "DriverMatricule",
-                table: "DEV.WEB.AVC.License",
-                newName: "DriverId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_License_DriverMatricule",
-                table: "DEV.WEB.AVC.License",
-                newName: "IX_DEV.WEB.AVC.License_DriverId");
-
-            migrationBuilder.RenameColumn(
                 name: "DispatcherMatricule",
                 table: "DEV.WEB.AVC.Certification",
-                newName: "DispatcherId");
+                newName: "Dispatchermatricule");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Certification_DispatcherMatricule",
+                name: "IX_Certifications_DispatcherMatricule",
                 table: "DEV.WEB.AVC.Certification",
-                newName: "IX_DEV.WEB.AVC.Certification_DispatcherId");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "matricule",
-                table: "DEV.WEB.AVC.User",
-                type: "nvarchar(max)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Id",
-                table: "DEV.WEB.AVC.User",
-                type: "nvarchar(450)",
-                nullable: false,
-                defaultValue: "");
+                newName: "IX_DEV.WEB.AVC.Certification_Dispatchermatricule");
 
             migrationBuilder.AddColumn<int>(
                 name: "Status",
@@ -609,6 +632,12 @@ namespace HELMo_bilite.Data.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Drivermatricule",
+                table: "DEV.WEB.AVC.License",
+                type: "nvarchar(450)",
+                nullable: true);
 
             migrationBuilder.AlterColumn<int>(
                 name: "LocalityCode",
@@ -629,7 +658,7 @@ namespace HELMo_bilite.Data.Migrations
             migrationBuilder.AddPrimaryKey(
                 name: "PK_DEV.WEB.AVC.User",
                 table: "DEV.WEB.AVC.User",
-                column: "Id");
+                column: "matricule");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_DEV.WEB.AVC.License",
@@ -650,14 +679,14 @@ namespace HELMo_bilite.Data.Migrations
                 name: "DEV.WEB.AVC.Client",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    matricule = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CompanyAdressId = table.Column<int>(type: "int", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Number = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DEV.WEB.AVC.Client", x => x.Id);
+                    table.PrimaryKey("PK_DEV.WEB.AVC.Client", x => x.matricule);
                     table.ForeignKey(
                         name: "FK_DEV.WEB.AVC.Client_DEV.WEB.AVC.Address_CompanyAdressId",
                         column: x => x.CompanyAdressId,
@@ -665,43 +694,48 @@ namespace HELMo_bilite.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DEV.WEB.AVC.Client_DEV.WEB.AVC.User_Id",
-                        column: x => x.Id,
+                        name: "FK_DEV.WEB.AVC.Client_DEV.WEB.AVC.User_matricule",
+                        column: x => x.matricule,
                         principalTable: "DEV.WEB.AVC.User",
-                        principalColumn: "Id");
+                        principalColumn: "matricule");
                 });
 
             migrationBuilder.CreateTable(
                 name: "DEV.WEB.AVC.Dispatcher",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    matricule = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DEV.WEB.AVC.Dispatcher", x => x.Id);
+                    table.PrimaryKey("PK_DEV.WEB.AVC.Dispatcher", x => x.matricule);
                     table.ForeignKey(
-                        name: "FK_DEV.WEB.AVC.Dispatcher_DEV.WEB.AVC.User_Id",
-                        column: x => x.Id,
+                        name: "FK_DEV.WEB.AVC.Dispatcher_DEV.WEB.AVC.User_matricule",
+                        column: x => x.matricule,
                         principalTable: "DEV.WEB.AVC.User",
-                        principalColumn: "Id");
+                        principalColumn: "matricule");
                 });
 
             migrationBuilder.CreateTable(
                 name: "DEV.WEB.AVC.Driver",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    matricule = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DEV.WEB.AVC.Driver", x => x.Id);
+                    table.PrimaryKey("PK_DEV.WEB.AVC.Driver", x => x.matricule);
                     table.ForeignKey(
-                        name: "FK_DEV.WEB.AVC.Driver_DEV.WEB.AVC.User_Id",
-                        column: x => x.Id,
+                        name: "FK_DEV.WEB.AVC.Driver_DEV.WEB.AVC.User_matricule",
+                        column: x => x.matricule,
                         principalTable: "DEV.WEB.AVC.User",
-                        principalColumn: "Id");
+                        principalColumn: "matricule");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DEV.WEB.AVC.License_Drivermatricule",
+                table: "DEV.WEB.AVC.License",
+                column: "Drivermatricule");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DEV.WEB.AVC.Client_CompanyAdressId",
@@ -709,25 +743,18 @@ namespace HELMo_bilite.Data.Migrations
                 column: "CompanyAdressId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_DEV.WEB.AVC.Certification_DEV.WEB.AVC.Dispatcher_DispatcherId",
+                name: "FK_DEV.WEB.AVC.Certification_DEV.WEB.AVC.Dispatcher_Dispatchermatricule",
                 table: "DEV.WEB.AVC.Certification",
-                column: "DispatcherId",
+                column: "Dispatchermatricule",
                 principalTable: "DEV.WEB.AVC.Dispatcher",
-                principalColumn: "Id");
+                principalColumn: "matricule");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_DEV.WEB.AVC.License_DEV.WEB.AVC.Driver_DriverId",
+                name: "FK_DEV.WEB.AVC.License_DEV.WEB.AVC.Driver_Drivermatricule",
                 table: "DEV.WEB.AVC.License",
-                column: "DriverId",
+                column: "Drivermatricule",
                 principalTable: "DEV.WEB.AVC.Driver",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DEV.WEB.AVC.User_AspNetUsers_Id",
-                table: "DEV.WEB.AVC.User",
-                column: "Id",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                principalColumn: "matricule");
         }
     }
 }

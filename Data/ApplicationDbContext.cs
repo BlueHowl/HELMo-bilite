@@ -9,12 +9,15 @@ namespace HELMo_bilite.Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {
-    public DbSet<Driver> Drivers { get; set; }
-    public DbSet<Dispatcher> Dispatchers { get; set; }
-    public DbSet<Client> Clients { get; set; }
-    public DbSet<Admin> Admins { get; set; }
+    public DbSet<Driver> Drivers { get; set; }//fait
+    public DbSet<Dispatcher> Dispatchers { get; set; }//fait
+    public DbSet<Client> Clients { get; set; }//fait
+    public DbSet<Admin> Admins { get; set; }//fait
+    public DbSet<Vehicule> Trucks { get; set; }//fait
+    public DbSet<Certification> Certifications { get; set; }//fait
+    public DbSet<License> Licenses { get; set; }//fait
 
-    public DbSet<Truck> Trucks { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     { }
@@ -37,6 +40,14 @@ public class ApplicationDbContext : IdentityDbContext
             .HasValue<Client>("Client")
             .HasValue<Admin>("Admin");
 
+
+        modelBuilder.Entity<Driver>()
+            .HasMany(l => l.Licenses)
+            .WithMany(d => d.Drivers)
+            .UsingEntity(t => t.ToTable("DriverLicense"));      
+        
+
+       
 
 
 

@@ -4,6 +4,7 @@ using HELMo_bilite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HELMo_bilite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230507203038_DriverLicenses5")]
+    partial class DriverLicenses5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace HELMo_bilite.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("DriverLicense", b =>
-                {
-                    b.Property<string>("DriversMatricule")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("LicensesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DriversMatricule", "LicensesId");
-
-                    b.HasIndex("LicensesId");
-
-                    b.ToTable("DriverLicense", (string)null);
-                });
 
             modelBuilder.Entity("HELMo_bilite.Models.Address", b =>
                 {
@@ -64,98 +51,98 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("IdAddress");
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("Address");
 
                     b.HasData(
                         new
                         {
-                            IdAddress = "90",
-                            Country = "Sri Lanka",
-                            Locality = "Pagacborough",
-                            LocalityCode = "97440-9992",
-                            Number = "108",
-                            Street = "Monserrat Crossroad"
+                            IdAddress = "80",
+                            Country = "Italy",
+                            Locality = "West Michel",
+                            LocalityCode = "87812-6339",
+                            Number = "1339",
+                            Street = "Monroe Islands"
                         },
                         new
                         {
-                            IdAddress = "91",
-                            Country = "Azerbaijan",
-                            Locality = "Gusberg",
-                            LocalityCode = "59648",
-                            Number = "299",
-                            Street = "Herzog Way"
+                            IdAddress = "81",
+                            Country = "Holy See (Vatican City State)",
+                            Locality = "Todberg",
+                            LocalityCode = "60938",
+                            Number = "70509",
+                            Street = "Norma Village"
                         },
                         new
                         {
-                            IdAddress = "92",
-                            Country = "Jordan",
-                            Locality = "Frederikport",
-                            LocalityCode = "08837",
-                            Number = "46554",
-                            Street = "Greenfelder Vista"
+                            IdAddress = "82",
+                            Country = "Mali",
+                            Locality = "Port Merlmouth",
+                            LocalityCode = "85529",
+                            Number = "4858",
+                            Street = "Sporer Mall"
                         },
                         new
                         {
-                            IdAddress = "93",
-                            Country = "Virgin Islands, British",
-                            Locality = "North Mayra",
-                            LocalityCode = "51386-4584",
-                            Number = "84451",
-                            Street = "Fisher Villages"
+                            IdAddress = "83",
+                            Country = "Algeria",
+                            Locality = "Chaunceyborough",
+                            LocalityCode = "48102-6198",
+                            Number = "3549",
+                            Street = "Schowalter Row"
                         },
                         new
                         {
-                            IdAddress = "94",
-                            Country = "Spain",
-                            Locality = "Lake Minervahaven",
-                            LocalityCode = "56592-6804",
-                            Number = "77973",
-                            Street = "Manuela Stravenue"
+                            IdAddress = "84",
+                            Country = "Cote d'Ivoire",
+                            Locality = "North Cindy",
+                            LocalityCode = "86039",
+                            Number = "44084",
+                            Street = "Hassie Shores"
                         },
                         new
                         {
-                            IdAddress = "95",
-                            Country = "Lao People's Democratic Republic",
-                            Locality = "Brennaside",
-                            LocalityCode = "98042",
-                            Number = "741",
-                            Street = "Fadel Views"
+                            IdAddress = "85",
+                            Country = "Sao Tome and Principe",
+                            Locality = "West Imaland",
+                            LocalityCode = "50710-5896",
+                            Number = "70663",
+                            Street = "Bode Mountain"
                         },
                         new
                         {
-                            IdAddress = "96",
-                            Country = "Cayman Islands",
-                            Locality = "East Emily",
-                            LocalityCode = "32449-1042",
-                            Number = "5037",
-                            Street = "Zackary Cliff"
+                            IdAddress = "86",
+                            Country = "Mauritius",
+                            Locality = "Wilkinsonfort",
+                            LocalityCode = "43186",
+                            Number = "11517",
+                            Street = "Cummerata Ville"
                         },
                         new
                         {
-                            IdAddress = "97",
-                            Country = "Benin",
-                            Locality = "South Caesar",
-                            LocalityCode = "28192-1236",
-                            Number = "365",
-                            Street = "Madonna Mission"
+                            IdAddress = "87",
+                            Country = "French Polynesia",
+                            Locality = "East Monserratehaven",
+                            LocalityCode = "87076-4412",
+                            Number = "137",
+                            Street = "Carroll Road"
                         },
                         new
                         {
-                            IdAddress = "98",
-                            Country = "Iraq",
-                            Locality = "West Ernesto",
-                            LocalityCode = "94433",
-                            Number = "880",
-                            Street = "Murazik Trail"
+                            IdAddress = "88",
+                            Country = "Guinea-Bissau",
+                            Locality = "Kihnview",
+                            LocalityCode = "80726",
+                            Number = "2006",
+                            Street = "Reed Place"
                         },
                         new
                         {
-                            IdAddress = "99",
-                            Country = "China",
-                            Locality = "West Eduardo",
-                            LocalityCode = "78395",
-                            Number = "6609",
-                            Street = "Zelda Walk"
+                            IdAddress = "89",
+                            Country = "Qatar",
+                            Locality = "Danielbury",
+                            LocalityCode = "38809",
+                            Number = "956",
+                            Street = "Larkin Spring"
                         });
                 });
 
@@ -173,7 +160,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Certifications", (string)null);
+                    b.ToTable("Certifications");
 
                     b.HasData(
                         new
@@ -207,7 +194,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Licenses", (string)null);
+                    b.ToTable("Licenses");
 
                     b.HasData(
                         new
@@ -271,6 +258,9 @@ namespace HELMo_bilite.Data.Migrations
                     b.Property<int>("IdLicenses")
                         .HasColumnType("int");
 
+                    b.Property<int>("LicensesId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -283,91 +273,9 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Plate");
 
-                    b.HasIndex("IdLicenses");
+                    b.HasIndex("LicensesId");
 
-                    b.ToTable("Trucks", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Plate = "ZR3SYK40K2SK61953",
-                            Brand = "Rolls Royce",
-                            IdLicenses = 2,
-                            Model = "Explorer",
-                            Payload = 16000
-                        },
-                        new
-                        {
-                            Plate = "A2CPHJUFBBXV12437",
-                            Brand = "Volvo",
-                            IdLicenses = 2,
-                            Model = "911",
-                            Payload = 5000
-                        },
-                        new
-                        {
-                            Plate = "V1LY16VD4AQV46550",
-                            Brand = "Tesla",
-                            IdLicenses = 3,
-                            Model = "Volt",
-                            Payload = 22000
-                        },
-                        new
-                        {
-                            Plate = "SS1GIVD235F537437",
-                            Brand = "Rolls Royce",
-                            IdLicenses = 1,
-                            Model = "Malibu",
-                            Payload = 39000
-                        },
-                        new
-                        {
-                            Plate = "POK243CPHZC540896",
-                            Brand = "Mini",
-                            IdLicenses = 2,
-                            Model = "Colorado",
-                            Payload = 19000
-                        },
-                        new
-                        {
-                            Plate = "IDEO2MQ4VCVP28531",
-                            Brand = "Hyundai",
-                            IdLicenses = 2,
-                            Model = "Grand Caravan",
-                            Payload = 39000
-                        },
-                        new
-                        {
-                            Plate = "PGKAZFG8NETR69956",
-                            Brand = "BMW",
-                            IdLicenses = 2,
-                            Model = "Wrangler",
-                            Payload = 3000
-                        },
-                        new
-                        {
-                            Plate = "9ZVMEQLMYNIT84444",
-                            Brand = "Aston Martin",
-                            IdLicenses = 1,
-                            Model = "Taurus",
-                            Payload = 30000
-                        },
-                        new
-                        {
-                            Plate = "M54M4VFXXFLC69003",
-                            Brand = "Tesla",
-                            IdLicenses = 3,
-                            Model = "Impala",
-                            Payload = 30000
-                        },
-                        new
-                        {
-                            Plate = "78410WS0JNZU60252",
-                            Brand = "Aston Martin",
-                            IdLicenses = 3,
-                            Model = "1",
-                            Payload = 30000
-                        });
+                    b.ToTable("Trucks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -612,113 +520,113 @@ namespace HELMo_bilite.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Matricule = "100",
-                            Email = "Thora.Kuvalis56@hotmail.com",
-                            FirstName = "Terry",
-                            Name = "McKenzie",
-                            Password = "p8SHolxZeU",
-                            CompanyAddressId = "90",
-                            CompanyName = "Berge - Sporer",
-                            Number = "483-506-7101"
+                            Matricule = "90",
+                            Email = "Ayla_Gleason@yahoo.com",
+                            FirstName = "Ruthie",
+                            Name = "Hettinger",
+                            Password = "dE6mnFsXi4",
+                            CompanyAddressId = "80",
+                            CompanyName = "Smith LLC",
+                            Number = "631-912-4670"
                         },
                         new
                         {
-                            Matricule = "101",
-                            Email = "Wilburn_Bartoletti@yahoo.com",
-                            FirstName = "Vern",
-                            Name = "Hand",
-                            Password = "Kkg_2eOKfS",
-                            CompanyAddressId = "91",
-                            CompanyName = "Towne - Hilll",
-                            Number = "202-595-3449"
+                            Matricule = "91",
+                            Email = "Elroy.Wunsch53@yahoo.com",
+                            FirstName = "Brant",
+                            Name = "Kirlin",
+                            Password = "gDLBGE8y1s",
+                            CompanyAddressId = "81",
+                            CompanyName = "Lindgren, Lang and Anderson",
+                            Number = "393-213-0590"
                         },
                         new
                         {
-                            Matricule = "102",
-                            Email = "Rosa.Carter@yahoo.com",
-                            FirstName = "Gayle",
-                            Name = "Boehm",
-                            Password = "f59UIHJ7j4",
-                            CompanyAddressId = "92",
-                            CompanyName = "Vandervort - Johnston",
-                            Number = "323-641-5750"
+                            Matricule = "92",
+                            Email = "Wanda_Mosciski26@hotmail.com",
+                            FirstName = "Jazmyne",
+                            Name = "Hane",
+                            Password = "9zZPKexgd4",
+                            CompanyAddressId = "82",
+                            CompanyName = "Abernathy and Sons",
+                            Number = "997-757-6890"
                         },
                         new
                         {
-                            Matricule = "103",
-                            Email = "Demarco_Parisian77@hotmail.com",
-                            FirstName = "Armani",
-                            Name = "Morissette",
-                            Password = "oduD0m2H9B",
-                            CompanyAddressId = "93",
-                            CompanyName = "Sporer, Stroman and Kautzer",
-                            Number = "870-216-2710"
+                            Matricule = "93",
+                            Email = "Ernie4@gmail.com",
+                            FirstName = "Whitney",
+                            Name = "Beier",
+                            Password = "CuYqZ4U5dk",
+                            CompanyAddressId = "83",
+                            CompanyName = "VonRueden Group",
+                            Number = "747-762-3446"
                         },
                         new
                         {
-                            Matricule = "104",
-                            Email = "Annie.Quitzon@hotmail.com",
-                            FirstName = "Constantin",
-                            Name = "Lemke",
-                            Password = "Uc9yFL9zBo",
-                            CompanyAddressId = "94",
-                            CompanyName = "Beahan - Mayert",
-                            Number = "981-755-8271"
+                            Matricule = "94",
+                            Email = "Watson_Blick@gmail.com",
+                            FirstName = "Delmer",
+                            Name = "Keeling",
+                            Password = "uKVao0YePZ",
+                            CompanyAddressId = "84",
+                            CompanyName = "Dickinson and Sons",
+                            Number = "368-754-7247"
                         },
                         new
                         {
-                            Matricule = "105",
-                            Email = "Mitchell_Schaden38@gmail.com",
-                            FirstName = "Demario",
-                            Name = "Maggio",
-                            Password = "Jggu5bibiQ",
-                            CompanyAddressId = "95",
-                            CompanyName = "Okuneva and Sons",
-                            Number = "877-270-3613"
+                            Matricule = "95",
+                            Email = "Buford63@yahoo.com",
+                            FirstName = "Amiya",
+                            Name = "Russel",
+                            Password = "DoEph07ykM",
+                            CompanyAddressId = "85",
+                            CompanyName = "Feil - Blanda",
+                            Number = "607-634-8165"
                         },
                         new
                         {
-                            Matricule = "106",
-                            Email = "Kory_Emard1@gmail.com",
-                            FirstName = "Jessyca",
-                            Name = "Jakubowski",
-                            Password = "ksWRJVcUH3",
-                            CompanyAddressId = "96",
-                            CompanyName = "Terry, Bode and Kutch",
-                            Number = "548-897-9723"
+                            Matricule = "96",
+                            Email = "Dandre_Schiller38@yahoo.com",
+                            FirstName = "Lilly",
+                            Name = "Hane",
+                            Password = "F7Wa6j5vpD",
+                            CompanyAddressId = "86",
+                            CompanyName = "Hegmann, Stracke and Ward",
+                            Number = "992-356-8699"
                         },
                         new
                         {
-                            Matricule = "107",
-                            Email = "Iliana_Pacocha@yahoo.com",
-                            FirstName = "Aurelia",
-                            Name = "McGlynn",
-                            Password = "S8BCh5Yrar",
-                            CompanyAddressId = "97",
-                            CompanyName = "Hills - Bashirian",
-                            Number = "883-677-3964"
+                            Matricule = "97",
+                            Email = "Karelle9@hotmail.com",
+                            FirstName = "Kale",
+                            Name = "Ebert",
+                            Password = "86FwWPislI",
+                            CompanyAddressId = "87",
+                            CompanyName = "Green LLC",
+                            Number = "494-731-4889"
                         },
                         new
                         {
-                            Matricule = "108",
-                            Email = "Ali_Feest@gmail.com",
-                            FirstName = "Maryjane",
-                            Name = "Sauer",
-                            Password = "MsuwzmUrw7",
-                            CompanyAddressId = "98",
-                            CompanyName = "Bauch, Rau and Rath",
-                            Number = "872-425-8960"
+                            Matricule = "98",
+                            Email = "Kassandra_Klocko@yahoo.com",
+                            FirstName = "Gerald",
+                            Name = "Krajcik",
+                            Password = "x2_pps5fxU",
+                            CompanyAddressId = "88",
+                            CompanyName = "Monahan, Prosacco and Tromp",
+                            Number = "246-421-9051"
                         },
                         new
                         {
-                            Matricule = "109",
-                            Email = "Zachery_Hilll70@gmail.com",
-                            FirstName = "Hudson",
-                            Name = "Hamill",
-                            Password = "X9A417cftS",
-                            CompanyAddressId = "99",
-                            CompanyName = "Greenfelder - Harris",
-                            Number = "392-879-3862"
+                            Matricule = "99",
+                            Email = "Cloyd27@hotmail.com",
+                            FirstName = "Bertrand",
+                            Name = "Halvorson",
+                            Password = "oaQJkehrFV",
+                            CompanyAddressId = "89",
+                            CompanyName = "Wiegand and Sons",
+                            Number = "369-443-6870"
                         });
                 });
 
@@ -736,92 +644,92 @@ namespace HELMo_bilite.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Matricule = "80",
-                            Email = "Sammie80@yahoo.com",
-                            FirstName = "Joan",
-                            Name = "Abbott",
-                            Password = "wW8kvnUpFg",
+                            Matricule = "70",
+                            Email = "Robbie.Terry14@hotmail.com",
+                            FirstName = "Emilie",
+                            Name = "Carroll",
+                            Password = "YNTLmzs6LQ",
                             IdCertification = 3
                         },
                         new
                         {
-                            Matricule = "81",
-                            Email = "Dustin.McClure3@yahoo.com",
-                            FirstName = "Deion",
-                            Name = "Wisozk",
-                            Password = "i6LGjKxLQR",
-                            IdCertification = 1
-                        },
-                        new
-                        {
-                            Matricule = "82",
-                            Email = "Marcia28@hotmail.com",
-                            FirstName = "Gerhard",
-                            Name = "Hamill",
-                            Password = "bdwhhgjSB8",
+                            Matricule = "71",
+                            Email = "Dulce61@hotmail.com",
+                            FirstName = "Jovan",
+                            Name = "Prohaska",
+                            Password = "dx5UyzfqFV",
                             IdCertification = 2
                         },
                         new
                         {
-                            Matricule = "83",
-                            Email = "Leone_Rau73@gmail.com",
-                            FirstName = "Jeremy",
-                            Name = "Fisher",
-                            Password = "YHdC_vGmZ1",
-                            IdCertification = 1
-                        },
-                        new
-                        {
-                            Matricule = "84",
-                            Email = "Twila.Monahan@gmail.com",
-                            FirstName = "Keagan",
-                            Name = "Collier",
-                            Password = "aUGgqYHLHg",
+                            Matricule = "72",
+                            Email = "Eriberto19@yahoo.com",
+                            FirstName = "August",
+                            Name = "Bosco",
+                            Password = "Vc0qj5_soV",
                             IdCertification = 2
                         },
                         new
                         {
-                            Matricule = "85",
-                            Email = "Mossie_Zulauf@hotmail.com",
-                            FirstName = "Bobby",
-                            Name = "Schuppe",
-                            Password = "ZYD3ZYR873",
-                            IdCertification = 3
+                            Matricule = "73",
+                            Email = "Jessyca.Stanton@yahoo.com",
+                            FirstName = "Hunter",
+                            Name = "McKenzie",
+                            Password = "U3aKHJVFLG",
+                            IdCertification = 1
                         },
                         new
                         {
-                            Matricule = "86",
-                            Email = "Pansy13@yahoo.com",
-                            FirstName = "Joanny",
-                            Name = "Nienow",
-                            Password = "yLTwq1D3aJ",
-                            IdCertification = 3
+                            Matricule = "74",
+                            Email = "Ibrahim_Schulist83@gmail.com",
+                            FirstName = "Phyllis",
+                            Name = "Gerhold",
+                            Password = "QQNf1gZ0_F",
+                            IdCertification = 2
                         },
                         new
                         {
-                            Matricule = "87",
-                            Email = "Juwan_Heller@gmail.com",
+                            Matricule = "75",
+                            Email = "Florine_Leffler@hotmail.com",
+                            FirstName = "Erna",
+                            Name = "Huels",
+                            Password = "8CEZ9TxK85",
+                            IdCertification = 2
+                        },
+                        new
+                        {
+                            Matricule = "76",
+                            Email = "Damien_Leuschke@hotmail.com",
+                            FirstName = "Berry",
+                            Name = "Buckridge",
+                            Password = "RmnbzjVGk7",
+                            IdCertification = 2
+                        },
+                        new
+                        {
+                            Matricule = "77",
+                            Email = "Alden_Murazik@hotmail.com",
                             FirstName = "Rowan",
                             Name = "Durgan",
-                            Password = "HBthoJ0ZRJ",
+                            Password = "sfmjRJv8rE",
                             IdCertification = 2
                         },
                         new
                         {
-                            Matricule = "88",
-                            Email = "Murl46@hotmail.com",
-                            FirstName = "Emile",
-                            Name = "Stoltenberg",
-                            Password = "P5GFW2kX0n",
-                            IdCertification = 1
+                            Matricule = "78",
+                            Email = "Pierre_Huels38@hotmail.com",
+                            FirstName = "Eldred",
+                            Name = "Cormier",
+                            Password = "jgNNIy58eS",
+                            IdCertification = 2
                         },
                         new
                         {
-                            Matricule = "89",
-                            Email = "Greg61@yahoo.com",
-                            FirstName = "Maida",
-                            Name = "Gottlieb",
-                            Password = "YsFBriOOHY",
+                            Matricule = "79",
+                            Email = "Israel.Hilll2@gmail.com",
+                            FirstName = "Alayna",
+                            Name = "Fritsch",
+                            Password = "XpMUXTvBBU",
                             IdCertification = 1
                         });
                 });
@@ -830,111 +738,101 @@ namespace HELMo_bilite.Data.Migrations
                 {
                     b.HasBaseType("HELMo_bilite.Models.User");
 
+                    b.Property<string>("DriverMatricule")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("DriverMatricule");
+
                     b.HasDiscriminator().HasValue("Driver");
 
                     b.HasData(
                         new
                         {
+                            Matricule = "51",
+                            Email = "Tyler.Trantow20@yahoo.com",
+                            FirstName = "Wilhelm",
+                            Name = "Kuhlman",
+                            Password = "CPBan1hjCw"
+                        },
+                        new
+                        {
+                            Matricule = "53",
+                            Email = "Cristal.Macejkovic54@hotmail.com",
+                            FirstName = "Idella",
+                            Name = "Koepp",
+                            Password = "XQImEP2Sml"
+                        },
+                        new
+                        {
+                            Matricule = "55",
+                            Email = "Jany_Littel83@yahoo.com",
+                            FirstName = "Arely",
+                            Name = "Stanton",
+                            Password = "zN6nJvikjF"
+                        },
+                        new
+                        {
+                            Matricule = "57",
+                            Email = "Wiley0@gmail.com",
+                            FirstName = "Arjun",
+                            Name = "Ondricka",
+                            Password = "LdQUo1Gg0u"
+                        },
+                        new
+                        {
+                            Matricule = "59",
+                            Email = "Bo_Kirlin33@hotmail.com",
+                            FirstName = "Bernard",
+                            Name = "Sanford",
+                            Password = "s2OpgAVQXn"
+                        },
+                        new
+                        {
                             Matricule = "61",
-                            Email = "Jaida_Bosco@yahoo.com",
-                            FirstName = "Effie",
-                            Name = "Lind",
-                            Password = "caaoXUumpg"
+                            Email = "Beaulah74@gmail.com",
+                            FirstName = "Dayne",
+                            Name = "Kuhlman",
+                            Password = "fnXQFF1y7h"
                         },
                         new
                         {
                             Matricule = "63",
-                            Email = "Ilene_Erdman71@gmail.com",
-                            FirstName = "Jamie",
-                            Name = "Gutkowski",
-                            Password = "_yG6LY4vhm"
+                            Email = "Dedrick83@hotmail.com",
+                            FirstName = "Alexandre",
+                            Name = "Wyman",
+                            Password = "1RxYwlJkmH"
                         },
                         new
                         {
                             Matricule = "65",
-                            Email = "Geraldine_DuBuque@gmail.com",
-                            FirstName = "Dewayne",
-                            Name = "Leuschke",
-                            Password = "RV1e_AkrIE"
+                            Email = "Zelda85@hotmail.com",
+                            FirstName = "Kenya",
+                            Name = "Weissnat",
+                            Password = "fwUAP3UFL_"
                         },
                         new
                         {
                             Matricule = "67",
-                            Email = "Taya.Mann76@hotmail.com",
-                            FirstName = "Kenny",
-                            Name = "Steuber",
-                            Password = "Rocf4AhWI_"
+                            Email = "Gwen_Rosenbaum71@hotmail.com",
+                            FirstName = "Bertha",
+                            Name = "Osinski",
+                            Password = "W81PQi4zkh"
                         },
                         new
                         {
                             Matricule = "69",
-                            Email = "Ima.Turcotte28@yahoo.com",
-                            FirstName = "David",
-                            Name = "Gerhold",
-                            Password = "k6Bq8S9Orv"
-                        },
-                        new
-                        {
-                            Matricule = "71",
-                            Email = "Nicolette68@yahoo.com",
-                            FirstName = "Saul",
-                            Name = "Reichel",
-                            Password = "mRAs_Rn2th"
-                        },
-                        new
-                        {
-                            Matricule = "73",
-                            Email = "Zoie36@yahoo.com",
-                            FirstName = "Stacy",
-                            Name = "Hermiston",
-                            Password = "Aax1q8oJvQ"
-                        },
-                        new
-                        {
-                            Matricule = "75",
-                            Email = "Destinee_Dach@yahoo.com",
-                            FirstName = "Margarette",
-                            Name = "Ruecker",
-                            Password = "XOzxFlYsaP"
-                        },
-                        new
-                        {
-                            Matricule = "77",
-                            Email = "Levi.Hessel92@hotmail.com",
-                            FirstName = "Brandy",
-                            Name = "Powlowski",
-                            Password = "OZfoNNlfUr"
-                        },
-                        new
-                        {
-                            Matricule = "79",
-                            Email = "Tobin.Fritsch@hotmail.com",
-                            FirstName = "Elian",
-                            Name = "Kohler",
-                            Password = "DDoLGY8Zw7"
+                            Email = "Iva75@yahoo.com",
+                            FirstName = "Isai",
+                            Name = "Berge",
+                            Password = "nVK4z_DjH7"
                         });
-                });
-
-            modelBuilder.Entity("DriverLicense", b =>
-                {
-                    b.HasOne("HELMo_bilite.Models.Driver", null)
-                        .WithMany()
-                        .HasForeignKey("DriversMatricule")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HELMo_bilite.Models.License", null)
-                        .WithMany()
-                        .HasForeignKey("LicensesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HELMo_bilite.Models.Vehicule", b =>
                 {
                     b.HasOne("HELMo_bilite.Models.License", "Licenses")
                         .WithMany()
-                        .HasForeignKey("IdLicenses")
+                        .HasForeignKey("LicensesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1012,6 +910,18 @@ namespace HELMo_bilite.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Certification");
+                });
+
+            modelBuilder.Entity("HELMo_bilite.Models.Driver", b =>
+                {
+                    b.HasOne("HELMo_bilite.Models.Driver", null)
+                        .WithMany("Licenses")
+                        .HasForeignKey("DriverMatricule");
+                });
+
+            modelBuilder.Entity("HELMo_bilite.Models.Driver", b =>
+                {
+                    b.Navigation("Licenses");
                 });
 #pragma warning restore 612, 618
         }

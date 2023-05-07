@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
-public class Truck
+public class Vehicule
 {
     [Key]
     public string Plate { get; set; }
@@ -10,9 +10,11 @@ public class Truck
     public string Brand { get; set; }
     [Required]
     public string Model { get; set; }
-    
+    [Required]    
     public License Licenses { get; set; }
-
+    [Required]
+    [ForeignKey(nameof(Licenses))]
+    public int IdLicenses { get; set; }
     [Required]
     public int Payload { get; set; }  
     

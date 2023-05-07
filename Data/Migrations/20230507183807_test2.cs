@@ -4,572 +4,622 @@
 
 namespace HELMo_bilite.Data.Migrations
 {
-    public partial class DataGeneration2 : Migration
+    public partial class test2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_User_Addresses_CompanyAddressId",
+                table: "User");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Addresses",
+                table: "Addresses");
+
+            migrationBuilder.RenameTable(
+                name: "Addresses",
+                newName: "Address");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Address",
+                table: "Address",
+                column: "IdAddress");
+
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "60",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Russian Federation", "North Lou", "48349", "6726", "Cassidy Avenue" });
+                values: new object[] { "China", "South Oceanehaven", "71414-2106", "31801", "Ratke Points" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "61",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Svalbard & Jan Mayen Islands", "South Marcos", "82122-6127", "9350", "Schowalter Union" });
+                values: new object[] { "Faroe Islands", "Elvabury", "93343-9945", "1077", "Ralph Brooks" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "62",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "American Samoa", "Port Brigitte", "79338", "52797", "Ola Street" });
+                values: new object[] { "Albania", "Cindyside", "32601", "4421", "Harvey Underpass" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "63",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Saint Helena", "Prohaskastad", "08713", "4960", "Jerod Lake" });
+                values: new object[] { "Saint Pierre and Miquelon", "Walkerfurt", "46645", "029", "Kling Divide" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "64",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Angola", "South Alyson", "11476-4355", "41539", "Adele Terrace" });
+                values: new object[] { "Mozambique", "Hughborough", "73932", "180", "Runolfsson Road" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "65",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "New Zealand", "Port Estebanville", "65548-8295", "582", "Rosenbaum Forges" });
+                values: new object[] { "Turkey", "Jaceborough", "62353", "29520", "Geovanny Plains" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "66",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Kuwait", "New Kraigfurt", "42410-2502", "4513", "Joana Coves" });
+                values: new object[] { "Andorra", "North Rigoberto", "81207", "08814", "Leone Prairie" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "67",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "South Africa", "Mckenzieton", "09267", "03435", "Greenholt Summit" });
+                values: new object[] { "Uruguay", "Framiville", "83956-4151", "91280", "Lakin Crossroad" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "68",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Algeria", "Jessycaton", "76118-9718", "703", "Schaefer Mission" });
+                values: new object[] { "Nicaragua", "Laurianebury", "09757-4744", "3839", "Corkery Meadows" });
 
             migrationBuilder.UpdateData(
                 table: "Address",
                 keyColumn: "IdAddress",
                 keyValue: "69",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Bhutan", "Russelville", "29489", "1578", "Schmeler Pass" });
+                values: new object[] { "Comoros", "New Ulises", "31357-7242", "5382", "Desiree Underpass" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "70",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Nikolaus Inc", "Breanna.Hoppe33@yahoo.com", "Jenifer", "Schimmel", "477-494-5965", "DZ0VPIVozW" });
+                values: new object[] { "Leuschke - Leffler", "Heber_Rodriguez@hotmail.com", "Melvin", "Rath", "280-623-5988", "EM0U6J7Bry" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "71",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Walter - Nitzsche", "Genesis94@gmail.com", "Bernardo", "Kautzer", "541-411-4812", "k7A01paGTG" });
+                values: new object[] { "Treutel, Torphy and Parisian", "Fermin.Becker35@hotmail.com", "Hester", "Mitchell", "723-283-2272", "Ei2CJxhhOQ" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "72",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Barrows Inc", "Roosevelt0@hotmail.com", "Lauriane", "Mayer", "273-607-7095", "zjl2UdPNvv" });
+                values: new object[] { "Hilpert LLC", "Hudson35@hotmail.com", "Eliseo", "Labadie", "893-890-0860", "9W0b6xwdcE" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "73",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Skiles, Stroman and Hills", "Kyleigh9@hotmail.com", "Julianne", "Erdman", "964-735-3836", "EjWTr4STOI" });
+                values: new object[] { "Lockman, Crist and Turner", "Sage.Shanahan@gmail.com", "Doyle", "Jakubowski", "430-582-0595", "4q77YdrCqU" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "74",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Heathcote Inc", "Mireya.Haley19@yahoo.com", "Jalen", "Reinger", "279-953-3500", "mBJvOS8SZ1" });
+                values: new object[] { "Schuppe, Waters and Friesen", "Marge74@yahoo.com", "Amanda", "Hodkiewicz", "810-202-6198", "tdcHHBS0QU" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "75",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Zieme, Jerde and Simonis", "Gregorio_Huels67@hotmail.com", "Mia", "Kirlin", "717-251-9819", "MDcYZ3Wafi" });
+                values: new object[] { "Price, Stark and Volkman", "Orie.Walter62@gmail.com", "Clifton", "Deckow", "383-974-2568", "ScyOwgukB5" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "76",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Wehner - Mosciski", "Baron.Zulauf@yahoo.com", "Carolyne", "Jaskolski", "629-225-9968", "QenYc_FXP2" });
+                values: new object[] { "Russel - Dach", "Ahmad.Strosin38@gmail.com", "Francesco", "Goyette", "227-445-8065", "1JUknVV6h8" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "77",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "McGlynn - Schroeder", "Teagan_Lesch63@hotmail.com", "Carolina", "Weber", "219-446-0641", "mUSq0qJL83" });
+                values: new object[] { "Von and Sons", "Oral_Hoppe33@gmail.com", "Odie", "Willms", "552-787-6932", "b0aLzke8aJ" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "78",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Wolff - Cole", "Virgie94@yahoo.com", "Maci", "Hegmann", "489-338-8948", "L62Oz2ytD9" });
+                values: new object[] { "Cummerata Group", "Carey_Reichert@gmail.com", "Modesta", "Christiansen", "892-526-6511", "ersIwdvCtp" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "79",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Zulauf Group", "Akeem.McKenzie1@hotmail.com", "Dwight", "Bartoletti", "987-522-2456", "C0pJ0H_rTc" });
+                values: new object[] { "Lind Group", "Holly_Dicki0@gmail.com", "Zoey", "Ortiz", "934-698-2229", "35ImMmQSag" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "50",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Seamus_Marvin@yahoo.com", "Daron", "Goodwin", "F96W8StFtx" });
+                values: new object[] { "Eloisa72@hotmail.com", "Ava", "Lowe", "dpxdjnK3GA" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "51",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Carol.Connelly@hotmail.com", "Keyon", "Pouros", "yIuqlliiFc" });
+                values: new object[] { "Hazle.Swaniawski44@gmail.com", "Lilla", "Bednar", "U0kuysYVht" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "52",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Kris30@yahoo.com", "Zella", "Wunsch", "kzHgSIXXmV" });
+                values: new object[] { "Clarissa80@hotmail.com", "Nat", "Rosenbaum", "f_6OfP7WG4" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "53",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Aletha.Johnson43@hotmail.com", "Gennaro", "O'Hara", "k1Ib2QGpNF" });
+                values: new object[] { "Gerhard_Osinski@hotmail.com", "Alexane", "Metz", "TCkeEvk4L9" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "54",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Deven16@gmail.com", "Jannie", "Stoltenberg", "MEn4OEH_k4" });
+                values: new object[] { "Nannie.Schuppe29@gmail.com", "Cesar", "Tillman", "yOZ9qMn1I4" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "55",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Marielle.Ortiz80@yahoo.com", "Ari", "Huels", "_OWSQCae5r" });
+                values: new object[] { "Orion_Hettinger@yahoo.com", "Max", "Beier", "6Id6PI1bkC" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "56",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Maximo_Mann@yahoo.com", "Linnea", "Cruickshank", "emwE3_XS1c" });
+                values: new object[] { "Jovan_Koepp48@yahoo.com", "Alvena", "Hoppe", "pLgu8DUc6n" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "57",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Rashawn.Gorczany@hotmail.com", "Hailie", "Roob", "2tjcXj3OWG" });
+                values: new object[] { "Leanne_Metz90@hotmail.com", "Judd", "Keebler", "2h6UIn54EU" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "58",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Tressie62@yahoo.com", "Yolanda", "Heaney", "I_tFy7un4T" });
+                values: new object[] { "Corrine.OConnell@gmail.com", "Ressie", "Armstrong", "ckkm8GTpxh" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "59",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Al11@gmail.com", "Dorris", "Hartmann", "1FbcZXDsSK" });
+                values: new object[] { "Murphy7@gmail.com", "Trevion", "Sporer", "WhA2yPC3KY" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "40",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Mia.Hegmann78@gmail.com", "Ari", "Towne", "iis3mbTU_J" });
+                values: new object[] { "Ellis_Kozey@gmail.com", "Verna", "Upton", "Ru4latlJFc" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "41",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Rahul.Ryan@yahoo.com", "Bryce", "Weber", "FluObpMySQ" });
+                values: new object[] { "Muhammad_Fadel92@yahoo.com", "Arch", "Baumbach", "Ao5ZlGGlAL" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "42",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Elliott.Klocko59@hotmail.com", "Laverne", "Gleason", "J9tn4YOiGD" });
+                values: new object[] { "Vivian_Bode2@gmail.com", "Colin", "Frami", "dEO4JdOkXd" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "43",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Alayna92@hotmail.com", "Devante", "Franecki", "aa79IAnyQu" });
+                values: new object[] { "Jay.Schuppe66@gmail.com", "Levi", "Macejkovic", "XrCDN06FB7" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "44",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Eulalia_Cronin@yahoo.com", "Yasmine", "Thiel", "Xuzq6M7ZC4" });
+                values: new object[] { "Marianne.Kiehn45@gmail.com", "Coby", "Fay", "A1CvioS5rO" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "45",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Carmel_Legros23@gmail.com", "Armando", "Bogisich", "SHrbDJ2vGy" });
+                values: new object[] { "Julian.Hodkiewicz@yahoo.com", "Dejuan", "Glover", "sKjv9BeiBs" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "46",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Norberto.Considine15@hotmail.com", "Olin", "Johnson", "pZZxSvMhGt" });
+                values: new object[] { "Aubree86@yahoo.com", "Eloy", "Jakubowski", "zdsPDRyz5t" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "47",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Amanda37@gmail.com", "Richmond", "Ritchie", "9hJZUJebEJ" });
+                values: new object[] { "Alyce48@gmail.com", "Mireya", "Baumbach", "1oncDBbfOd" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "48",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Rudy.Kreiger@hotmail.com", "Lawson", "Kassulke", "sB0cUCbU7U" });
+                values: new object[] { "Rolando_Jacobson58@yahoo.com", "Raoul", "Bogisich", "u7j2AHvkhD" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "49",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Kamron.Corkery@hotmail.com", "Lonnie", "Borer", "VjERNCVWtE" });
+                values: new object[] { "Arden.Connelly@gmail.com", "Ignatius", "Leannon", "bAkSPXdDis" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_User_Address_CompanyAddressId",
+                table: "User",
+                column: "CompanyAddressId",
+                principalTable: "Address",
+                principalColumn: "IdAddress",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_User_Address_CompanyAddressId",
+                table: "User");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_Address",
+                table: "Address");
+
+            migrationBuilder.RenameTable(
+                name: "Address",
+                newName: "Addresses");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_Addresses",
+                table: "Addresses",
+                column: "IdAddress");
+
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "60",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Turks and Caicos Islands", "Christiansenstad", "77483-3165", "532", "Carson Path" });
+                values: new object[] { "Suriname", "South Ernestina", "28387-6071", "42849", "Berge Shores" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "61",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Hungary", "Mayertburgh", "73379-5426", "364", "Dickinson Greens" });
+                values: new object[] { "American Samoa", "Catharinemouth", "89588", "7877", "Emiliano Cove" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "62",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Liechtenstein", "Hellerburgh", "43568-6742", "188", "Strosin Port" });
+                values: new object[] { "Myanmar", "South Tinaville", "96975", "315", "Gottlieb Corners" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "63",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Sudan", "New Aylaside", "90207", "0330", "Huels Vista" });
+                values: new object[] { "Equatorial Guinea", "East Eldonshire", "52809-3498", "8999", "Richmond Haven" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "64",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Belgium", "Port Orvilleburgh", "19788-9089", "029", "Walter Squares" });
+                values: new object[] { "Malawi", "South Susanna", "87414", "234", "Timmy Viaduct" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "65",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Grenada", "North Zachariahburgh", "42104-9162", "6746", "Lily Path" });
+                values: new object[] { "Qatar", "Bernhardland", "64338", "554", "Buckridge Dam" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "66",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Turkmenistan", "Mayershire", "64520-8518", "20832", "Elna Passage" });
+                values: new object[] { "Kenya", "Mattiemouth", "18117", "9444", "Madisyn Ridges" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "67",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "South Georgia and the South Sandwich Islands", "Lake Susannahaven", "68023", "292", "O'Kon Freeway" });
+                values: new object[] { "Suriname", "O'Haramouth", "09276", "02406", "Kemmer Cliffs" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "68",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Belarus", "South Woodrowstad", "77660-0667", "55172", "Dickens Freeway" });
+                values: new object[] { "Denmark", "Bernieceland", "99682", "216", "Bernhard Mountain" });
 
             migrationBuilder.UpdateData(
-                table: "Address",
+                table: "Addresses",
                 keyColumn: "IdAddress",
                 keyValue: "69",
                 columns: new[] { "Country", "Locality", "LocalityCode", "Number", "Street" },
-                values: new object[] { "Indonesia", "West Greysonton", "27512", "6717", "Morar River" });
+                values: new object[] { "Seychelles", "New Gonzalo", "50883", "7027", "Mayer Wall" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "70",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Rodriguez Inc", "Erin.Parker@yahoo.com", "Jesus", "Bechtelar", "486-250-8053", "TW97iADotQ" });
+                values: new object[] { "Larkin and Sons", "Mike.Thompson39@gmail.com", "Darrin", "Emard", "539-863-4533", "Xgw7zR1yxC" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "71",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Abernathy and Sons", "Cathy_Schowalter@gmail.com", "Brennan", "O'Keefe", "578-899-7693", "oaTyKK0H6U" });
+                values: new object[] { "Leannon Group", "Linnie3@hotmail.com", "Dovie", "Boyle", "741-716-4122", "yE6Ckxo0EI" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "72",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Schmitt and Sons", "Maryam_Grady@gmail.com", "Hilda", "Jacobs", "350-348-4779", "mrZc7oi2yj" });
+                values: new object[] { "Cronin, Mayert and Ullrich", "Shawna.Breitenberg24@yahoo.com", "Michelle", "Mayer", "621-567-3328", "abKt5Dl1Qe" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "73",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Hartmann LLC", "Lola_Quigley@gmail.com", "Jamel", "Bauch", "574-848-3083", "AREp7pgU2j" });
+                values: new object[] { "Moore Inc", "Marietta.Muller@yahoo.com", "Roosevelt", "Mitchell", "400-883-1300", "T_oyCv8C6y" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "74",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Kuhic - Effertz", "Anna_Larson13@gmail.com", "Adalberto", "Frami", "587-514-4357", "DWmnuVM6aM" });
+                values: new object[] { "Quigley, O'Keefe and Rath", "Reina75@hotmail.com", "Gianni", "Effertz", "781-208-4655", "___4f5iAgk" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "75",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Hagenes Inc", "Jarrett16@hotmail.com", "Delia", "Effertz", "383-449-8923", "xOjnmx9JMI" });
+                values: new object[] { "Waters - Sipes", "Olin.Yundt90@hotmail.com", "Margarette", "Crist", "303-424-0192", "BR6dkuxfvP" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "76",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Orn Inc", "Akeem2@yahoo.com", "Brandyn", "D'Amore", "435-358-9142", "hQl0f4aadZ" });
+                values: new object[] { "Fritsch and Sons", "Emmet.Kulas@gmail.com", "Lizeth", "Ullrich", "870-448-2595", "EMDwIttWd1" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "77",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Kuhn and Sons", "Arianna.Langosh41@gmail.com", "Edmond", "Durgan", "898-586-3625", "68s4RJSpfM" });
+                values: new object[] { "Hilpert LLC", "Adell_Becker@gmail.com", "Tito", "Krajcik", "994-333-0350", "NXUbh8v6B_" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "78",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Osinski - Franecki", "Cristal97@yahoo.com", "Daphne", "Feeney", "796-774-2920", "9KgthYQCaB" });
+                values: new object[] { "Mills - Leannon", "Antone_Lemke24@gmail.com", "Giuseppe", "Wuckert", "403-976-9428", "UqeXtidOZG" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "79",
                 columns: new[] { "CompanyName", "Email", "FirstName", "Name", "Number", "Password" },
-                values: new object[] { "Daniel, Kilback and Berge", "Sandra_Fay24@yahoo.com", "Oral", "Wyman", "922-565-1752", "zib2jDUkBc" });
+                values: new object[] { "Hills, Morissette and McKenzie", "Frankie_Lind28@yahoo.com", "Stephan", "Purdy", "267-694-5476", "P5er5vGDpg" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "50",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Vladimir.Paucek55@hotmail.com", "Merlin", "Mueller", "oZ8vKVYEbx" });
+                values: new object[] { "Alene70@gmail.com", "Ronaldo", "Bergnaum", "MkGwzQmnxg" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "51",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Ursula41@hotmail.com", "Deangelo", "Wiegand", "TlztgutH4k" });
+                values: new object[] { "Abbie.Durgan@yahoo.com", "Clifton", "Schmeler", "NPSn7Mf8x9" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "52",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Rolando.Turner95@hotmail.com", "Treva", "Purdy", "KJUn9mxYco" });
+                values: new object[] { "Elyse_Kohler@hotmail.com", "Lionel", "Bins", "Z1yPMOCJog" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "53",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Maryse47@hotmail.com", "Myrtice", "Shanahan", "1pIMkFicl2" });
+                values: new object[] { "Mafalda_Bergstrom13@gmail.com", "Dominique", "Marks", "Jm2IcbiGR1" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "54",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Laurie.Sawayn@gmail.com", "Coleman", "Turner", "HiZXm1RPgo" });
+                values: new object[] { "Garett.Schuppe@yahoo.com", "Tierra", "Bauch", "TSEukDRJre" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "55",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Tatyana.Champlin@gmail.com", "Kariane", "Marvin", "TFnxu6_3KO" });
+                values: new object[] { "Brionna.Sauer39@gmail.com", "Emory", "Hirthe", "tpMcyrJZD3" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "56",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Andreanne53@hotmail.com", "Citlalli", "Gorczany", "H_YSn1M_70" });
+                values: new object[] { "Vince_Senger9@hotmail.com", "Tod", "Heathcote", "2G_be6cBNs" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "57",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Nakia21@gmail.com", "Cale", "Considine", "hqbG0MO5pe" });
+                values: new object[] { "Gia_Lynch28@hotmail.com", "Giovani", "Wilkinson", "zcVZ77TycI" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "58",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Derrick17@yahoo.com", "Zetta", "Tillman", "ry8gkNk9B0" });
+                values: new object[] { "Randy58@yahoo.com", "Gudrun", "Muller", "vToaTB9C_5" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "59",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Laurie.Botsford@yahoo.com", "Paul", "Ryan", "XA4bdNojcW" });
+                values: new object[] { "Sylvan26@gmail.com", "Dennis", "Kirlin", "bFW9tWuMMG" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "40",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Theo.Kunde87@hotmail.com", "Arthur", "Windler", "idliFpfOAa" });
+                values: new object[] { "Taylor.Shanahan99@gmail.com", "Camden", "Ryan", "pJl4rbrfNA" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "41",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Sylvan.Terry80@yahoo.com", "Kiera", "Mueller", "EQBEfpuHCG" });
+                values: new object[] { "Andre.Kessler36@hotmail.com", "Anjali", "Mohr", "GG5jdeVZtM" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "42",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Jerome.Rohan80@gmail.com", "Alessia", "Cole", "zaa67ZA_PR" });
+                values: new object[] { "Kassandra_Dicki82@yahoo.com", "Gianni", "Predovic", "VWtt3ZOjYu" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "43",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Delilah.Bashirian4@gmail.com", "Nelson", "Kiehn", "tSL2tJgDIq" });
+                values: new object[] { "Hobart.Mayer@yahoo.com", "Jeanette", "Olson", "TZ6VsNmKzL" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "44",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Sheridan21@gmail.com", "Lina", "Wisozk", "L4ly8KWHIB" });
+                values: new object[] { "Joel.Goodwin55@yahoo.com", "Jannie", "Reilly", "UlxyLXZJQj" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "45",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Arnold55@hotmail.com", "Art", "Mann", "VV9XcmttgB" });
+                values: new object[] { "Trey_Roob@hotmail.com", "Lori", "Baumbach", "rVOGUDsLol" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "46",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Daphne.Bruen54@hotmail.com", "Arvel", "D'Amore", "vjyoTiST47" });
+                values: new object[] { "Van96@hotmail.com", "Joey", "Leuschke", "zRYzU5UqJ1" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "47",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Luella.Kirlin@hotmail.com", "Ethan", "Wiegand", "DumzDVWqa_" });
+                values: new object[] { "Anibal74@yahoo.com", "Creola", "Streich", "qJhKuWBpiX" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "48",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Wilfrid.Grant28@hotmail.com", "Chanelle", "Kreiger", "L7YFAjRpm2" });
+                values: new object[] { "Liana11@gmail.com", "Rachael", "Veum", "YTdZ5wlFUP" });
 
             migrationBuilder.UpdateData(
                 table: "User",
                 keyColumn: "Matricule",
                 keyValue: "49",
                 columns: new[] { "Email", "FirstName", "Name", "Password" },
-                values: new object[] { "Audreanne52@hotmail.com", "Gilbert", "Johnston", "7U3Q3S1fxh" });
+                values: new object[] { "Kattie_Spencer@gmail.com", "Kevon", "Kuvalis", "xn1TMgdsFB" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_User_Addresses_CompanyAddressId",
+                table: "User",
+                column: "CompanyAddressId",
+                principalTable: "Addresses",
+                principalColumn: "IdAddress",
+                onDelete: ReferentialAction.Cascade);
         }
     }
 }
