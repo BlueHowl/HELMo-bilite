@@ -110,7 +110,7 @@ public class DataGeneration
         modelBuilder.Entity<License>().HasData(license);
         modelBuilder.Entity<Driver>().HasData(drivers);*/
 
-        /*var drivers = new List<Driver>();
+        var drivers = new List<Driver>();
 
         for (int i = 0; i < 10; i++)
         {
@@ -123,9 +123,10 @@ public class DataGeneration
         }
 
         modelBuilder.Entity<Driver>().HasData(drivers);
-        ;*/
-
         modelBuilder.Entity<License>().HasData(license);
+        
+
+        /*;
         modelBuilder.Entity<Driver>().HasData(new Driver
         {
             Matricule = "1",
@@ -134,7 +135,7 @@ public class DataGeneration
             Email = "test@test.com",
             Password = "test",
             Licenses = {new License { Id = 1, Name = "B"}}
-        });
+        });*/
 
     }
 
