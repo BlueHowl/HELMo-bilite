@@ -83,7 +83,7 @@ namespace HELMo_bilite.Data.Migrations
                         .IsUnique()
                         .HasFilter("[UnloadingAddressId] IS NOT NULL");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
 
                     b.HasData(
                         new
@@ -373,7 +373,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Certifications");
+                    b.ToTable("Certifications", (string)null);
 
                     b.HasData(
                         new
@@ -441,7 +441,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasIndex("IdVehicule");
 
-                    b.ToTable("Deliveries");
+                    b.ToTable("Deliveries", (string)null);
 
                     b.HasData(
                         new
@@ -581,7 +581,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Licenses");
+                    b.ToTable("Licenses", (string)null);
 
                     b.HasData(
                         new
@@ -667,7 +667,7 @@ namespace HELMo_bilite.Data.Migrations
 
                     b.HasIndex("IdLicenses");
 
-                    b.ToTable("Vehicules");
+                    b.ToTable("Vehicules", (string)null);
 
                     b.HasData(
                         new

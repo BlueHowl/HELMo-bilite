@@ -50,7 +50,7 @@ public class DataGeneration
     private List<Vehicule> trucks = new List<Vehicule>();
     private List<Dispatcher> dispatchers = new List<Dispatcher>();
 
-    private List<License> license = new List<License>
+    private List<License> licenses = new List<License>
         {
             new License{Id = 1,   Name = "B"},
             new License{Id = 2,   Name = "C"},
@@ -100,13 +100,24 @@ public class DataGeneration
 
         for (int i = 0; i < 10; i++)
         {
-            var driver = driverFaker.Generate();
-            int index = new Random().Next(certifications.Count);
+            /*var driver = driverFaker.Generate();
+            int number = new Random().Next(licenses.Count);
+
+            ICollection<License> licensesTemp = new List<License>();
+
+            for (int j = 0; j < number; ++j)
+            {
+                int index = new Random().Next(licenses.Count);
+                licensesTemp.Add(licenses[index]);
+            }
+
+            driver.Licenses = licensesTemp;
+            drivers.Add(driver);*/
             drivers.Add(driverFaker.Generate());
         }
 
 
-        modelBuilder.Entity<License>().HasData(license);
+        modelBuilder.Entity<License>().HasData(licenses);
         modelBuilder.Entity<Driver>().HasData(drivers);
 
     }
@@ -156,7 +167,7 @@ public class DataGeneration
         for (int i = 0; i < 10; i++)
         {
             var tr = truckFraker.Generate();
-            tr.IdLicenses = license[new Random().Next(license.Count)].Id;  
+            tr.IdLicenses = licenses[new Random().Next(licenses.Count)].Id;  
             trucks.Add(tr);
         }
 

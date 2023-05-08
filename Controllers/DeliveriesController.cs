@@ -46,9 +46,7 @@ namespace HELMo_bilite.Controllers
         // GET: Deliveries/Create
         public IActionResult Create()
         {
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Matricule", "Matricule");
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Matricule", "Matricule");
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate");
+            setViewDataLists();
             return View();
         }
 
@@ -65,9 +63,8 @@ namespace HELMo_bilite.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Matricule", "Matricule", delivery.IdClient);
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Matricule", "Matricule", delivery.IdDriver);
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate", delivery.IdVehicule);
+
+            setViewDataLists();
             return View(delivery);
         }
 
@@ -84,9 +81,9 @@ namespace HELMo_bilite.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Matricule", "Matricule", delivery.IdClient);
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Matricule", "Matricule", delivery.IdDriver);
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate", delivery.IdVehicule);
+
+            //Console.WriteLine(delivery.ToString); ça à régler le bug wtf
+            setViewDataLists();
             return View(delivery);
         }
 
@@ -122,9 +119,8 @@ namespace HELMo_bilite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Matricule", "Matricule", delivery.IdClient);
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Matricule", "Matricule", delivery.IdDriver);
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate", delivery.IdVehicule);
+
+            setViewDataLists();
             return View(delivery);
         }
 
@@ -171,6 +167,31 @@ namespace HELMo_bilite.Controllers
         private bool DeliveryExists(int id)
         {
           return (_context.Deliveries?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private void setViewDataLists()
+        {
+            List<SelectListItem> clientList = _context.Clients.Select(c => new SelectListItem
+            {
+                Value = c.Matricule.ToString(),
+                Text = $"{c.FirstName} {c.Name}"
+            }).ToList();
+
+            List<SelectListItem> driverList = _context.Drivers.Select(d => new SelectListItem
+            {
+                Value = d.Matricule.ToString(),
+                Text = $"{d.FirstName} {d.Name} ({(d.Licenses.Count > 0 ? string.Join(",", d.Licenses.Select(l => l.Name).ToList()) : "Sans permi")})"
+            }).ToList();
+
+            List<SelectListItem> vehiculeList = _context.Vehicules.Select(v => new SelectListItem
+            {
+                Value = v.Plate.ToString(),
+                Text = $"{v.Brand} {v.Model}"
+            }).ToList();
+
+            ViewData["IdClient"] = clientList;
+            ViewData["IdDriver"] = driverList;
+            ViewData["IdVehicule"] = vehiculeList;
         }
     }
 }
