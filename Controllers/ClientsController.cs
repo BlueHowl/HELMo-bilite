@@ -10,87 +10,90 @@ using HELMo_bilite.Models;
 
 namespace HELMo_bilite.Controllers
 {
-    public class UsersController : Controller
+    public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UsersController(ApplicationDbContext context)
+        public ClientsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Clients
         public async Task<IActionResult> Index()
         {
-              return _context.Users != null ? 
-                          View(await _context.Users.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Users'  is null.");
+            var applicationDbContext = _context.Clients.Include(c => c.CompanyAddress);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Clients/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.matricule == id);
-            if (user == null)
+            var client = await _context.Clients
+                .Include(c => c.CompanyAddress)
+                .FirstOrDefaultAsync(m => m.Matricule == id);
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(client);
         }
 
-        // GET: Users/Create
+        // GET: Clients/Create
         public IActionResult Create()
         {
+            ViewData["CompanyAddressId"] = new SelectList(_context.Set<Address>(), "IdAddress", "IdAddress");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Clients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("matricule,Name,FirstName,Email,Password,Status")] User user)
+        public async Task<IActionResult> Create([Bind("CompanyName,CompanyAddressId,Number,Matricule,Name,FirstName,Email,Password")] Client client)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(client);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            ViewData["CompanyAddressId"] = new SelectList(_context.Set<Address>(), "IdAddress", "IdAddress", client.CompanyAddressId);
+            return View(client);
         }
 
-        // GET: Users/Edit/5
+        // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var client = await _context.Clients.FindAsync(id);
+            if (client == null)
             {
                 return NotFound();
             }
-            return View(user);
+            ViewData["CompanyAddressId"] = new SelectList(_context.Set<Address>(), "IdAddress", "IdAddress", client.CompanyAddressId);
+            return View(client);
         }
 
-        // POST: Users/Edit/5
+        // POST: Clients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("matricule,Name,FirstName,Email,Password,Status")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("CompanyName,CompanyAddressId,Number,Matricule,Name,FirstName,Email,Password")] Client client)
         {
-            if (id != user.matricule)
+            if (id != client.Matricule)
             {
                 return NotFound();
             }
@@ -99,12 +102,12 @@ namespace HELMo_bilite.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(client);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.matricule))
+                    if (!ClientExists(client.Matricule))
                     {
                         return NotFound();
                     }
@@ -115,49 +118,51 @@ namespace HELMo_bilite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            ViewData["CompanyAddressId"] = new SelectList(_context.Set<Address>(), "IdAddress", "IdAddress", client.CompanyAddressId);
+            return View(client);
         }
 
-        // GET: Users/Delete/5
+        // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Users == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.matricule == id);
-            if (user == null)
+            var client = await _context.Clients
+                .Include(c => c.CompanyAddress)
+                .FirstOrDefaultAsync(m => m.Matricule == id);
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(client);
         }
 
-        // POST: Users/Delete/5
+        // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Users == null)
+            if (_context.Clients == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Users'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Clients'  is null.");
             }
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
+            var client = await _context.Clients.FindAsync(id);
+            if (client != null)
             {
-                _context.Users.Remove(user);
+                _context.Clients.Remove(client);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(string id)
+        private bool ClientExists(string id)
         {
-          return (_context.Users?.Any(e => e.matricule == id)).GetValueOrDefault();
+          return (_context.Clients?.Any(e => e.Matricule == id)).GetValueOrDefault();
         }
     }
 }

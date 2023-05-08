@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
-[Table("DEV.WEB.AVC.Dispatcher")]
 public class Dispatcher : User
 {
-    //[NotMapped]
-    public List<Certification> Certifications { get; set; }
+    [ForeignKey(nameof(Certification))]
+    public int IdCertification { get; set; }
+    public Certification Certification { get; set; }
+
+    //public ICollection<Delivery> Deliverys { get; set; } = new List<Delivery>();
 }

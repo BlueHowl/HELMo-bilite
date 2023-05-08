@@ -1,4 +1,4 @@
-﻿@model HELMo_bilite.Models.User
+﻿@model HELMo_bilite.Models.Client
 
 @{
     ViewData["Title"] = "Details";
@@ -7,9 +7,27 @@
 <h1>Details</h1>
 
 <div>
-    <h4>User</h4>
+    <h4>Client</h4>
     <hr />
     <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CompanyAddress)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CompanyAddress.IdAddress)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Number)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -34,15 +52,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Password)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.matricule">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Matricule">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HELMo_bilite.Models;
 
 
-[Table("DEV.WEB.AVC.User")]
 public class User
 {
     /// <summary>
@@ -13,11 +12,14 @@ public class User
     /// </summary>
     [Key]
     [Required]
-    public string matricule { get; set; }
+    [StringLength(10)]
+    public string Matricule { get; set; }
     [Required]
+    [StringLength(100)]
     public string Name { get; set; }
 
     [Required]
+    [StringLength(100)]
     public string FirstName { get; set; }
 
     //this is unique
@@ -27,7 +29,7 @@ public class User
     public string Email { get; set; }
 
     [Required]
+    [StringLength(60)]
     public string Password { get; set; }
-    [Required]
-    public int Status { get; set; }
+    
 }
