@@ -7,4 +7,6 @@ public class Driver : User
 
     public ICollection<License> Licenses { get; set; } = new List<License>();
 
+    public ICollection<Delivery> Deliverys { get; set; } = new List<Delivery>();
+
 }

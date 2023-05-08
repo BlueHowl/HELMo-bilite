@@ -45,6 +45,11 @@ public class DataGeneration
             .RuleFor(t => t.Brand, f => f.Vehicle.Manufacturer())
             .RuleFor(t => t.Payload, f => f.Random.Int(1, 40) * 1000);
 
+    private List<Client> clients = new List<Client>();
+    private List<Driver> drivers = new List<Driver>(); 
+    private List<Vehicule> trucks = new List<Vehicule>();
+    private List<Dispatcher> dispatchers = new List<Dispatcher>();
+
     private List<License> license = new List<License>
         {
             new License{Id = 1,   Name = "B"},
@@ -70,6 +75,8 @@ public class DataGeneration
         SeedClient();
         SeedAdmin();
         SeedTruck();
+        SeedDelivery();
+
     }
 
 
@@ -89,15 +96,12 @@ public class DataGeneration
 
     private void SeedDiver()
     {
-        var drivers = new List<Driver>();        
+        //var drivers = new List<Driver>();        
 
         for (int i = 0; i < 10; i++)
         {
             var driver = driverFaker.Generate();
             int index = new Random().Next(certifications.Count);
-            
-            
-
             drivers.Add(driverFaker.Generate());
         }
 
@@ -109,7 +113,7 @@ public class DataGeneration
 
     private void SeedDispatcher()
     {
-        var dispatchers = new List<Dispatcher>();
+        
         
 
         for (int i = 0; i < 10; i++)
@@ -126,8 +130,6 @@ public class DataGeneration
 
     private void SeedClient()
     {
-
-        var clients = new List<Client>();
         var addresses = new List<Address>();
 
         for (int i = 0; i < 10; i++)
@@ -139,7 +141,6 @@ public class DataGeneration
         {
             var client = clientFaker.Generate();
             client.CompanyAddressId = address.IdAddress;
-            //client.CompanyAddress = address;
             clients.Add(client);
             
         }
@@ -150,10 +151,7 @@ public class DataGeneration
     }
 
     private void SeedTruck()
-    {
-        var trucks = new List<Vehicule>();
-
-        
+    {       
 
         for (int i = 0; i < 10; i++)
         {
@@ -164,5 +162,43 @@ public class DataGeneration
 
         modelBuilder.Entity<Vehicule>().HasData(trucks);
     }
-    
+
+    private void SeedDelivery()
+    {
+        var deliveries = new List<Delivery>();
+        var deliveryFaker = new Faker<Delivery>()
+            .RuleFor(d => d.Id, f => f.IndexGlobal)
+            .RuleFor(d => d.Content, f => f.Lorem.Text());
+
+
+        var addressesLoad = new List<Address>();
+        var addressesUnload = new List<Address>();
+        for (int i = 0; i < 10; i++)
+        {
+            addressesLoad.Add(addressFaker.Generate());
+            addressesUnload.Add(addressFaker.Generate());
+        }
+        modelBuilder.Entity<Address>().HasData(addressesLoad);
+        modelBuilder.Entity<Address>().HasData(addressesUnload);
+
+
+        for (int i = 0; i < 10; i++)
+        {
+            var delivery = deliveryFaker.Generate();
+            
+            delivery.IdClient = clients[i].Matricule;
+            delivery.IdVehicule = trucks[i].Plate;
+            delivery.status = "En cours";
+            delivery.LoadAddressId = addressesLoad[i].IdAddress;
+            delivery.UnloadingAddressId = addressesUnload[i].IdAddress;
+            delivery.UnloadingDate = new DateTime(2020, 12, 12);
+            delivery.LoadDate = new DateTime(2020, 12, 15);
+
+            deliveries.Add(delivery);
+        }
+        
+        modelBuilder.Entity<Delivery>().HasData(deliveries);
+    }
+
+
 }

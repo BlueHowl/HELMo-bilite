@@ -13,11 +13,10 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Dispatcher> Dispatchers { get; set; }//fait
     public DbSet<Client> Clients { get; set; }//fait
     public DbSet<Admin> Admins { get; set; }//fait
-    public DbSet<Vehicule> Trucks { get; set; }//fait
+    public DbSet<Vehicule> Vehicules { get; set; }//fait
     public DbSet<Certification> Certifications { get; set; }//fait
     public DbSet<License> Licenses { get; set; }//fait
-
-    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }//fait
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     { }
@@ -44,10 +43,21 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.Entity<Driver>()
             .HasMany(l => l.Licenses)
             .WithMany(d => d.Drivers)
-            .UsingEntity(t => t.ToTable("DriverLicense"));      
-        
+            .UsingEntity(t => t.ToTable("DriverLicense"));
 
-       
+
+        modelBuilder.Entity<Delivery>()
+            .HasOne(d => d.LoadAddress)
+            .WithOne()
+            .HasForeignKey<Address>("LoadAddressId")
+            .IsRequired(false);
+
+        modelBuilder.Entity<Delivery>()
+           .HasOne(d => d.UnloadingAddress)
+           .WithOne()
+           .HasForeignKey<Address>("UnloadingAddressId")
+           .IsRequired(false);
+
 
 
 

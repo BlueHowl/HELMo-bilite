@@ -7,9 +7,10 @@ namespace HELMo_bilite.Models;
 public class Address
 {
     [Key] public string IdAddress { get; set; }
-    [Required] public string Locality { get; set; }
-    [Required] public string Number { get; set; }
-    [Required] public string Street { get; set; }
-    [Required] public string LocalityCode { get; set; }
-    [Required] public string Country { get; set; }
+    [Required][StringLength(100)] public string Locality { get; set; }
+    [Required][StringLength(5)] public string Number { get; set; }
+    [Required][StringLength(100)] public string Street { get; set; }
+    [Required][StringLength(10)] public string LocalityCode { get; set; }
+    [Required][StringLength(100)] public string Country { get; set; }
+
 }
