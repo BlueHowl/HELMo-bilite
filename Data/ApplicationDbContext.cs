@@ -1,9 +1,6 @@
-﻿using Bogus;
-using HELMo_bilite.Models;
+﻿using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using NuGet.DependencyResolver;
-using System.Reflection.Emit;
 
 namespace HELMo_bilite.Data;
 
