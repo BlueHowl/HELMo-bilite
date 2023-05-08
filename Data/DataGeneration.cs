@@ -96,25 +96,50 @@ public class DataGeneration
 
     private void SeedDiver()
     {
-        //var drivers = new List<Driver>();        
+        /*//var drivers = new List<Driver>();        
 
         for (int i = 0; i < 10; i++)
         {
             var driver = driverFaker.Generate();
-            int index = new Random().Next(certifications.Count);
-            drivers.Add(driverFaker.Generate());
+            driver.Licenses.Add(license.First());
+            license.First().Drivers.Add(driver);
+            drivers.Add(driver);
         }
 
 
         modelBuilder.Entity<License>().HasData(license);
+        modelBuilder.Entity<Driver>().HasData(drivers);*/
+
+        /*var drivers = new List<Driver>();
+
+        for (int i = 0; i < 10; i++)
+        {
+            var driver = driverFaker.Generate();
+            var license = this.license.First();
+
+            //driver.Licenses.Add(license);
+            //license.Drivers.Add(driver);
+            drivers.Add(driver);
+        }
+
         modelBuilder.Entity<Driver>().HasData(drivers);
+        ;*/
+
+        modelBuilder.Entity<License>().HasData(license);
+        modelBuilder.Entity<Driver>().HasData(new Driver
+        {
+            Matricule = "1",
+            Name = "Driver",
+            FirstName = "Driver",
+            Email = "test@test.com",
+            Password = "test",
+            Licenses = {new License { Id = 1, Name = "B"}}
+        });
 
     }
 
     private void SeedDispatcher()
     {
-        
-        
 
         for (int i = 0; i < 10; i++)
         {
