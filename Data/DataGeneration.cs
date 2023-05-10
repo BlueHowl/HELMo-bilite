@@ -37,7 +37,7 @@ public class DataGeneration
 
     }
 
-    public static void SeedUser(UserManager<User> _userManager)
+    public static async void SeedUser(UserManager<User> _userManager)
     {
         if (_userManager.Users.Count() != 0)
             return;
@@ -54,12 +54,17 @@ public class DataGeneration
                 FirstName = surName,
                 Name = lastName,
                 Email = email,
+                UserName = email,
 
             };
-            var result = _userManager.CreateAsync(driver, "Test@123456").Result;
+            var result = _userManager.CreateAsync(driver, "Test@123").Result;
             if (result.Succeeded)
             {
                 var result2 = _userManager.AddToRoleAsync(driver, "driver").Result;
+            }
+            else
+            {
+                throw new Exception("User not created");
             }
 
         }
