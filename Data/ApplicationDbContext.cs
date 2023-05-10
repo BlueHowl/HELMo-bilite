@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace HELMo_bilite.Data;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<User>
 {
     public DbSet<Driver> Drivers { get; set; }//fait
     public DbSet<Dispatcher> Dispatchers { get; set; }//fait
@@ -31,13 +31,7 @@ public class ApplicationDbContext : IdentityDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>()
-            .ToTable("User")
-            .HasDiscriminator<string>("Role")
-            .HasValue<Driver>("Driver")
-            .HasValue<Dispatcher>("Dispatcher")
-            .HasValue<Client>("Client")
-            .HasValue<Admin>("Admin");
+        
 
 
         modelBuilder.Entity<Driver>()
@@ -61,9 +55,6 @@ public class ApplicationDbContext : IdentityDbContext
 
 
 
-        //apres tout
-        //doit etre la dernier ligne de OnModelCreating
-        new DataGeneration(modelBuilder).Start();
 
     }
 
