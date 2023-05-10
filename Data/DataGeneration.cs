@@ -62,10 +62,6 @@ public class DataGeneration
             {
                 var result2 = _userManager.AddToRoleAsync(driver, "driver").Result;
             }
-            else
-            {
-                throw new Exception("User not created");
-            }
 
         }
 

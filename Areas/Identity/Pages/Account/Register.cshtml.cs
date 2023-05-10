@@ -108,6 +108,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
+
+            [Required]
+            public int Role { get; set; }
         }
 
 
@@ -128,6 +131,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                 user.Matricule = "0";
                 user.FirstName = Input.FirstName;
                 user.Name = Input.Name;
+                
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -150,8 +154,15 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
+                    var result2 = await _userManager.AddToRoleAsync(user, Input.Role == 1 ? "driver" : "user");
+                    if (!result2.Succeeded)
+                    {
+                        throw new Exception();
+                    }
+
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
@@ -192,5 +203,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             }
             return (IUserEmailStore<User>)_userStore;
         }
+
+      
+       
+
     }
 }
