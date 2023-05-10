@@ -16,7 +16,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultUI();
+    .AddDefaultUI()
+    .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider); ;
+
+
 
 builder.Services.AddControllersWithViews();
 
@@ -45,11 +48,6 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -64,6 +62,10 @@ using (var scope = app.Services.CreateScope())
     DataGeneration.SeedUser(userManager);
 
 }
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.Run();
