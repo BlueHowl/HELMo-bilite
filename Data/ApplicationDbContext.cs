@@ -9,6 +9,11 @@ namespace HELMo_bilite.Data;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
+    public static readonly string RoleDriver = "driver";
+    public static readonly string RoleDispatcher = "dispatcher";
+    public static readonly string RoleClient = "client";
+    public static readonly string RoleAdmin = "admin";
+
     public DbSet<Driver> Drivers { get; set; }//fait
     public DbSet<Dispatcher> Dispatchers { get; set; }//fait
     public DbSet<Client> Clients { get; set; }//fait

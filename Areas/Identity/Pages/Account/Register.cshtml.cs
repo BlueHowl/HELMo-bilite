@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using HELMo_bilite.Data;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -110,6 +112,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
 
             [Required]
+            [Display(Name = "Role")]
             public int Role { get; set; }
         }
 
@@ -135,7 +138,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -154,11 +157,11 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    var result2 = await _userManager.AddToRoleAsync(user, Input.Role == 1 ? "driver" : "user");
-                    if (!result2.Succeeded)
-                    {
-                        throw new Exception();
-                    }
+
+                    await _userManager.AddToRoleAsync(user, Input.Role == 0 ? ApplicationDbContext.RoleDriver     :
+                                                            Input.Role == 1 ? ApplicationDbContext.RoleDispatcher : 
+                                                            Input.Role == 2 ? ApplicationDbContext.RoleClient     : 
+                                                            ApplicationDbContext.RoleDriver);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -185,7 +188,16 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<User>();
+                switch(Input.Role){
+                    case 0:
+                        return Activator.CreateInstance<Driver>();
+                    case 1:
+                        return Activator.CreateInstance<Dispatcher>();
+                    case 2:
+                        return Activator.CreateInstance<Client>();
+                    default:
+                        return Activator.CreateInstance<Driver>();
+                } 
             }
             catch
             {
@@ -203,6 +215,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             }
             return (IUserEmailStore<User>)_userStore;
         }
+
+        
 
       
        
