@@ -55,7 +55,14 @@ public class ApplicationDbContext : IdentityDbContext<User>
            .HasForeignKey<Address>("UnloadingAddressId")
            .IsRequired(false);
 
-        modelBuilder.Entity<License>().HasData( new  License { Id = 1, Name= "test"});
+        modelBuilder.Entity<License>().HasData(new License { Id = 1, Name= "B"});
+        modelBuilder.Entity<License>().HasData(new License { Id = 2, Name = "C (camion)" });
+        modelBuilder.Entity<License>().HasData(new License { Id = 3, Name = "CE (camion avec remorque)" });
+
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 1, Name = "Pas de diplome" });
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 2, Name = "CESS" });
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 3, Name = "Bachlier" });
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 4, Name = "Master" });
 
 
 

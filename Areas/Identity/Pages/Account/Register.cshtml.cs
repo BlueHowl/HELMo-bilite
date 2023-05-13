@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using HELMo_bilite.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -41,10 +42,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender, 
+            IEmailSender emailSender,
             ApplicationDbContext dbContext)
         {
-            
+
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -63,6 +64,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
         [BindProperty]
         public ICollection<License> Lisence => _dbContext.Licenses.ToList();
+
+        [BindProperty]
+        public ICollection<Certification> Certification => _dbContext.Certifications.ToList();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -122,16 +126,16 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Role")]
-            public int Role { get; set; }
+            public int Role { get; set; } = 0;
 
             [Display(Name = "License")]
-            public int License { get; set; }
+            public List<string> License { get; set; }
 
             [Display(Name = "Matricule")]
             public int Matricule { get; set; }
 
-            [Display(Name = "LevelCertification")]
-            public int LevelCertification { get; set; }
+            [Display(Name = "Votre niveau de certification")]
+            public string LevelCertification { get; set; }
 
 
         }
@@ -147,18 +151,14 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                user.Matricule = "0";
-                user.FirstName = Input.FirstName;
-                user.Name = Input.Name;
-                
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);                
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -178,14 +178,29 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
 
-                    await _userManager.AddToRoleAsync(user, Input.Role == 0 ? ApplicationDbContext.RoleDriver     :
-                                                            Input.Role == 1 ? ApplicationDbContext.RoleDispatcher : 
-                                                            Input.Role == 2 ? ApplicationDbContext.RoleClient     : 
+                    await _userManager.AddToRoleAsync(user, Input.Role == 0 ? ApplicationDbContext.RoleDriver :
+                                                            Input.Role == 1 ? ApplicationDbContext.RoleDispatcher :
+                                                            Input.Role == 2 ? ApplicationDbContext.RoleClient :
                                                             ApplicationDbContext.RoleDriver);
+                    if (Input.Role ==0)
+                    {
+                        var driver = _dbContext.Drivers.Find(user.Id);
+                        foreach (var idLisence in Input.License)
+                        {
+                            var license = _dbContext.Licenses.Find(int.Parse(idLisence));
+                            if (license != null)
+                            {
+                                driver.Licenses.Add(license);
+                            }
+                        }
+                        _dbContext.SaveChanges();
+                    }
+                    
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        
+
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
@@ -208,16 +223,30 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             try
             {
-                switch(Input.Role){
+                switch (Input.Role)
+                {
                     case 0:
-                        return Activator.CreateInstance<Driver>();
+                        Driver driver = Activator.CreateInstance<Driver>();
+                        driver.Name = Input.Name;
+                        driver.FirstName = Input.FirstName;
+                        driver.Matricule = "" + Input.Matricule;
+                        return driver;
                     case 1:
-                        return Activator.CreateInstance<Dispatcher>();
+                        Dispatcher dispatcher = Activator.CreateInstance<Dispatcher>();
+                        dispatcher.Name = Input.Name;
+                        dispatcher.FirstName = Input.FirstName;
+                        dispatcher.Matricule = "" + Input.Matricule;
+                        dispatcher.IdCertification = int.Parse(Input.LevelCertification);
+                        return dispatcher;
                     case 2:
                         return Activator.CreateInstance<Client>();
                     default:
-                        return Activator.CreateInstance<Driver>();
-                } 
+                        var user = Activator.CreateInstance<User>();
+                        user.Name = Input.Name;
+                        user.FirstName = Input.FirstName;
+                        user.Matricule = "" + Input.Matricule;
+                        return user;
+                }
             }
             catch
             {
@@ -236,10 +265,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return (IUserEmailStore<User>)_userStore;
         }
 
-        
 
-      
-       
+
+
+
 
     }
 }
