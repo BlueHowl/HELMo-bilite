@@ -34,9 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-
-        
+        base.OnModelCreating(modelBuilder);        
 
 
         modelBuilder.Entity<Driver>()
@@ -57,7 +55,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
            .HasForeignKey<Address>("UnloadingAddressId")
            .IsRequired(false);
 
-
+        modelBuilder.Entity<License>().HasData( new  License { Id = 1, Name= "test"});
 
 
 

@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using HELMo_bilite.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -32,20 +33,25 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbContext;
+
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, 
+            ApplicationDbContext dbContext)
         {
+            
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
         }
 
         /// <summary>
@@ -54,6 +60,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        public ICollection<License> Lisence => _dbContext.Licenses.ToList();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -114,6 +123,17 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Role")]
             public int Role { get; set; }
+
+            [Display(Name = "License")]
+            public int License { get; set; }
+
+            [Display(Name = "Matricule")]
+            public int Matricule { get; set; }
+
+            [Display(Name = "LevelCertification")]
+            public int LevelCertification { get; set; }
+
+
         }
 
 
