@@ -239,7 +239,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         dispatcher.IdCertification = int.Parse(Input.LevelCertification);
                         return dispatcher;
                     case 2:
-                        return Activator.CreateInstance<Client>();
+                        Client client = Activator.CreateInstance<Client>();
+
+
+                        return client;
                     default:
                         var user = Activator.CreateInstance<User>();
                         user.Name = Input.Name;

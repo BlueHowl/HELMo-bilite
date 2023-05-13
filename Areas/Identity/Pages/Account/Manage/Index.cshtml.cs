@@ -6,7 +6,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using HELMo_bilite.Data;
 using HELMo_bilite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,13 +19,19 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _dbContext;
+        
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _dbContext = dbContext;
+            
+
         }
 
         /// <summary>
@@ -31,6 +39,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+
+
+        public string Role { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -46,6 +57,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [BindProperty]
+        public ICollection<string> License { get; set; } = new List<string>();
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -59,6 +73,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
         }
 
         private async Task LoadAsync(User user)
@@ -66,8 +81,14 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
+            Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             Username = userName;
-
+            var driver = _dbContext.Drivers.Find(user.Id);
+            License = driver.Licenses.Select(i => i.Name).ToList();
+            if(License.Count == 0)
+            {
+                License.Add("pas de lisence");
+            }
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber
