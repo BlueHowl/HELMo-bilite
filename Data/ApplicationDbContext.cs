@@ -14,15 +14,16 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public static readonly string RoleClient = "client";
     public static readonly string RoleAdmin = "admin";
 
-    public DbSet<Driver> Drivers { get; set; }//fait
-    public DbSet<Dispatcher> Dispatchers { get; set; }//fait
-    public DbSet<Client> Clients { get; set; }//fait
-    public DbSet<Admin> Admins { get; set; }//fait
-    public DbSet<Vehicule> Vehicules { get; set; }//fait
-    public DbSet<Certification> Certifications { get; set; }//fait
-    public DbSet<License> Licenses { get; set; }//fait
-    public DbSet<Delivery> Deliveries { get; set; }//fait
-    public DbSet<HelmoMember> HelmoMembers { get; set; }//fait
+    public DbSet<Driver> Drivers { get; set; }
+    public DbSet<Dispatcher> Dispatchers { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<Vehicule> Vehicules { get; set; }
+    public DbSet<Certification> Certifications { get; set; }
+    public DbSet<License> Licenses { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<HelmoMember> HelmoMembers { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     { }

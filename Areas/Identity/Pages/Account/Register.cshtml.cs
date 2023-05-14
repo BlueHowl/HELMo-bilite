@@ -121,12 +121,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Name")]
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            [Required]
             [DataType(DataType.Text)]
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
@@ -139,13 +137,15 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             public List<string> License { get; set; }
 
             [Display(Name = "Matricule")]
-            public int Matricule { get; set; }
+            public int? Matricule { get; set; }
 
+            [DataType(DataType.Text)]
             [Display(Name = "Votre niveau de certification")]
-            public string LevelCertification { get; set; }
+            public string? LevelCertification { get; set; }
 
+            [DataType(DataType.Text)]
             [Display(Name = "Le nom de votre société")]
-            public string CompanyName { get; set; }
+            public string? CompanyName { get; set; }
         }
 
 
@@ -252,8 +252,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         return dispatcher;
                     case 2:
                         Client client = Activator.CreateInstance<Client>();
-
-
+                        client.CompanyName = Input.CompanyName;
+                        client.CompanyAddressId = StoreAddressesCompanyClient();
+                       
                         return client;
                     default:
                         var user = Activator.CreateInstance<User>();
@@ -276,6 +277,22 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<User>)_userStore;
+        }
+
+        private string StoreAddressesCompanyClient()
+        {
+            var address = new Address
+            {
+                    Locality = AddressCreation.Locality,
+                    Street = AddressCreation.Street,
+                    Number = AddressCreation.Number,
+                    LocalityCode = AddressCreation.LocalityCode,
+                    Country = AddressCreation.Country,
+            };
+           
+            _dbContext.Addresses.Add(address);
+            _dbContext.SaveChanges();
+            return address.IdAddress;
         }
 
         
