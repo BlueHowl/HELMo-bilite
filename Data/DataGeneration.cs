@@ -47,10 +47,10 @@ public class DataGeneration
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@helmobilite.be";
-            var matricule = "DR"+Randomizer.Seed.Next(100000, 1000000);
+            var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
             var driver = new Driver()
             {
-               Matricule = matricule,
+                Matricule = matricule,
                 FirstName = surName,
                 Name = lastName,
                 Email = email,
@@ -63,7 +63,21 @@ public class DataGeneration
                 var result2 = _userManager.AddToRoleAsync(driver, "driver").Result;
             }
 
+
         }
+
+        Admin admin = new Admin
+        {
+            Email = "valentin.lopez1109@gmail.com",
+            UserName = "valentin.lopez1109@gmail.com"
+        };
+
+        var resultAdmin = _userManager.CreateAsync(admin, "Test@123").Result;
+        if (resultAdmin.Succeeded)
+        {
+            var resultAdmin2 = _userManager.AddToRoleAsync(admin, "admin").Result;
+        }
+
 
     }
 

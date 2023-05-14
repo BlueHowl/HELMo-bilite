@@ -83,8 +83,13 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
 
             Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             Username = userName;
-            var driver = _dbContext.Drivers.Find(user.Id);
-            License = driver.Licenses.Select(i => i.Name).ToList();
+
+            if(Role == "driver")
+            {
+                var driver = _dbContext.Drivers.Find(user.Id);
+                License = driver.Licenses.Select(i => i.Name).ToList();
+            }
+           
             if(License.Count == 0)
             {
                 License.Add("pas de lisence");

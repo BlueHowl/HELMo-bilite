@@ -254,13 +254,14 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         Client client = Activator.CreateInstance<Client>();
                         client.CompanyName = Input.CompanyName;
                         client.CompanyAddressId = StoreAddressesCompanyClient();
-                       
+
                         return client;
                     default:
                         var user = Activator.CreateInstance<User>();
 
                         return user;
                 }
+
             }
             catch
             {
