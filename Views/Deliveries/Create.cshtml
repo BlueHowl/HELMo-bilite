@@ -1,0 +1,54 @@
+﻿@model HELMo_bilite.Controllers.ViewModels.ClientOrderVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Delivery</h4>
+<hr />
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label">Contenu</label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoadAddressId" class="control-label">Addresse de chargement</label>
+                <input asp-for="LoadAddressId" class="form-control" />
+                <span asp-validation-for="LoadAddressId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnloadingAddressId" class="control-label">Addresse de déchargement</label>
+                <input asp-for="UnloadingAddressId" class="form-control" />
+                <span asp-validation-for="UnloadingAddressId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoadDate" class="control-label">Heure de chargement</label>
+                <input asp-for="LoadDate" class="form-control" />
+                <span asp-validation-for="LoadDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnloadingDate" class="control-label">Heure de déchargement</label>
+                <input asp-for="UnloadingDate" class="form-control" />
+                <span asp-validation-for="UnloadingDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Créer" class="btn btn-primary w-100 p-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-end">
+    <a asp-action="Index">Retour</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,6 +1,8 @@
-﻿using HELMo_bilite.Models;
+﻿using Bogus.DataSets;
+using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Address = HELMo_bilite.Models.Address;
 
 namespace HELMo_bilite.Data;
 
@@ -14,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Certification> Certifications { get; set; }//fait
     public DbSet<License> Licenses { get; set; }//fait
     public DbSet<Delivery> Deliveries { get; set; }//fait
+    public DbSet<Address> Addresses { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     { }
@@ -27,8 +30,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        
 
 
         modelBuilder.Entity<Driver>()
