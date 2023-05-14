@@ -23,6 +23,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using HELMo_bilite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using HELMo_bilite.Controllers;
+using HELMo_bilite.ViewModels;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -53,7 +55,12 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _dbContext = dbContext;
+            
         }
+
+
+        [BindProperty]
+        public CreationAddressVM AddressCreation { get; set; } = new CreationAddressVM();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -137,8 +144,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             [Display(Name = "Votre niveau de certification")]
             public string LevelCertification { get; set; }
 
-
+            [Display(Name = "Le nom de votre société")]
+            public string CompanyName { get; set; }
         }
+
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -154,6 +163,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -219,6 +230,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return Page();
         }
 
+
         private User CreateUser()
         {
             try
@@ -245,9 +257,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         return client;
                     default:
                         var user = Activator.CreateInstance<User>();
-                        user.Name = Input.Name;
-                        user.FirstName = Input.FirstName;
-                        user.Matricule = "" + Input.Matricule;
+
                         return user;
                 }
             }
@@ -268,9 +278,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return (IUserEmailStore<User>)_userStore;
         }
 
-
-
-
+        
 
 
     }

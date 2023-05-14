@@ -22,6 +22,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Certification> Certifications { get; set; }//fait
     public DbSet<License> Licenses { get; set; }//fait
     public DbSet<Delivery> Deliveries { get; set; }//fait
+    public DbSet<HelmoMember> HelmoMembers { get; set; }//fait
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     { }

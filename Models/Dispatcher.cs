@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
-public class Dispatcher : User
+public class Dispatcher : HelmoMember
 {
     [ForeignKey(nameof(Certification))]
     public int? IdCertification { get; set; }
