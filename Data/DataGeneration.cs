@@ -72,13 +72,9 @@ public class DataGeneration
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
-            var email = $"{surName}.{lastName}@helmobilite.be";
-            var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
+            var email = $"{surName}.{lastName}@une-companie.be";
             var client = new Client()
             {
-                Matricule = matricule,
-                FirstName = surName,
-                Name = lastName,
                 Email = email,
                 UserName = email,
                 CompanyName = "test"

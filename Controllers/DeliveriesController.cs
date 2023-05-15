@@ -201,10 +201,11 @@ namespace HELMo_bilite.Controllers
 
         private void setViewDataLists()
         {
+            //TODO j'ai changer ici car les client n'ont pas de matricule ni de nom et de prenom
             List<SelectListItem> clientList = _context.Clients.Select(c => new SelectListItem
             {
-                Value = c.Matricule.ToString(),
-                Text = $"{c.FirstName} {c.Name}"
+                Value = c.Id,
+                Text = $"{c.CompanyName} {c.Email}"
             }).ToList();
 
             List<SelectListItem> driverList = _context.Drivers.Select(d => new SelectListItem

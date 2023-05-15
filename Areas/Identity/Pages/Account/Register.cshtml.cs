@@ -24,7 +24,7 @@ using HELMo_bilite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using HELMo_bilite.Controllers;
-using HELMo_bilite.ViewModels;
+using HELMo_bilite.Controllers.ViewModels;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -196,9 +196,11 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                     if (Input.Role ==0)
                     {
                         var driver = _dbContext.Drivers.Find(user.Id);
+                        driver.Licenses = new List<License>();
                         foreach (var idLisence in Input.License)
                         {
                             var license = _dbContext.Licenses.Find(int.Parse(idLisence));
+
                             if (license != null)
                             {
                                 driver.Licenses.Add(license);
