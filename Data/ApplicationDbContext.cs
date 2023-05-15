@@ -1,14 +1,14 @@
-﻿using Bogus;
+﻿using Bogus.DataSets;
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using NuGet.DependencyResolver;
-using System.Reflection.Emit;
+using Address = HELMo_bilite.Models.Address;
 
 namespace HELMo_bilite.Data;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
+
     public static readonly string RoleDriver = "driver";
     public static readonly string RoleDispatcher = "dispatcher";
     public static readonly string RoleClient = "client";
@@ -36,7 +36,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);        
+        base.OnModelCreating(modelBuilder);
 
 
         modelBuilder.Entity<Driver>()

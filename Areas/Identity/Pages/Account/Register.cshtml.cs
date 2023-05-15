@@ -24,7 +24,7 @@ using HELMo_bilite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using HELMo_bilite.Controllers;
-using HELMo_bilite.ViewModels;
+using HELMo_bilite.Controllers.ViewModels;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
