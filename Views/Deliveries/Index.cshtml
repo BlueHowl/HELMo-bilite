@@ -46,11 +46,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Client.Matricule)
+                @Html.DisplayFor(modelItem => item.Client.Id)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Driver.Matricule)
+                @Html.DisplayFor(modelItem => item.Driver.Id)
             </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
             </td>

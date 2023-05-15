@@ -1,0 +1,172 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Inscripption";
+
+}
+
+
+<div class="row justify-content-center">
+    <div class="col-md-4 align-content-between">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2>S'enregistrer</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+                <label asp-for="Input.Email"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <select class="form-select" asp-for="Input.Role" id="selecteRoleRegister" onchange="onRoleChange()">
+                    <option selected>Choisisez un role</option>
+                    <option value="0">Chauffeur</option>
+                    <option value="1">Dispatcher</option>
+                    <option value="2">Client</option>
+                </select>
+                <label for="floatingSelectDisabled">Votre role</label>
+            </div>
+
+
+            <div class="helmo hidden">
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="on" aria-required="true" />
+                            <label asp-for="Input.FirstName"></label>
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Name" class="form-control" autocomplete="on" aria-required="true" />
+                            <label asp-for="Input.Name"></label>
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3 helmo hidden">
+                <div class="input-group">
+                    <span class="input-group-text" id="StartMat">Matricule</span>
+                    <input asp-for="Input.Matricule" class="form-control" autocomplete="on" aria-required="true" />
+                </div>
+
+                <span asp-validation-for="Input.Matricule" class="text-danger"></span>
+            </div>
+            <div class="form mb-3 driver hidden">
+                <div class="form-control">
+                    <label>Selectionner vos lisences</label><br />
+                    <select class="selectpicker" asp-for="Input.License" id="selecteLicenseRegister" multiple>
+                        @foreach (var item in Model.Lisence)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-floating mb-3 dispatcher hidden">
+                <select class="form-select" asp-for="Input.LevelCertification" id="selecteLevelStudy">
+                    <option selected>Selectionner votre niveau d'étude</option>
+                    @foreach (var item in Model.Certification)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <label asp-for="Input.LevelCertification"></label>
+            </div>
+
+            <div class="form-floating mb-3 client hidden">
+                <input asp-for="Input.CompanyName" class="form-control" autocomplete="on" aria-required="true" />
+                <label asp-for="Input.CompanyName"></label>
+                <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+            </div>
+            <div class="client hidden">
+                <partial name="_CreateAddressForm" model="@Model.AddressCreation" />
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Input.Password"></label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                <label asp-for="Input.ConfirmPassword"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+
+
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+
+        </form>
+    </div>
+    <script type="">
+        $('.selectpicker').selectpicker();
+
+
+        function onRoleChange() {
+            let selectedRole = $("#selecteRoleRegister").val();
+            console.log(selectedRole);
+            switch (selectedRole) {
+                case "0": // Chauffeur
+                    $(".driver").show();
+                    $(".helmo").show();
+
+                    $(".client").hide();
+                    $(".dispatcher").hide();
+
+                    $("input[name='Input.Matricule']").rules("add", {
+                        required: true,
+                        messages: {
+                            required: "Le matricule est obligatoire pour les chauffeurs."
+                        }
+                    });
+
+                    break;
+                case "1": // Dispatcher
+                    $(".helmo").show();
+                    $(".dispatcher").show();
+
+                    $(".driver").hide();
+                    $(".client").hide();
+
+                    $("input[name='Input.Matricule']").rules("add", {
+                        required: true,
+                        messages: {
+                            required: "Le matricule est obligatoire pour les dispatcher."
+                        }
+                    });
+                    break;
+                case "2": // Client
+                    $(".helmo").hide();
+                    $(".driver").hide();
+                    $(".client").show();
+                    $(".dispatcher").hide();
+                    $("input[name='Input.Matricule']").rules("remove");
+                    break;
+                default:
+                    $(".helmo").hide();
+                    $(".driver").hide();
+                    $(".client").hide();
+                    $(".dispatcher").hide();
+                    $("input[name='Input.Matricule']").rules("remove");
+                    break;
+            }
+
+        }
+    </script>
+
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+
+}

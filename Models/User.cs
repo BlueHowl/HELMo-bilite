@@ -1,19 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
 
-
-public class User
+public class User : IdentityUser
 {
-    /// <summary>
-    /// TODO: demander au prof si le client a un matricule
-    /// </summary>
-    [Key]
+}
+
+public class HelmoMember : User
+{
+
     [Required]
     [StringLength(10)]
     public string Matricule { get; set; }
+
     [Required]
     [StringLength(100)]
     public string Name { get; set; }
@@ -21,15 +23,4 @@ public class User
     [Required]
     [StringLength(100)]
     public string FirstName { get; set; }
-
-    //this is unique
-
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
-
-    [Required]
-    [StringLength(60)]
-    public string Password { get; set; }
-    
 }

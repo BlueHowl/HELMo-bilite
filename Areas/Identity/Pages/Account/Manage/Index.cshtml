@@ -1,0 +1,94 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form id="profile-form g-2" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            @if (User.IsInRole("driver") || User.IsInRole("dispatcher"))
+            {
+                <div class="row g-2">
+                    <div class="col-md">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.FirstName" class="form-control" autocomplete="on" aria-required="true" />
+                            <label asp-for="Input.FirstName"></label>
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Name" class="form-control" autocomplete="on" aria-required="true" />
+                            <label asp-for="Input.Name"></label>
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text" id="StartMat">Matricule</span>
+                        <input asp-for="Input.Matricule" class="form-control" autocomplete="on" aria-required="true" />
+                    </div>
+
+                    <span asp-validation-for="Input.Matricule" class="text-danger"></span>
+                </div>
+
+
+            }
+            @if (User.IsInRole("driver"))
+            {
+                <div class="form mb-3">
+                    <div class="form-control">
+                        <label>Vos lisences</label><br />
+                            <ul>
+
+                                @foreach (var item in Model.Licenses)
+                                {
+                                    <li>@item</li>
+                                }
+
+                            </ul>
+
+                    </div>
+                </div>
+            }
+            @if (User.IsInRole("dispatcher"))
+            {
+                <div class="form-floating mb-3 dispatcher hidden">
+                    <select class="form-select" asp-for="Input.LevelCertification" id="selecteLevelStudy">
+                        <option selected>Selectionner votre niveau d'étude</option>
+                        @*@foreach (var item in Model.Certification)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }*@
+                    </select>
+                    <label asp-for="Input.LevelCertification"></label>
+                </div>
+
+            }
+
+
+            
+            
+           
+            
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

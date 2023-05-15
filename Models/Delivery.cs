@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
@@ -48,6 +47,26 @@ public class Delivery
     [ForeignKey(nameof(Vehicule))]
     public string? IdVehicule { get; set; }
 
+    public Delivery()
+    {
 
+    }
 
+    public Delivery(Client client, Driver driver, string content, Address loadAddress, DateTime loadDate, Address unloadingAddress, DateTime unloadingDate, string status, Vehicule vehicule)
+    {
+        Client = client;
+        IdClient = client.Id;
+        Driver = driver;
+        IdDriver = driver?.Id;
+        Content = content;
+        LoadAddress = loadAddress;
+        LoadAddressId = loadAddress.IdAddress;
+        LoadDate = loadDate;
+        UnloadingAddress = unloadingAddress;
+        UnloadingAddressId = unloadingAddress.IdAddress;
+        UnloadingDate = unloadingDate;
+        this.status = status;
+        Vehicule = vehicule;
+        IdVehicule = vehicule?.Plate;
+    }
 }

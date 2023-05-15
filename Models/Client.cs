@@ -12,7 +12,7 @@ public class Client : User
     [ForeignKey(nameof(CompanyName))]
     public string CompanyAddressId { get; set; }
     [StringLength(50)]
-    public string Number { get; set; }
+    public string? Number { get; set; }
 
-    public ICollection<Delivery> Deliverys { get; set; } = new List<Delivery>();
+    public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
 }

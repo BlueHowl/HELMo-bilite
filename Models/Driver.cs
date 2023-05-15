@@ -2,11 +2,11 @@
 
 namespace HELMo_bilite.Models;
 
-public class Driver : User
+public class Driver : HelmoMember
 {
+    
+    public ICollection<License>? Licenses { get; set; }
 
-    public ICollection<License> Licenses { get; set; } = new List<License>();
-
-    public ICollection<Delivery> Deliverys { get; set; } = new List<Delivery>();
+    public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
 
 }
