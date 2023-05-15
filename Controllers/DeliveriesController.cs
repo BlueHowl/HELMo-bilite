@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
+using HELMo_bilite.Controllers.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace HELMo_bilite.Controllers
 {
     public class DeliveriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public DeliveriesController(ApplicationDbContext context)
+        public DeliveriesController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Deliveries
@@ -50,9 +54,7 @@ namespace HELMo_bilite.Controllers
         // GET: Deliveries/Create
         public IActionResult Create()
         {
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Id", "Id");
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Id", "Id");
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate");
+            setViewDataLists();
             return View();
         }
 
@@ -61,18 +63,39 @@ namespace HELMo_bilite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdClient,IdDriver,Content,LoadAddressId,LoadDate,UnloadingAddressId,UnloadingDate,status,IdVehicule")] Delivery delivery)
+        public async Task<IActionResult> Create([Bind("Content,LoadAddressId,UnloadingAddressId,LoadDate,UnloadingDate")] ClientOrderVM order)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid && order.UnloadingDate > order.LoadDate)
             {
-                _context.Add(delivery);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var currentUser = await _userManager.GetUserAsync(HttpContext.User);
+
+                if (currentUser is Client client)
+                {
+                    //TODO changer addresses + afficher message erreur si champs invalides
+                    var loadAddress = await _context.Addresses.FirstOrDefaultAsync();
+                    var unloadAddress = await _context.Addresses.FirstOrDefaultAsync();
+
+                    var newDelivery = new Delivery
+                    (
+                        (Client)currentUser,
+                        null,
+                        order.Content,
+                        loadAddress,
+                        order.LoadDate,
+                        unloadAddress,
+                        order.UnloadingDate,
+                        "En attente",
+                        null
+                    );
+
+                    _context.Add(newDelivery);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Id", "Id", delivery.IdClient);
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Id", "Id", delivery.IdDriver);
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate", delivery.IdVehicule);
-            return View(delivery);
+
+            setViewDataLists();
+            return View(order);
         }
 
         // GET: Deliveries/Edit/5
@@ -88,9 +111,9 @@ namespace HELMo_bilite.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Id", "Id", delivery.IdClient);
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Id", "Id", delivery.IdDriver);
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate", delivery.IdVehicule);
+
+            setViewDataLists();
+
             return View(delivery);
         }
 
@@ -126,9 +149,8 @@ namespace HELMo_bilite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdClient"] = new SelectList(_context.Clients, "Id", "Id", delivery.IdClient);
-            ViewData["IdDriver"] = new SelectList(_context.Drivers, "Id", "Id", delivery.IdDriver);
-            ViewData["IdVehicule"] = new SelectList(_context.Vehicules, "Plate", "Plate", delivery.IdVehicule);
+
+            setViewDataLists();
             return View(delivery);
         }
 
@@ -160,21 +182,47 @@ namespace HELMo_bilite.Controllers
         {
             if (_context.Deliveries == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Delivery'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Deliveries'  is null.");
+
             }
             var delivery = await _context.Deliveries.FindAsync(id);
             if (delivery != null)
             {
                 _context.Deliveries.Remove(delivery);
             }
-            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DeliveryExists(int id)
         {
-          return (_context.Deliveries?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Deliveries?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        private void setViewDataLists()
+        {
+            List<SelectListItem> clientList = _context.Clients.Select(c => new SelectListItem
+            {
+                Value = c.Matricule.ToString(),
+                Text = $"{c.FirstName} {c.Name}"
+            }).ToList();
+
+            List<SelectListItem> driverList = _context.Drivers.Select(d => new SelectListItem
+            {
+                Value = d.Matricule.ToString(),
+                Text = $"{d.FirstName} {d.Name} ({(d.Licenses.Count > 0 ? string.Join(",", d.Licenses.Select(l => l.Name).ToList()) : "Sans permi")})"
+            }).ToList();
+
+            List<SelectListItem> vehiculeList = _context.Vehicules.Select(v => new SelectListItem
+            {
+                Value = v.Plate.ToString(),
+                Text = $"{v.Brand} {v.Model}"
+            }).ToList();
+
+            ViewData["IdClient"] = clientList;
+            ViewData["IdDriver"] = driverList;
+            ViewData["IdVehicule"] = vehiculeList;
+        }
+
     }
 }
