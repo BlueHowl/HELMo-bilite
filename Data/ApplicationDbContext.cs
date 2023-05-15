@@ -8,14 +8,21 @@ namespace HELMo_bilite.Data;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
-    public DbSet<Driver> Drivers { get; set; }//fait
-    public DbSet<Dispatcher> Dispatchers { get; set; }//fait
-    public DbSet<Client> Clients { get; set; }//fait
-    public DbSet<Admin> Admins { get; set; }//fait
-    public DbSet<Vehicule> Vehicules { get; set; }//fait
-    public DbSet<Certification> Certifications { get; set; }//fait
-    public DbSet<License> Licenses { get; set; }//fait
-    public DbSet<Delivery> Deliveries { get; set; }//fait
+
+    public static readonly string RoleDriver = "driver";
+    public static readonly string RoleDispatcher = "dispatcher";
+    public static readonly string RoleClient = "client";
+    public static readonly string RoleAdmin = "admin";
+
+    public DbSet<Driver> Drivers { get; set; }
+    public DbSet<Dispatcher> Dispatchers { get; set; }
+    public DbSet<Client> Clients { get; set; }
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<Vehicule> Vehicules { get; set; }
+    public DbSet<Certification> Certifications { get; set; }
+    public DbSet<License> Licenses { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<HelmoMember> HelmoMembers { get; set; }
     public DbSet<Address> Addresses { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
@@ -50,7 +57,14 @@ public class ApplicationDbContext : IdentityDbContext<User>
            .HasForeignKey<Address>("UnloadingAddressId")
            .IsRequired(false);
 
+        modelBuilder.Entity<License>().HasData(new License { Id = 1, Name= "B"});
+        modelBuilder.Entity<License>().HasData(new License { Id = 2, Name = "C (camion)" });
+        modelBuilder.Entity<License>().HasData(new License { Id = 3, Name = "CE (camion avec remorque)" });
 
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 1, Name = "Pas de diplome" });
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 2, Name = "CESS" });
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 3, Name = "Bachlier" });
+        modelBuilder.Entity<Certification>().HasData(new Certification { Id = 4, Name = "Master" });
 
 
 

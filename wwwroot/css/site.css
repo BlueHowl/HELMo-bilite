@@ -108,3 +108,7 @@ main section:not(:first-child) {
 #third-section img {
     width: inherit;
 }
+
+.hidden{
+    display : none;
+}

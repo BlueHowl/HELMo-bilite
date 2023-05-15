@@ -6,6 +6,7 @@ namespace HELMo_bilite.Models;
 
 public class Address
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key] public string IdAddress { get; set; }
     [Required][StringLength(100)] public string Locality { get; set; }
     [Required][StringLength(5)] public string Number { get; set; }

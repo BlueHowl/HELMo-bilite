@@ -19,6 +19,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using HELMo_bilite.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using HELMo_bilite.Controllers;
+using HELMo_bilite.ViewModels;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -30,21 +36,31 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _dbContext;
+
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext dbContext)
         {
+
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
+            
         }
+
+
+        [BindProperty]
+        public CreationAddressVM AddressCreation { get; set; } = new CreationAddressVM();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -52,6 +68,12 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        public ICollection<License> Lisence => _dbContext.Licenses.ToList();
+
+        [BindProperty]
+        public ICollection<Certification> Certification => _dbContext.Certifications.ToList();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -99,19 +121,33 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Name")]
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
-            [Required]
             [DataType(DataType.Text)]
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
 
             [Required]
-            public int Role { get; set; }
+            [Display(Name = "Role")]
+            public int Role { get; set; } = 0;
+
+            [Display(Name = "License")]
+            public List<string> License { get; set; }
+
+            [Display(Name = "Matricule")]
+            public int? Matricule { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Votre niveau de certification")]
+            public string? LevelCertification { get; set; }
+
+            [DataType(DataType.Text)]
+            [Display(Name = "Le nom de votre société")]
+            public string? CompanyName { get; set; }
         }
+
 
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -124,17 +160,15 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
+
+
                 var user = CreateUser();
 
-                user.Matricule = "0";
-                user.FirstName = Input.FirstName;
-                user.Name = Input.Name;
-                
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);                
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -154,15 +188,30 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    var result2 = await _userManager.AddToRoleAsync(user, Input.Role == 1 ? "driver" : "user");
-                    if (!result2.Succeeded)
+
+                    await _userManager.AddToRoleAsync(user, Input.Role == 0 ? ApplicationDbContext.RoleDriver :
+                                                            Input.Role == 1 ? ApplicationDbContext.RoleDispatcher :
+                                                            Input.Role == 2 ? ApplicationDbContext.RoleClient :
+                                                            ApplicationDbContext.RoleDriver);
+                    if (Input.Role ==0)
                     {
-                        throw new Exception();
+                        var driver = _dbContext.Drivers.Find(user.Id);
+                        foreach (var idLisence in Input.License)
+                        {
+                            var license = _dbContext.Licenses.Find(int.Parse(idLisence));
+                            if (license != null)
+                            {
+                                driver.Licenses.Add(license);
+                            }
+                        }
+                        _dbContext.SaveChanges();
                     }
+                    
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        
+
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
@@ -181,11 +230,38 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return Page();
         }
 
+
         private User CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<User>();
+                switch (Input.Role)
+                {
+                    case 0:
+                        Driver driver = Activator.CreateInstance<Driver>();
+                        driver.Name = Input.Name;
+                        driver.FirstName = Input.FirstName;
+                        driver.Matricule = "" + Input.Matricule;
+                        return driver;
+                    case 1:
+                        Dispatcher dispatcher = Activator.CreateInstance<Dispatcher>();
+                        dispatcher.Name = Input.Name;
+                        dispatcher.FirstName = Input.FirstName;
+                        dispatcher.Matricule = "" + Input.Matricule;
+                        dispatcher.IdCertification = int.Parse(Input.LevelCertification);
+                        return dispatcher;
+                    case 2:
+                        Client client = Activator.CreateInstance<Client>();
+                        client.CompanyName = Input.CompanyName;
+                        client.CompanyAddressId = StoreAddressesCompanyClient();
+
+                        return client;
+                    default:
+                        var user = Activator.CreateInstance<User>();
+
+                        return user;
+                }
+
             }
             catch
             {
@@ -204,8 +280,24 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return (IUserEmailStore<User>)_userStore;
         }
 
-      
-       
+        private string StoreAddressesCompanyClient()
+        {
+            var address = new Address
+            {
+                    Locality = AddressCreation.Locality,
+                    Street = AddressCreation.Street,
+                    Number = AddressCreation.Number,
+                    LocalityCode = AddressCreation.LocalityCode,
+                    Country = AddressCreation.Country,
+            };
+           
+            _dbContext.Addresses.Add(address);
+            _dbContext.SaveChanges();
+            return address.IdAddress;
+        }
+
+        
+
 
     }
 }

@@ -15,7 +15,6 @@ namespace HELMo_bilite.Controllers
     public class DeliveriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         private readonly UserManager<User> _userManager;
 
         public DeliveriesController(ApplicationDbContext context, UserManager<User> userManager)
@@ -114,6 +113,7 @@ namespace HELMo_bilite.Controllers
             }
 
             setViewDataLists();
+
             return View(delivery);
         }
 
@@ -183,13 +183,13 @@ namespace HELMo_bilite.Controllers
             if (_context.Deliveries == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Deliveries'  is null.");
+
             }
             var delivery = await _context.Deliveries.FindAsync(id);
             if (delivery != null)
             {
                 _context.Deliveries.Remove(delivery);
             }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
