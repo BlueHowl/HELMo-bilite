@@ -8,7 +8,6 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
-using HELMo_bilite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

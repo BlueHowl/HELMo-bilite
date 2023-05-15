@@ -1,4 +1,4 @@
-﻿namespace HELMo_bilite.ViewModels
+﻿namespace HELMo_bilite.Controllers.ViewModels
 {
     public class LisencesEditVM
     {
