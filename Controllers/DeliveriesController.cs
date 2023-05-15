@@ -65,15 +65,19 @@ namespace HELMo_bilite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Content,LoadAddressId,UnloadingAddressId,LoadDate,UnloadingDate")] ClientOrderVM order)
         {
-            if(ModelState.IsValid && order.UnloadingDate > order.LoadDate)
+            if(order.LoadDate > order.UnloadingDate)
+            {
+                ModelState.AddModelError("UnloadingDate", "La date de déchargement ne peut pas être antérieur à la date de chargement !");
+            }
+
+            if(ModelState.IsValid)
             {
                 var currentUser = await _userManager.GetUserAsync(HttpContext.User);
 
                 if (currentUser is Client client)
                 {
-                    //TODO changer addresses + afficher message erreur si champs invalides
-                    var loadAddress = await _context.Addresses.FirstOrDefaultAsync();
-                    var unloadAddress = await _context.Addresses.FirstOrDefaultAsync();
+                    var loadAddress = await _context.Addresses.FindAsync(order.LoadAddressId);
+                    var unloadAddress = await _context.Addresses.FindAsync(order.UnloadingAddressId);
 
                     var newDelivery = new Delivery
                     (
@@ -199,9 +203,38 @@ namespace HELMo_bilite.Controllers
             return (_context.Deliveries?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+
+
+        // GET: Deliveries/CreateAddress
+        public IActionResult CreateAddress()
+        {
+            return View();
+        }
+
+        // POST: Deliveries/CreateAddress
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAddress([Bind("Street,Number,Locality,LocalityCode,Country")] CreationAddressVM address)
+        {
+            if (ModelState.IsValid)
+            {
+                var newAddress = new Address(address.Locality, address.Number.ToString(), address.Street, address.LocalityCode.ToString(), address.Country);
+
+                _context.Addresses.Add(newAddress); //TODO peut être simplifié _context.Add(newAddress);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Create));
+            }
+
+            return View(address);
+        }
+
+
+
         private void setViewDataLists()
         {
-            //TODO j'ai changer ici car les client n'ont pas de matricule ni de nom et de prenom
+ 
             List<SelectListItem> clientList = _context.Clients.Select(c => new SelectListItem
             {
                 Value = c.Id,
@@ -220,9 +253,16 @@ namespace HELMo_bilite.Controllers
                 Text = $"{v.Brand} {v.Model}"
             }).ToList();
 
-            ViewData["IdClient"] = clientList;
-            ViewData["IdDriver"] = driverList;
-            ViewData["IdVehicule"] = vehiculeList;
+            List<SelectListItem> addressList = _context.Addresses.Select(a => new SelectListItem
+            {
+                Value = a.IdAddress,
+                Text = $"{a.Street}, {a.Number} {a.Locality}"
+            }).ToList();
+
+            ViewData["Clients"] = clientList;
+            ViewData["Drivers"] = driverList;
+            ViewData["Vehicules"] = vehiculeList;
+            ViewData["Addresses"] = addressList;
         }
 
     }

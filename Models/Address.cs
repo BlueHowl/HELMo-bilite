@@ -14,4 +14,14 @@ public class Address
     [Required][StringLength(10)] public string LocalityCode { get; set; }
     [Required][StringLength(100)] public string Country { get; set; }
 
+    public Address() { }
+
+    public Address(string locality, string number, string street, string localityCode, string country)
+    {
+        Locality = locality;
+        Number = number;
+        Street = street;
+        LocalityCode = localityCode;
+        Country = country;
+    }
 }
