@@ -288,8 +288,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             {
                     Locality = AddressCreation.Locality,
                     Street = AddressCreation.Street,
-                    Number = AddressCreation.Number,
-                    LocalityCode = AddressCreation.LocalityCode,
+                    Number = AddressCreation.Number.ToString(),
+                    LocalityCode = AddressCreation.LocalityCode.ToString(),
                     Country = AddressCreation.Country,
             };
            

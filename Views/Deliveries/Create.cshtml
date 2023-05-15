@@ -5,14 +5,14 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Créer une nouvelle commande</h1>
 
-<h4>Delivery</h4>
 <hr />
 <div class="row d-flex justify-content-center">
 
     <div class="col-md-4">
         <form asp-action="Create">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
 
@@ -21,25 +21,40 @@
                 <input asp-for="Content" class="form-control" />
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
 
                 <label asp-for="LoadAddressId" class="control-label">Addresse de chargement</label>
 
-                <input asp-for="LoadAddressId" class="form-control" />
+                <select asp-for="LoadAddressId" class="form-control" asp-items="ViewBag.Addresses">
+                    <option value="">-- Choisir une addresse --</option>
+                </select>
                 <span asp-validation-for="LoadAddressId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
 
                 <label asp-for="UnloadingAddressId" class="control-label">Addresse de déchargement</label>
-                <input asp-for="UnloadingAddressId" class="form-control" />
+
+                <select asp-for="UnloadingAddressId" class="form-control" asp-items="ViewBag.Addresses">
+                    <option value="">-- Choisir une addresse --</option>
+                </select>
                 <span asp-validation-for="UnloadingAddressId" class="text-danger"></span>
             </div>
+
+            <p>
+                <a asp-action="CreateAddress">Créer une addresse</a>
+            </p>
+
+
             <div class="form-group">
                 <label asp-for="LoadDate" class="control-label">Heure de chargement</label>
 
                 <input asp-for="LoadDate" class="form-control" />
                 <span asp-validation-for="LoadDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
 
                 <label asp-for="UnloadingDate" class="control-label">Heure de déchargement</label>
