@@ -2,29 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using HELMo_bilite.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using HELMo_bilite.Controllers;
 using HELMo_bilite.Controllers.ViewModels;
+using NuGet.Packaging.Signing;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -60,7 +50,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
 
         [BindProperty]
-        public CreationAddressVM AddressCreation { get; set; } = new CreationAddressVM();
+        public CreationAddressInscriptionVM AddressCreation { get; set; } = new CreationAddressInscriptionVM();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -160,6 +150,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            VerifyInput();
+
 
             if (ModelState.IsValid)
             {
@@ -227,6 +219,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            /*else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }*/
 
             // If we got this far, something failed, redisplay form
             return Page();
@@ -243,13 +239,13 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         Driver driver = Activator.CreateInstance<Driver>();
                         driver.Name = Input.Name;
                         driver.FirstName = Input.FirstName;
-                        driver.Matricule = "" + Input.Matricule;
+                        driver.Matricule = FormatMatricule(Input.Matricule, Input.Role);
                         return driver;
                     case 1:
                         Dispatcher dispatcher = Activator.CreateInstance<Dispatcher>();
                         dispatcher.Name = Input.Name;
                         dispatcher.FirstName = Input.FirstName;
-                        dispatcher.Matricule = "" + Input.Matricule;
+                        dispatcher.Matricule = FormatMatricule(Input.Matricule, Input.Role);
                         dispatcher.IdCertification = int.Parse(Input.LevelCertification);
                         return dispatcher;
                     case 2:
@@ -288,8 +284,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             {
                     Locality = AddressCreation.Locality,
                     Street = AddressCreation.Street,
-                    Number = AddressCreation.Number,
-                    LocalityCode = AddressCreation.LocalityCode,
+                    Number = AddressCreation.Number.ToString(),
+                    LocalityCode = AddressCreation.LocalityCode.ToString(),
                     Country = AddressCreation.Country,
             };
            
@@ -298,7 +294,26 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return address.IdAddress;
         }
 
-        
+        private void VerifyInput()
+        {
+            if(Input.Role == 0 || Input.Role == 1)
+            {
+                var user = _dbContext.HelmoMembers.Where(hm => FormatMatricule(Input.Matricule,Input.Role) == hm.Matricule).FirstOrDefault(); ;
+                if(user != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Matricule deja utiliser");
+                }
+            }
+
+        }
+
+
+        private string FormatMatricule(int? num, int role)
+        {
+            return (role == 0 ? "DR": "DI" )+$"{num:00000000}";
+        }
+
+
 
 
     }

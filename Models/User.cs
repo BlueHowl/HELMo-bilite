@@ -7,6 +7,7 @@ namespace HELMo_bilite.Models;
 
 public class User : IdentityUser
 {
+   
 }
 
 public class HelmoMember : User
@@ -23,4 +24,5 @@ public class HelmoMember : User
     [Required]
     [StringLength(100)]
     public string FirstName { get; set; }
+
 }

@@ -1,4 +1,10 @@
-﻿@model HELMo_bilite.Controllers.ViewModels.CreationAddressVM
+﻿@model HELMo_bilite.Controllers.ViewModels.CreationAddressInscriptionVM
+
+@{
+    ViewData["Title"] = "CreateAddress";
+}
+
+
 
 <div class="row g-2">
     <div class="col-md">
@@ -38,3 +44,4 @@
     <label asp-for="Country">Pays</label>
     <span asp-validation-for="Country" class="text-danger"></span>
 </div>
+
