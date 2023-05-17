@@ -5,57 +5,43 @@
 }
 
 
-<form asp-action="Create">
 
-    <div class="row g-2">
-        <div class="col-md">
-            <div class="form-floating mb-3">
-                <input asp-for="Street" class="form-control" />
-                <label asp-for="Street">Rue</label>
-                <span asp-validation-for="Street" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md">
-            <div class="form-floating mb-3">
-                <input asp-for="Number" class="form-control" />
-                <label asp-for="Number">Numero</label>
-                <span asp-validation-for="Number" class="text-danger"></span>
-            </div>
+<div class="row g-2">
+    <div class="col-md">
+        <div class="form-floating mb-3">
+            <input asp-for="Street" class="form-control" />
+            <label asp-for="Street">Rue</label>
+            <span asp-validation-for="Street" class="text-danger"></span>
         </div>
     </div>
-    <div class="row g-2">
-        <div class="col-md">
-            <div class="form-floating mb-3">
-                <input asp-for="Locality" class="form-control" />
-                <label asp-for="Locality">Ville</label>
-                <span asp-validation-for="Locality" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md">
-            <div class="form-floating mb-3">
-                <input asp-for="LocalityCode" class="form-control" />
-                <label asp-for="LocalityCode">Code postal</label>
-                <span asp-validation-for="LocalityCode" class="text-danger"></span>
-            </div>
+    <div class="col-md">
+        <div class="form-floating mb-3">
+            <input asp-for="Number" class="form-control" />
+            <label asp-for="Number">Numero</label>
+            <span asp-validation-for="Number" class="text-danger"></span>
         </div>
     </div>
-
-    <div class="form-floating mb-3">
-        <input asp-for="Country" class="form-control" />
-        <label asp-for="Country">Pays</label>
-        <span asp-validation-for="Country" class="text-danger"></span>
+</div>
+<div class="row g-2">
+    <div class="col-md">
+        <div class="form-floating mb-3">
+            <input asp-for="Locality" class="form-control" />
+            <label asp-for="Locality">Ville</label>
+            <span asp-validation-for="Locality" class="text-danger"></span>
+        </div>
     </div>
-
-</form>
-
-
-<div class="text-end">
-    <a asp-action="Create">Retour</a>
-
+    <div class="col-md">
+        <div class="form-floating mb-3">
+            <input asp-for="LocalityCode" class="form-control" />
+            <label asp-for="LocalityCode">Code postal</label>
+            <span asp-validation-for="LocalityCode" class="text-danger"></span>
+        </div>
+    </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<div class="form-floating mb-3">
+    <input asp-for="Country" class="form-control" />
+    <label asp-for="Country">Pays</label>
+    <span asp-validation-for="Country" class="text-danger"></span>
+</div>
+
