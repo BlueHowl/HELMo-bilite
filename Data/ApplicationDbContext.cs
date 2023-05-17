@@ -2,13 +2,11 @@
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Address = HELMo_bilite.Models.Address;
 
 namespace HELMo_bilite.Data;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
-
     public static readonly string RoleDriver = "driver";
     public static readonly string RoleDispatcher = "dispatcher";
     public static readonly string RoleClient = "client";
@@ -18,12 +16,12 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Dispatcher> Dispatchers { get; set; }
     public DbSet<Client> Clients { get; set; }
     public DbSet<Admin> Admins { get; set; }
-    public DbSet<Vehicule> Vehicules { get; set; }
+    public DbSet<Models.Vehicle> Vehicles { get; set; }
     public DbSet<Certification> Certifications { get; set; }
     public DbSet<License> Licenses { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<HelmoMember> HelmoMembers { get; set; }
-    public DbSet<Address> Addresses { get; set; }
+    public DbSet<Models.Address> Addresses { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
     { }
@@ -48,16 +46,17 @@ public class ApplicationDbContext : IdentityDbContext<User>
         modelBuilder.Entity<Delivery>()
             .HasOne(d => d.LoadAddress)
             .WithOne()
-            .HasForeignKey<Address>("LoadAddressId")
+            .HasForeignKey<Models.Address>("LoadAddressId")
             .IsRequired(false);
 
         modelBuilder.Entity<Delivery>()
            .HasOne(d => d.UnloadingAddress)
            .WithOne()
-           .HasForeignKey<Address>("UnloadingAddressId")
+           .HasForeignKey<Models.Address>("UnloadingAddressId")
            .IsRequired(false);
 
-        modelBuilder.Entity<License>().HasData(new License { Id = 1, Name= "B"});
+
+        modelBuilder.Entity<License>().HasData(new License { Id = 1, Name = "B" });
         modelBuilder.Entity<License>().HasData(new License { Id = 2, Name = "C (camion)" });
         modelBuilder.Entity<License>().HasData(new License { Id = 3, Name = "CE (camion avec remorque)" });
 
