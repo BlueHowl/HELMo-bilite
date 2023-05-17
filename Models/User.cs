@@ -7,6 +7,7 @@ namespace HELMo_bilite.Models;
 
 public class User : IdentityUser
 {
+   
 }
 
 public abstract class HelmoMember : User
