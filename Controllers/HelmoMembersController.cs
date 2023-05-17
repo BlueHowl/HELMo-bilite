@@ -7,23 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
+using HELMo_bilite.Controllers.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace HELMo_bilite.Controllers
 {
     public class HelmoMembersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HelmoMembersController(ApplicationDbContext context)
+        public HelmoMembersController(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: HelmoMembers
         public async Task<IActionResult> Index()
         {
               return _context.HelmoMembers != null ? 
-                          View(await _context.HelmoMembers.ToListAsync()) :
+                          View(TransformListOfMember(await _context.HelmoMembers.ToListAsync())) :
                           Problem("Entity set 'ApplicationDbContext.HelmoMembers'  is null.");
         }
 
@@ -51,113 +57,18 @@ namespace HELMo_bilite.Controllers
             return View();
         }
 
-        // POST: HelmoMembers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Matricule,Name,FirstName")] HelmoMember helmoMember)
+       
+
+        private List<HelmoMemberVM> TransformListOfMember(List<HelmoMember> helmoMembers)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(helmoMember);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(helmoMember);
-        }
-
-        // GET: HelmoMembers/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null || _context.HelmoMembers == null)
-            {
-                return NotFound();
-            }
-
-            var helmoMember = await _context.HelmoMembers.FindAsync(id);
-            if (helmoMember == null)
-            {
-                return NotFound();
-            }
-            return View(helmoMember);
-        }
-
-        // POST: HelmoMembers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Matricule,Name,FirstName")] HelmoMember helmoMember)
-        {
-            if (id != helmoMember.Matricule)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(helmoMember);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!HelmoMemberExists(helmoMember.Matricule))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(helmoMember);
-        }
-
-        // GET: HelmoMembers/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.HelmoMembers == null)
-            {
-                return NotFound();
-            }
-
-            var helmoMember = await _context.HelmoMembers
-                .FirstOrDefaultAsync(m => m.Matricule == id);
-            if (helmoMember == null)
-            {
-                return NotFound();
-            }
-
-            return View(helmoMember);
-        }
-
-        // POST: HelmoMembers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (_context.HelmoMembers == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.HelmoMembers'  is null.");
-            }
-            var helmoMember = await _context.HelmoMembers.FindAsync(id);
-            if (helmoMember != null)
-            {
-                _context.HelmoMembers.Remove(helmoMember);
-            }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool HelmoMemberExists(string id)
-        {
-          return (_context.HelmoMembers?.Any(e => e.Matricule == id)).GetValueOrDefault();
+            return helmoMembers.Select(m => new HelmoMemberVM
+            {
+                Matricule = m.Matricule,
+                Name = m.Name,
+                FirstName = m.FirstName,
+                Role = (m.Matricule.StartsWith("DR")) ?"Driver" : "Student"
+            }).ToList();
         }
     }
 }

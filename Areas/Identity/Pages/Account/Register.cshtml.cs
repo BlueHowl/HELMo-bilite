@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using HELMo_bilite.Data;
 using HELMo_bilite.Controllers.ViewModels;
+using NuGet.Packaging.Signing;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -149,6 +150,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            VerifyInput();
+
 
             if (ModelState.IsValid)
             {
@@ -216,10 +219,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            else
+            /*else
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
-            }
+            }*/
 
             // If we got this far, something failed, redisplay form
             return Page();
@@ -236,13 +239,13 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                         Driver driver = Activator.CreateInstance<Driver>();
                         driver.Name = Input.Name;
                         driver.FirstName = Input.FirstName;
-                        driver.Matricule = "" + Input.Matricule;
+                        driver.Matricule = FormatMatricule(Input.Matricule, Input.Role);
                         return driver;
                     case 1:
                         Dispatcher dispatcher = Activator.CreateInstance<Dispatcher>();
                         dispatcher.Name = Input.Name;
                         dispatcher.FirstName = Input.FirstName;
-                        dispatcher.Matricule = "" + Input.Matricule;
+                        dispatcher.Matricule = FormatMatricule(Input.Matricule, Input.Role);
                         dispatcher.IdCertification = int.Parse(Input.LevelCertification);
                         return dispatcher;
                     case 2:
@@ -291,7 +294,26 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             return address.IdAddress;
         }
 
-        
+        private void VerifyInput()
+        {
+            if(Input.Role == 0 || Input.Role == 1)
+            {
+                var user = _dbContext.HelmoMembers.Where(hm => FormatMatricule(Input.Matricule,Input.Role) == hm.Matricule).FirstOrDefault(); ;
+                if(user != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Matricule deja utiliser");
+                }
+            }
+
+        }
+
+
+        private string FormatMatricule(int? num, int role)
+        {
+            return (role == 0 ? "DR": "DI" )+$"{num:00000000}";
+        }
+
+
 
 
     }

@@ -72,6 +72,30 @@ public class DataGeneration
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
+            var email = $"{surName}.{lastName}@helmobilite.be";
+            var matricule = "DI" + Randomizer.Seed.Next(100000, 1000000);
+            var dispatcher = new Dispatcher()
+            {
+                Matricule = matricule,
+                FirstName = surName,
+                Name = lastName,
+                Email = email,
+                UserName = email,
+                IdCertification = 1
+            };
+            var result = _userManager.CreateAsync(dispatcher, "Test@123").Result;
+            if (result.Succeeded)
+            {
+                var result2 = _userManager.AddToRoleAsync(dispatcher, "dispatcher").Result;
+            }
+
+
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            var surName = new Bogus.Person().FirstName;
+            var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@une-companie.be";
             var client = new Client()
             {
