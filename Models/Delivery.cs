@@ -56,8 +56,8 @@ public class Delivery
     {
         Client = client;
         IdClient = client.Id;
-        Driver = driver;
-        IdDriver = driver?.Id;
+        Driver = driver;/*
+        IdDriver = driver?.Id;*/
         Content = content;
         LoadAddress = loadAddress;
         LoadAddressId = loadAddress.IdAddress;

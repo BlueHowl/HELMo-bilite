@@ -9,7 +9,7 @@ public class User : IdentityUser
 {
 }
 
-public class HelmoMember : User
+public abstract class HelmoMember : User
 {
 
     [Required]
@@ -23,4 +23,5 @@ public class HelmoMember : User
     [Required]
     [StringLength(100)]
     public string FirstName { get; set; }
+
 }

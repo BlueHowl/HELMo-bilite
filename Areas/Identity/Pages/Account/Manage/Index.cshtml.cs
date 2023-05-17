@@ -21,7 +21,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _dbContext;
-        
+
 
         public IndexModel(
             UserManager<User> userManager,
@@ -31,7 +31,6 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
-            
 
         }
 
@@ -40,8 +39,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+        [BindProperty]
 
-
+        public List<Certification> Certifications => _dbContext.Certifications.ToList();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -49,6 +49,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -70,28 +71,22 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-
             [DataType(DataType.Text)]
-            [Display(Name = "Name")]
+            [StringLength(100)]
+            [Display(Name = "Nom")]
             public string? Name { get; set; }
 
             [DataType(DataType.Text)]
+            [StringLength(100)]
             [Display(Name = "FirstName")]
             public string FirstName { get; set; }
-
-            [Required]
-            [Display(Name = "Role")]
-            public int Role { get; set; } = 0;
-
-            [Display(Name = "License")]
-            public List<string> License { get; set; }
 
             [Display(Name = "Matricule")]
             public string? Matricule { get; set; }
 
             [DataType(DataType.Text)]
             [Display(Name = "Votre niveau de certification")]
-            public string? LevelCertification { get; set; }
+            public int? LevelCertification { get; set; }
 
         }
 
@@ -108,7 +103,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             if (role == "driver")
             {
                 var driver = _dbContext.Drivers.Include(d => d.Licenses).FirstOrDefault(d => d.Id == user.Id);
-                
+
                 if (driver == null)
                 {
                     return;
@@ -124,12 +119,13 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
                 Input.FirstName = driver.FirstName;
                 Input.Matricule = driver.Matricule;
             }
-            if(role == "dispatcher")
+            if (role == "dispatcher")
             {
                 var dispatcher = _dbContext.Dispatchers.Find(user.Id);
                 Input.Name = dispatcher.Name;
                 Input.FirstName = dispatcher.FirstName;
-                Input.LevelCertification = _dbContext.Certifications.Find(dispatcher.IdCertification).Name; ;
+                Input.Matricule = dispatcher.Matricule;
+                Input.LevelCertification = _dbContext.Certifications.Find(dispatcher.IdCertification).Id;
 
             }
 
@@ -138,7 +134,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -156,27 +152,24 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            ModelErrorApplied(role);
+
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
                 return Page();
             }
-            var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+
+
             if (role == "driver")
             {
-                var driver = _dbContext.Drivers.Find(user.Id);
-                driver.Name = Input.Name;
-                driver.FirstName = Input.FirstName;
-                driver.Matricule = Input.Matricule;
-                _dbContext.SaveChanges();
+                StoreDriver(user);
             }
-            
-            if(role == "dispatcher")
+
+            if (role == "dispatcher")
             {
-                var dispatcher = _dbContext.Dispatchers.Find(user.Id);
-                dispatcher.Name = Input.Name;
-                dispatcher.FirstName = Input.FirstName;
-                _dbContext.SaveChanges();
+                StoreDispatcher(user);
             }
 
 
@@ -184,6 +177,60 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
+        }
+
+        private void StoreDriver(User user)
+        {
+            var driver = _dbContext.Drivers.Find(user.Id);
+            driver.Name = Input.Name;
+            driver.FirstName = Input.FirstName;
+            driver.Matricule = Input.Matricule;
+            _dbContext.SaveChanges();
+        }
+        private void StoreDispatcher(User user)
+        {
+            var dispatcher = _dbContext.Dispatchers.Find(user.Id);
+            dispatcher.Name = Input.Name;
+            dispatcher.FirstName = Input.FirstName;
+            dispatcher.Matricule = Input.Matricule;
+            dispatcher.IdCertification = _dbContext.Certifications.Find(Input.LevelCertification).Id;
+            _dbContext.SaveChanges();
+        }
+
+        private void ModelErrorApplied(string role)
+        {
+            if (role == "driver" || role == "dispatcher")
+            {
+                if (string.IsNullOrEmpty(Input.Matricule))
+                    ModelState.AddModelError(nameof(Input.Matricule), "le matricule ne peut pas etre vide");
+
+                if (string.IsNullOrEmpty(Input.Name))
+                    ModelState.AddModelError(nameof(Input.Name), "votre nom ne peut pas etre vide");
+
+                if (string.IsNullOrEmpty(Input.FirstName))
+                    ModelState.AddModelError(nameof(Input.FirstName), "votre prenom ne peut pas etre vide");
+
+                var user = _dbContext.HelmoMembers.Where(hm => Input.Matricule == hm.Matricule).FirstOrDefault(); ;
+                if (user != null)
+                {
+                    ModelState.AddModelError(nameof(Input.Matricule), "Matricule deja utiliser");
+                }
+
+
+            }
+            //obtention des erreurde validation
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            StatusMessage = "Error: ";
+            int n = 0;
+            foreach (var error in errors)
+            {
+                if (n++ != 0)
+                    StatusMessage += ", ";
+                StatusMessage += error.ErrorMessage;
+
+
+
+            }
         }
     }
 }

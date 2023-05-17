@@ -65,14 +65,21 @@
                 </div>
             }
             @if (User.IsInRole("dispatcher"))
-            {
-                <div class="form-floating mb-3 dispatcher hidden">
+            {                
+                <div class="form-floating mb-3">
                     <select class="form-select" asp-for="Input.LevelCertification" id="selecteLevelStudy">
                         <option selected>Selectionner votre niveau d'étude</option>
-                        @*@foreach (var item in Model.Certification)
+                        @foreach (var item in Model.Certifications)
                         {
-                            <option value="@item.Id">@item.Name</option>
-                        }*@
+                            if (item.Id == @Model.Input.LevelCertification)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
                     </select>
                     <label asp-for="Input.LevelCertification"></label>
                 </div>
