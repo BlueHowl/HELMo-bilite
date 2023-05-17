@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Bogus.DataSets;
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -155,5 +156,38 @@ public class DataGeneration
 
     }
 
+    public static void SeedVehicles(ApplicationDbContext _context)
+    {
+
+        var vehicles = _context.Set<Models.Vehicle>().ToList();
+
+        if (vehicles.Count > 0)
+        {
+            return;
+        }
+
+        Faker<Models.Vehicle> truckFraker = new Faker<Models.Vehicle>()
+            .RuleFor(t => t.Plate, f => f.Vehicle.Vin())
+            .RuleFor(t => t.Model, f => f.Vehicle.Model())
+            .RuleFor(t => t.Brand, f => f.Vehicle.Manufacturer())
+            .RuleFor(t => t.Payload, f => f.Random.Int(1, 40) * 1000);
+
+        List<License> license = new List<License>
+        {
+            new License{Id = 1,   Name = "B"},
+            new License{Id = 2,   Name = "C"},
+            new License{Id = 3,   Name = "CE"}
+        };
+
+
+        for (int i = 0; i < 10; i++)
+        {
+            var tr = truckFraker.Generate();
+            tr.IdLicenses = license[new Random().Next(license.Count)].Id;
+            _context.Vehicles.Add(tr);
+        }
+        _context.SaveChanges();
+
+    }
 
 }

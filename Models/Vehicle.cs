@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HELMo_bilite.Models;
-public class Vehicule
+public class Vehicle
 {
     [Key]
     [StringLength(50)]
