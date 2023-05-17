@@ -10,7 +10,7 @@ public class User : IdentityUser
    
 }
 
-public abstract class HelmoMember : User
+public class HelmoMember : User
 {
 
     [Required]

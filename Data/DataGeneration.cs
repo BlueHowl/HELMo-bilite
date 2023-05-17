@@ -159,7 +159,7 @@ public class DataGeneration
     public static void SeedVehicles(ApplicationDbContext _context)
     {
 
-        var vehicles = _context.Set<Models.Vehicle>().ToList();
+        var vehicles = _context.Vehicles.ToList();
 
         if (vehicles.Count > 0)
         {
