@@ -2,28 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using HELMo_bilite.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using HELMo_bilite.Controllers;
 using HELMo_bilite.Controllers.ViewModels;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
@@ -60,7 +49,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
 
         [BindProperty]
-        public CreationAddressVM AddressCreation { get; set; } = new CreationAddressVM();
+        public CreationAddressInscriptionVM AddressCreation { get; set; } = new CreationAddressInscriptionVM();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -226,6 +215,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
+            }
+            else
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
             }
 
             // If we got this far, something failed, redisplay form
