@@ -1,4 +1,4 @@
-﻿@model HELMo_bilite.Controllers.ViewModels.ClientOrderVM
+﻿@model HELMo_bilite.Controllers.ViewModels.CreateOrderVM
 
 
 @{
@@ -49,7 +49,7 @@
 
 
             <div class="form-group">
-                <label asp-for="LoadDate" class="control-label">Heure de chargement</label>
+                <label asp-for="LoadDate" class="control-label">Date de chargement</label>
 
                 <input asp-for="LoadDate" class="form-control" />
                 <span asp-validation-for="LoadDate" class="text-danger"></span>
@@ -57,7 +57,7 @@
 
             <div class="form-group">
 
-                <label asp-for="UnloadingDate" class="control-label">Heure de déchargement</label>
+                <label asp-for="UnloadingDate" class="control-label">Date de déchargement</label>
                 <input asp-for="UnloadingDate" class="form-control" />
                 <span asp-validation-for="UnloadingDate" class="text-danger"></span>
             </div>

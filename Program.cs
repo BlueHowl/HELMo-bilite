@@ -66,6 +66,7 @@ using (var scope = app.Services.CreateScope())
     DataGeneration.SeedRole(roleManager);
     DataGeneration.SeedUser(userManager);
     DataGeneration.SeedAddresses(dbContext);
+    DataGeneration.SeedVehicles(dbContext);
 
 }
 
