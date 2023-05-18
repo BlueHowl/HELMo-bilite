@@ -24,9 +24,9 @@ namespace HELMo_bilite.Controllers
         // GET: Drivers
         public async Task<IActionResult> Index()
         {
-              return _context.Drivers != null ? 
-                          View(await _context.Drivers.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Drivers'  is null.");
+            return _context.Drivers != null ?
+                        View(await _context.Drivers.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Drivers'  is null.");
         }
 
         // GET: Drivers/Details/5
@@ -100,13 +100,13 @@ namespace HELMo_bilite.Controllers
                 Matricule = driver.Matricule,
                 Licenses = allLisence
                            .Select(a => new SelectListItem
-                                  {
-                                      Value = "" + a.Id,
-                                      Text = a.Name,
-                                      Selected = driver.HasLicense(a.Id)
-                                  })
+                           {
+                               Value = "" + a.Id,
+                               Text = a.Name,
+                               Selected = driver.HasLicense(a.Id)
+                           })
                            .ToList()
-            }); 
+            });
 
         }
 
@@ -116,14 +116,7 @@ namespace HELMo_bilite.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, EditDriverLisencesVM driver)
-        {
-
-        public async Task<IActionResult> Edit(string id, [Bind("Matricule,Name,FirstName,Id,Email,UserName")] Driver driver)
-        {
-            if (id != driver.Id)
-            {
-                return NotFound();
-            }
+        {          
 
             if (ModelState.IsValid)
             {
@@ -211,7 +204,7 @@ namespace HELMo_bilite.Controllers
 
         private bool DriverExists(string id)
         {
-          return (_context.Drivers?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Drivers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
     }
