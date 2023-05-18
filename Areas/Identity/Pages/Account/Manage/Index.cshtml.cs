@@ -87,7 +87,6 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Text)]
             [Display(Name = "Votre niveau de certification")]
             public int? LevelCertification { get; set; }
-            
 
         }
 
@@ -155,7 +154,6 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
 
             var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
 
-           
             ModelErrorApplied(role);
 
             if (!ModelState.IsValid)

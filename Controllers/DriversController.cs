@@ -9,6 +9,7 @@ using HELMo_bilite.Data;
 using HELMo_bilite.Models;
 using HELMo_bilite.Controllers.ViewModels;
 
+
 namespace HELMo_bilite.Controllers
 {
     public class DriversController : Controller
@@ -84,6 +85,7 @@ namespace HELMo_bilite.Controllers
 
             var driver = await _context.Drivers.Include(d => d.Licenses)
                 .FirstOrDefaultAsync(m => m.Matricule == id);
+
             if (driver == null)
             {
                 return NotFound();
@@ -105,6 +107,7 @@ namespace HELMo_bilite.Controllers
                                   })
                            .ToList()
             }); 
+
         }
 
         // POST: Drivers/Edit/5
@@ -115,12 +118,18 @@ namespace HELMo_bilite.Controllers
         public async Task<IActionResult> Edit(string id, EditDriverLisencesVM driver)
         {
 
-            
+        public async Task<IActionResult> Edit(string id, [Bind("Matricule,Name,FirstName,Id,Email,UserName")] Driver driver)
+        {
+            if (id != driver.Id)
+            {
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+
                     var driverToUpdate = await _context.Drivers
                         .Include(d => d.Licenses)
                         .FirstOrDefaultAsync(m => m.Matricule == id);
@@ -139,11 +148,14 @@ namespace HELMo_bilite.Controllers
                         }
                     }
                     _context.Update(driverToUpdate);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+
                     if (!DriverExists(id))
+
                     {
                         return NotFound();
                     }
@@ -159,6 +171,7 @@ namespace HELMo_bilite.Controllers
 
         // GET: Drivers/Delete/5
         /*public async Task<IActionResult> Delete(string id)
+
         {
             if (id == null || _context.Drivers == null)
             {
@@ -192,7 +205,9 @@ namespace HELMo_bilite.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+
         }*/
+
 
         private bool DriverExists(string id)
         {
