@@ -153,6 +153,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             }
 
             var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+
             ModelErrorApplied(role);
 
             if (!ModelState.IsValid)

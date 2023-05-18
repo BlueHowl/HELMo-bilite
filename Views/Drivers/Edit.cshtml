@@ -1,4 +1,5 @@
-﻿@model HELMo_bilite.Models.Driver
+﻿@model HELMo_bilite.Controllers.ViewModels.EditDriverLisencesVM
+
 
 @{
     ViewData["Title"] = "Edit";
@@ -17,36 +18,21 @@
                 <input asp-for="Matricule" class="form-control" />
                 <span asp-validation-for="Matricule" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
+
+            <div class="form mb-3">
+                <div class="form-control">
+                    <label>Selectionner vos lisences</label><br />
+                    <select class="selectpicker" asp-for="IdsLicensesSelect" id="selecteLicenseRegister" multiple asp-items="Model.Licenses"></select>
+
+                </div>
+            </div> 
+
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
