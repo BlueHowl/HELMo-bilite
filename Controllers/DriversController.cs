@@ -8,10 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
 using HELMo_bilite.Controllers.ViewModels;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace HELMo_bilite.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class DriversController : Controller
     {
         private readonly ApplicationDbContext _context;

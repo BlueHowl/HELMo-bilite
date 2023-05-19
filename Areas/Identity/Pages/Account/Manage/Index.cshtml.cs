@@ -21,16 +21,20 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _dbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
 
 
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext, 
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
+             _webHostEnvironment = webHostEnvironment;
 
         }
 
@@ -87,6 +91,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Text)]
             [Display(Name = "Votre niveau de certification")]
             public int? LevelCertification { get; set; }
+
+            public IFormFile ProfilePicture { get; set; }
 
         }
 
@@ -165,6 +171,16 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
 
             if (role == "driver")
             {
+                Console.WriteLine("--------------------------------------------------------------------------");
+
+                Console.WriteLine(Input.ProfilePicture);
+                var pathFileSave = await SaveFile(Input.ProfilePicture, "user");
+                Console.WriteLine("fichier sauvegarder :" + pathFileSave);
+                Console.WriteLine("--------------------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------");
+                Console.WriteLine("--------------------------------------------------------------------------");
+
                 StoreDriver(user);
             }
 
@@ -232,6 +248,19 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
 
 
             }
+        }
+
+
+        private async Task<string> SaveFile(IFormFile profilePicture, string path)
+        {
+            var webRootPath = _webHostEnvironment.WebRootPath;
+            var fileName = Path.GetFileName(profilePicture.FileName);
+            var filePath = Path.Combine(webRootPath, "images", path, fileName);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await profilePicture.CopyToAsync(fileStream);
+            }
+            return fileName;
         }
     }
 }

@@ -19,7 +19,7 @@
 
             <div class="form-floating mb-3">
                 <select class="form-select" asp-for="Input.Role" id="selecteRoleRegister" onchange="onRoleChange()">
-                    <option selected>Choisisez un role</option>
+                    <option value="-1" selected>Choisisez un role</option>
                     <option value="0">Chauffeur</option>
                     <option value="1">Dispatcher</option>
                     <option value="2">Client</option>
@@ -109,7 +109,6 @@
 
         function onRoleChange() {
             let selectedRole = $("#selecteRoleRegister").val();
-            console.log(selectedRole);
             switch (selectedRole) {
                 case "0": // Chauffeur
                     $(".driver").show();
@@ -124,7 +123,6 @@
                             required: "Le matricule est obligatoire pour les chauffeurs."
                         }
                     });
-
                     break;
                 case "1": // Dispatcher
                     $(".helmo").show();
@@ -146,6 +144,7 @@
                     $(".client").show();
                     $(".dispatcher").hide();
                     $("input[name='Input.Matricule']").rules("remove");
+                    $("input[name='Input.License']").rules("remove");
                     break;
                 default:
                     $(".helmo").hide();
@@ -153,6 +152,7 @@
                     $(".client").hide();
                     $(".dispatcher").hide();
                     $("input[name='Input.Matricule']").rules("remove");
+                    $("input[name='Input.License']").rules("remove");
                     break;
             }
 

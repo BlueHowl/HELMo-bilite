@@ -40,17 +40,19 @@ public class DataGeneration
 
     }
 
-    public static async void SeedUser(UserManager<User> _userManager)
+    public static async void SeedUser(UserManager<User> _userManager, ApplicationDbContext _context)
     {
         if (_userManager.Users.Count() != 0)
             return;
 
+        var lisences = _context.Licenses.ToList();
         for (int i = 0; i < 10; i++)
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@helmobilite.be";
             var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
+            
             var driver = new Driver()
             {
                 Matricule = matricule,
@@ -58,6 +60,7 @@ public class DataGeneration
                 Name = lastName,
                 Email = email,
                 UserName = email,
+                Licenses = new List<License>{ lisences[0] },
 
             };
             var result = _userManager.CreateAsync(driver, "Test@123").Result;
