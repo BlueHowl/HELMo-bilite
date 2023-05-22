@@ -1,0 +1,66 @@
+﻿@model IEnumerable<HELMo_bilite.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Votre flote</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Plaque
+            </th>
+            <th>
+                Maque
+            </th>
+            <th>
+                Modele
+            </th>
+            <th>
+                Permis nesesaire
+            </th>
+            <th>
+                Poids maximal
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var imageSrc = "/images/";
+                        if (item.Picture != null)
+                            imageSrc += "vehicules/" + item.Picture;
+                        else
+                            imageSrc += "defaultTucksPicture.png";
+                    }
+                    <img src="@imageSrc" class="border rounded-circle img-profile" width="32" height="32" />
+                    @Html.DisplayFor(modelItem => item.VIN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.License.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payload)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.VIN"><span class="material-icons icon-color-black">&#xe5d3;</span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

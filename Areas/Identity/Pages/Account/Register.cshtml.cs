@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using HELMo_bilite.Data;
 using HELMo_bilite.Controllers.ViewModels;
 using NuGet.Packaging.Signing;
+using System.Linq;
 
 namespace HELMo_bilite.Areas.Identity.Pages.Account
 {
@@ -45,7 +46,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _dbContext = dbContext;
-            
+
         }
 
 
@@ -121,7 +122,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Role")]
-            public int Role { get; set; } = 0;
+            public int Role { get; set; } = -1;
 
             [Display(Name = "License")]
             public List<string> License { get; set; }
@@ -160,7 +161,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);                
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -185,22 +186,11 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
                                                             Input.Role == 1 ? ApplicationDbContext.RoleDispatcher :
                                                             Input.Role == 2 ? ApplicationDbContext.RoleClient :
                                                             ApplicationDbContext.RoleDriver);
-                    if (Input.Role ==0)
+                    if (Input.Role == 0)
                     {
-                        var driver = _dbContext.Drivers.Find(user.Id);
-                        driver.Licenses = new List<License>();
-                        foreach (var idLisence in Input.License)
-                        {
-                            var license = _dbContext.Licenses.Find(int.Parse(idLisence));
-
-                            if (license != null)
-                            {
-                                driver.Licenses.Add(license);
-                            }
-                        }
-                        _dbContext.SaveChanges();
+                        SaveLisencesDriver(user);
                     }
-                    
+
 
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
@@ -227,6 +217,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
 
 
         private User CreateUser()
@@ -282,39 +273,112 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
         {
             var address = new Address
             {
-                    Locality = AddressCreation.Locality,
-                    Street = AddressCreation.Street,
-                    Number = AddressCreation.Number.ToString(),
-                    LocalityCode = AddressCreation.LocalityCode.ToString(),
-                    Country = AddressCreation.Country,
+                Locality = AddressCreation.Locality,
+                Street = AddressCreation.Street,
+                Number = AddressCreation.Number.ToString(),
+                LocalityCode = AddressCreation.LocalityCode.ToString(),
+                Country = AddressCreation.Country,
             };
-           
+
             _dbContext.Addresses.Add(address);
             _dbContext.SaveChanges();
             return address.IdAddress;
         }
-
+        /// <summary>
+        /// this methode contain all the verification of the input
+        /// </summary>
         private void VerifyInput()
         {
-            if(Input.Role == 0 || Input.Role == 1)
+            if (Input.Role == -1)
+                ModelState.AddModelError(string.Empty, "Vous devez choisir un role");
+
+            if (Input.Role == 0 || Input.Role == 1)
             {
-                var user = _dbContext.HelmoMembers.Where(hm => FormatMatricule(Input.Matricule,Input.Role) == hm.Matricule).FirstOrDefault(); ;
-                if(user != null)
+                if (String.IsNullOrEmpty(Input.FirstName))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un prenom");
+                }
+                if (String.IsNullOrEmpty(Input.Name))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un nom");
+                }
+                if (Input.Matricule == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un matricule");
+                }
+
+                var user = _dbContext.HelmoMembers.Where(hm => FormatMatricule(Input.Matricule, Input.Role) == hm.Matricule).FirstOrDefault(); ;
+                if (user != null)
                 {
                     ModelState.AddModelError(string.Empty, "Matricule deja utiliser");
                 }
+
+            }
+            if (Input.Role == 1 && Input.LevelCertification == null)
+            {
+                ModelState.AddModelError(string.Empty, "Vous devez choisir un niveau de certification");
             }
 
+            if (Input.Role == 0 && Input.License == null)
+            {
+                ModelState.AddModelError(string.Empty, "Vous devez choisir au moins une license");
+            }
+
+            if (Input.Role == 2)
+            {
+                if (String.IsNullOrEmpty(Input.CompanyName))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un nom d'entreprise");
+                }
+                if (String.IsNullOrEmpty(AddressCreation.Street))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer une rue");
+                }
+                if (String.IsNullOrEmpty(AddressCreation.Number.ToString()))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un numero");
+                }
+                if (String.IsNullOrEmpty(AddressCreation.Locality))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer une localite");
+                }
+                if (String.IsNullOrEmpty(AddressCreation.LocalityCode.ToString()))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un code postal");
+                }
+                if (String.IsNullOrEmpty(AddressCreation.Country))
+                {
+                    ModelState.AddModelError(string.Empty, "Vous devez entrer un pays");
+                }
+            }
         }
 
 
         private string FormatMatricule(int? num, int role)
         {
-            return (role == 0 ? "DR": "DI" )+$"{num:00000000}";
+            return (role == 0 ? "DR" : "DI") + $"{num:00000000}";
         }
 
+      
+        private void SaveLisencesDriver(User user)
+        {
+            var driver = _dbContext.Drivers.Find(user.Id);
+            driver.Licenses = new List<License>();
+
+            //on trouver le plus grand id de lisence et on le coverti en int
+            var higthestLisenceId = int.Parse(Input.License.OrderByDescending(l => l).FirstOrDefault());
 
 
+            var lisences = _dbContext.Licenses.ToList();
+            foreach (var lisence in lisences)
+            {
 
+                if (higthestLisenceId >= lisence.Id)
+                {
+                    driver.Licenses.Add(lisence);
+                }
+            }
+            _dbContext.SaveChanges();
+        }
     }
 }

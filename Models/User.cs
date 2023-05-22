@@ -7,7 +7,7 @@ namespace HELMo_bilite.Models;
 
 public class User : IdentityUser
 {
-   
+    public string? PictureScr { get; set; }
 }
 
 public class HelmoMember : User
@@ -24,5 +24,7 @@ public class HelmoMember : User
     [Required]
     [StringLength(100)]
     public string FirstName { get; set; }
+
+    public DateTime? BirthDate { get; set; }
 
 }

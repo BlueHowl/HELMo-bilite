@@ -112,3 +112,7 @@ main section:not(:first-child) {
 .hidden{
     display : none;
 }
+
+.icon-color-black{
+color: black;
+}
