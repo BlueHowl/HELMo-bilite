@@ -13,19 +13,20 @@ public class AssignOrderVM
     public string? Client { get; set; }
 
     [DisplayName("Chauffeur")]
-    public string? IdDriver { get; set; }
+    [Required(ErrorMessage = "Veuillez sélectionner un chauffeur !")]
+    public string IdDriver { get; set; }
 
     [DisplayName("Contenu")]
     public string? Content { get; set; }
 
     [DisplayName("Addresse de chargement")]
-    public string? LoadAddressId { get; set; }
+    public string? LoadAddress { get; set; }
     
     [DisplayName("Date de chargement")]
     public DateTime? LoadDate { get; set; }
 
     [DisplayName("Addresse de déchargement")]
-    public string? UnloadingAddressId { get; set; }
+    public string? UnloadingAddress { get; set; }
 
     [DisplayName("Date de déchargement")]
     public DateTime? UnloadingDate { get; set; }
@@ -34,7 +35,8 @@ public class AssignOrderVM
     public string? Status { get; set; }
 
     [DisplayName("Véhicule")]
-    public string? IdVehicle { get; set; }
+    [Required(ErrorMessage = "Veuillez séléctionner une véhicule !")]
+    public string IdVehicle { get; set; }
 
     public AssignOrderVM() { }
 
@@ -44,9 +46,9 @@ public class AssignOrderVM
         Client = client;
         IdDriver = idDriver;
         Content = content;
-        LoadAddressId = loadAddressId;
+        LoadAddress = loadAddressId;
         LoadDate = loadDate;
-        UnloadingAddressId = unloadingAddressId;
+        UnloadingAddress = unloadingAddressId;
         UnloadingDate = unloadingDate;
         Status = status;
         IdVehicle = idVehicle;

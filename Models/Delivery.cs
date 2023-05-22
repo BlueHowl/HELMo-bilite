@@ -9,6 +9,7 @@ public class Delivery
     {
         public static readonly string Waiting = "En Attente";
         public static readonly string InProgress = "En Cours";
+        public static readonly string IsEnded = "Terminé";
     }
 
 
