@@ -15,4 +15,5 @@ public class Client : User
     public string? Number { get; set; }
 
     public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
+
 }

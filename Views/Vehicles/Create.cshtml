@@ -1,4 +1,4 @@
-﻿@model HELMo_bilite.Models.Vehicle
+﻿@model HELMo_bilite.Controllers.ViewModels.VehicleVM
 
 @{
     ViewData["Title"] = "Create";
@@ -12,6 +12,11 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="VIN" class="control-label"></label>
+                <input asp-for="VIN" class="form-control" />
+                <span asp-validation-for="VIN" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Plate" class="control-label"></label>
                 <input asp-for="Plate" class="form-control" />
@@ -38,7 +43,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Picture" class="control-label"></label>
-                <input asp-for="Picture" class="form-control" />
+                <input type="file" asp-for="Picture" class="form-control" />
                 <span asp-validation-for="Picture" class="text-danger"></span>
             </div>
             <div class="form-group">

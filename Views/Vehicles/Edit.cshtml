@@ -1,4 +1,4 @@
-﻿@model HELMo_bilite.Models.Vehicle
+﻿@model HELMo_bilite.Controllers.ViewModels.VehicleVM
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,11 +8,16 @@
 
 <h4>Vehicle</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<div class="d-flex justify-content-around">
+    <div class="row p-2">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Plate" />
+
+            <div class="form-group">
+                <label asp-for="Plate" class="control-label"></label>
+                <input asp-for="Plate" class="form-control" />
+                <span asp-validation-for="Plate" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Brand" class="control-label"></label>
                 <input asp-for="Brand" class="form-control" />
@@ -35,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Picture" class="control-label"></label>
-                <input asp-for="Picture" class="form-control" />
+                <input type="file" asp-for="Picture" class="form-control" />
                 <span asp-validation-for="Picture" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -43,12 +48,16 @@
             </div>
         </form>
     </div>
+
+    <div class="p-2">
+        <img src="~/images/@Model.PictureScr" alt="image Camion" width="auto" height="200" />
+    </div>
+    
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -170,7 +170,8 @@ public class DataGeneration
         }
 
         Faker<Models.Vehicle> truckFraker = new Faker<Models.Vehicle>()
-            .RuleFor(t => t.Plate, f => f.Vehicle.Vin())
+            .RuleFor(t => t.VIN, f => f.Vehicle.Vin())
+            .RuleFor(t=> t.LicensePlate, f=> "a-111-aaa")
             .RuleFor(t => t.Model, f => f.Vehicle.Model())
             .RuleFor(t => t.Brand, f => f.Vehicle.Manufacturer())
             .RuleFor(t => t.Payload, f => f.Random.Int(1, 40) * 1000);

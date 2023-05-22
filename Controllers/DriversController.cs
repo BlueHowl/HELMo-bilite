@@ -91,7 +91,7 @@ namespace HELMo_bilite.Controllers
             {
                 return NotFound();
             }
-            driver.Licenses = driver.Licenses ?? new List<License>();
+            driver.Licenses ??= new List<License>();
 
 
             var allLisence = await _context.Licenses.ToListAsync();
@@ -131,19 +131,22 @@ namespace HELMo_bilite.Controllers
                     {
                         return NotFound();
                     }
-                    driverToUpdate.Licenses = driverToUpdate.Licenses ?? new List<License>();
-                    var allLisence = await _context.Licenses.ToListAsync();
-                    driverToUpdate.Licenses.Clear();
-                    foreach (var license in allLisence)
+
+
+                    //on trouver le plus grand id de lisence et on le coverti en int
+                    var higthestLisenceId = int.Parse(driver.Licenses.OrderByDescending(l => l).FirstOrDefault().Value);
+
+
+                    var lisences = _context.Licenses.ToList();
+                    foreach (var lisence in lisences)
                     {
-                        if (driver.IdsLicensesSelect.Contains("" + license.Id))
+                        if (higthestLisenceId >= lisence.Id)
                         {
-                            driverToUpdate.Licenses.Add(license);
+                            driverToUpdate.Licenses.Add(lisence);
                         }
                     }
-                    _context.Update(driverToUpdate);
-
                     await _context.SaveChangesAsync();
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {

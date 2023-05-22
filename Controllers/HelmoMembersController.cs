@@ -64,10 +64,11 @@ namespace HELMo_bilite.Controllers
             
             return helmoMembers.Select(m => new HelmoMemberVM
             {
+                PictureScr = m.PictureScr,
                 Matricule = m.Matricule,
                 Name = m.Name,
                 FirstName = m.FirstName,
-                Role = (m.Matricule.StartsWith("DR")) ?"Driver" : "Student"
+                Role = (m.Matricule.StartsWith("DR")) ?"Driver" : "Dispatcher"
             }).ToList();
         }
     }

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Votre flote</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,47 +13,54 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Brand)
+                Plaque
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+                Maque
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Licenses)
+                Modele
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Payload)
+                Permis nesesaire
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Picture)
+                Poids maximal
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Licenses.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Payload)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Picture)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Plate">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Plate">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Plate">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var imageSrc = "/images/";
+                        if (item.Picture != null)
+                            imageSrc += "vehicules/" + item.Picture;
+                        else
+                            imageSrc += "defaultTucksPicture.png";
+                    }
+                    <img src="@imageSrc" class="border rounded-circle img-profile" width="32" height="32" />
+                    @Html.DisplayFor(modelItem => item.VIN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Licenses.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payload)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.VIN"><span class="material-icons icon-color-black">&#xe5d3;</span></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
