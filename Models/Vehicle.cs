@@ -4,9 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HELMo_bilite.Models;
 public class Vehicle
 {
+    /// <summary>
+    /// le numero de chassi du véhicule ne peut pas être modifié
+    /// </summary>
     [Key]
-    [StringLength(50)]
-    public string Plate { get; set; }
+    [StringLength(17)]
+    public string VIN { get; set; }
+
+    [StringLength(10)]
+    public string LicensePlate  { get; set; }
     [Required]
     [StringLength(50)]
     public string Brand { get; set; }
@@ -23,6 +29,7 @@ public class Vehicle
 
     [StringLength(150)]
     public string ?Picture { get; set; }
+
 
 
 }

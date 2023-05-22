@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -64,8 +65,8 @@ using (var scope = app.Services.CreateScope())
 
     //lancement de la creation des donnees de test
     DataGeneration.SeedRole(roleManager);
-    DataGeneration.SeedUser(userManager);
-    DataGeneration.SeedAddresses(dbContext);
+    DataGeneration.SeedUser(userManager, dbContext);
+    //DataGeneration.SeedAddresses(dbContext);
     DataGeneration.SeedVehicles(dbContext);
 
 }

@@ -66,7 +66,7 @@ public class Delivery
     public Vehicle Vehicle { get; set; }
     [ForeignKey(nameof(Vehicle))]
     public string? IdVehicle { get; set; }
-    public string VehicleDetails => $"{Vehicle?.Brand} {Vehicle?.Model}\n{Vehicle?.Plate}";
+    public string VehicleDetails => $"{Vehicle?.Brand} {Vehicle?.Model}\n{Vehicle?.VIN}";
 
     public Delivery()
     {
@@ -88,6 +88,6 @@ public class Delivery
         UnloadingDate = unloadingDate;
         Status = status;
         Vehicle = vehicule;
-        IdVehicle = vehicule?.Plate;
+        IdVehicle = vehicule?.VIN;
     }
 }

@@ -11,14 +11,25 @@
 <div class="row">
     <div class="col-md-6">
 
-        <form id="profile-form g-2" method="post">
+        <form id="profile-form g-2" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
             <div class="form-floating mb-3">
                 <input asp-for="Username" class="form-control" disabled />
                 <label asp-for="Username" class="form-label"></label>
             </div>
+
+            
             @if (User.IsInRole("driver") || User.IsInRole("dispatcher"))
             {
+                <div class="form-floating mb-3">
+                    <img src="@Model.Input.PictureSrc" />
+                    <input type="file" class="form-control" asp-for="Input.ProfilePicture" />
+                    <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                </div>
+
                 <div class="row g-2">
                     <div class="col-md">
                         <div class="form-floating mb-3">
@@ -45,6 +56,13 @@
                     <span asp-validation-for="Input.Matricule" class="text-danger"></span>
                 </div>
 
+                <div class="form-floating mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text" id="StartMat">Date de naissance</span>
+                        <input asp-for="Input.BirthDate" class="form-control" autocomplete="on" aria-required="true" />
+                    </div>
+                    <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
+                </div>
 
             }
             @if (User.IsInRole("driver"))
@@ -52,20 +70,20 @@
                 <div class="form mb-3">
                     <div class="form-control">
                         <label>Vos lisences</label><br />
-                            <ul>
+                        <ul>
 
-                                @foreach (var item in Model.Licenses)
-                                {
-                                    <li>@item</li>
-                                }
+                            @foreach (var item in Model.Licenses)
+                            {
+                                <li>@item</li>
+                            }
 
-                            </ul>
+                        </ul>
 
                     </div>
                 </div>
             }
             @if (User.IsInRole("dispatcher"))
-            {                
+            {
                 <div class="form-floating mb-3">
                     <select class="form-select" asp-for="Input.LevelCertification" id="selecteLevelStudy">
                         <option selected>Selectionner votre niveau d'étude</option>
@@ -86,11 +104,31 @@
 
             }
 
+            @if (User.IsInRole("client"))
+            {
+                <div class="form-floating mb-3">
+                    <img src="@Model.Input.LogoSrc" />
+                    <input type="file" class="form-control" asp-for="Input.ProfilePicture" />
+                    <span asp-validation-for="Input.LogoPicture" class="text-danger"></span>
+                </div>
 
-            
-            
-           
-            
+                <div class="form-floating mb-3 client">
+                    <input asp-for="Input.CompanyName" class="form-control" autocomplete="on" aria-required="true" />
+                    <label asp-for="Input.CompanyName"></label>
+                    <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+                </div>
+                <div class="client">
+                    <partial name="_CreateAddressForm" model="@Model.ClientCompanyAdress" />
+                </div>
+
+
+            }
+
+
+
+
+
+
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
     </div>

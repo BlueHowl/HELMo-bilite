@@ -306,8 +306,8 @@ namespace HELMo_bilite.Controllers
 
             List<SelectListItem> vehiculeList = _context.Vehicles.Select(v => new SelectListItem
             {
-                Value = v.Plate.ToString(),
-                Text = $"{v.Brand} {v.Model}, {v.Plate}"
+                Value = v.VIN.ToString(),
+                Text = $"{v.Brand} {v.Model}, {v.VIN}"
             }).ToList();
 
             List<SelectListItem> addressList = _context.Addresses.Select(a => new SelectListItem
