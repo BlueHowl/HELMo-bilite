@@ -1,9 +1,6 @@
 ﻿using Bogus;
-using Bogus.DataSets;
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Address = HELMo_bilite.Models.Address;
 
 namespace HELMo_bilite.Data;
 
@@ -42,6 +39,7 @@ public class DataGeneration
 
     public static async void SeedUser(UserManager<User> _userManager, ApplicationDbContext _context)
     {
+
         if (_userManager.Users.Count() != 0)
             return;
 
@@ -52,7 +50,7 @@ public class DataGeneration
             var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@helmobilite.be";
             var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
-            
+
             var driver = new Driver()
             {
                 Matricule = matricule,
@@ -60,15 +58,16 @@ public class DataGeneration
                 Name = lastName,
                 Email = email,
                 UserName = email,
+
                 Licenses = new List<License>{ lisences[0] },
 
             };
+
             var result = _userManager.CreateAsync(driver, "Test@123").Result;
             if (result.Succeeded)
             {
                 var result2 = _userManager.AddToRoleAsync(driver, "driver").Result;
             }
-
 
         }
 
@@ -92,7 +91,6 @@ public class DataGeneration
             {
                 var result2 = _userManager.AddToRoleAsync(dispatcher, "dispatcher").Result;
             }
-
 
         }
 
@@ -172,7 +170,7 @@ public class DataGeneration
         for (int i = 0; i < 10; i++)
         {
             var tr = truckFraker.Generate();
-            tr.IdLicenses = license[new Random().Next(license.Count)].Id;
+            tr.IdLicense = license[new Random().Next(license.Count)].Id;
             _context.Vehicles.Add(tr);
         }
         _context.SaveChanges();

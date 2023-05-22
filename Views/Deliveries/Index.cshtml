@@ -6,17 +6,17 @@
 
 <h1>Commandes</h1>
 
-<p>
-    <a asp-action="Create">Créer une nouvelle commande</a>
-</p>
+@if (User.IsInRole("client"))
+{
+    <p>
+        <a asp-action="Create">Créer une nouvelle commande</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Client)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Driver)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Content)
@@ -37,6 +37,9 @@
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Driver)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Vehicle)
             </th>
             <th></th>
@@ -44,15 +47,11 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+        //if(item.IdClient == ) TODO afficher uniquement les commandes du clients dans le cas client
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ClientDetails)
             </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.DriverDetails)
-            </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
@@ -72,11 +71,26 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.DriverDetails)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.VehicleDetails)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editer</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a> |
+                @if (item.Status == Delivery.State.Waiting)
+                {
+                    @if (User.IsInRole("dispatcher"))
+                    {
+                        <a asp-action="Assign" asp-route-id="@item.Id">Assigner</a>
+                    }
+                    else if (User.IsInRole("client"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editer</a>
+                    }
+                
+                }
+
+                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
                 <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
             </td>
         </tr>

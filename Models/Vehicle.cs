@@ -20,10 +20,10 @@ public class Vehicle
     [StringLength(50)]
     public string Model { get; set; }
     [Required]    
-    public License Licenses { get; set; }
+    public License License { get; set; }
     [Required]
-    [ForeignKey(nameof(Licenses))]
-    public int IdLicenses { get; set; }
+    [ForeignKey(nameof(License))]
+    public int IdLicense { get; set; }
     [Required]
     public int Payload { get; set; }
 
