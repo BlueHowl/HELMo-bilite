@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 2vw;
+    margin-bottom: 2vw;
 }
 
 footer {
@@ -32,18 +32,18 @@ nav {
     position: relative;
 }
 
-#cover > img {
-    width: 100%;
-}
+    #cover > img {
+        width: 100%;
+    }
 
-#cover > h1 {
-    position: absolute;
-    top: 70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 6vw;
-    color: white;
-}
+    #cover > h1 {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 6vw;
+        color: white;
+    }
 
 
 main section:not(:first-child) {
@@ -96,23 +96,30 @@ main section:not(:first-child) {
     display: inherit;
     align-items: center;
     margin: 2vw;
-
     transition-duration: 0.5s;
 }
 
-#third-section article:hover {
-    width: 22vw;
-    height: 12vw;
-}
+    #third-section article:hover {
+        width: 22vw;
+        height: 12vw;
+    }
 
 #third-section img {
     width: inherit;
 }
 
-.hidden{
-    display : none;
+.hidden {
+    display: none;
 }
 
-.icon-color-black{
-color: black;
+.icon-color-black {
+    color: black;
 }
+.icon-color-white {
+    color: white;
+}
+
+.table-80 {
+    width: 80%;
+}
+
