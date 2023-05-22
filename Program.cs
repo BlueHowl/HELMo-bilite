@@ -66,7 +66,7 @@ using (var scope = app.Services.CreateScope())
     //lancement de la creation des donnees de test
     DataGeneration.SeedRole(roleManager);
     DataGeneration.SeedUser(userManager, dbContext);
-    DataGeneration.SeedAddresses(dbContext);
+    //DataGeneration.SeedAddresses(dbContext);
     DataGeneration.SeedVehicles(dbContext);
 
 }

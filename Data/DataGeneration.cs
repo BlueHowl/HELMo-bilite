@@ -96,18 +96,32 @@ public class DataGeneration
 
         }
 
+        Faker<Address> addressFaker = new Faker<Address>()
+            .RuleFor(a => a.IdAddress, f => f.UniqueIndex.ToString())
+            .RuleFor(a => a.Street, f => f.Address.StreetName())
+            .RuleFor(a => a.Number, f => f.Address.BuildingNumber())
+            .RuleFor(a => a.Locality, f => f.Address.City())
+            .RuleFor(a => a.LocalityCode, f => f.Address.ZipCode())
+            .RuleFor(a => a.Country, f => f.Address.Country());
+
         for (int i = 0; i < 10; i++)
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
-            var email = $"{surName}.{lastName}@une-companie.be";
+            var company = new Bogus.Faker().Company.CompanyName();
+            var email = $"{surName}.{lastName}@une.companie.be";
+
+            var addressCompany =  addressFaker.Generate();
+
+            _context.Addresses.Add(addressCompany);
             var client = new Client()
             {
                 Email = email,
                 UserName = email,
-                CompanyName = "test"
-
+                CompanyName = company,
+                CompanyAddressId = addressCompany.IdAddress
             };
+
             var result = _userManager.CreateAsync(client, "Test@123").Result;
             if (result.Succeeded)
             {
@@ -126,37 +140,8 @@ public class DataGeneration
         {
             var resultAdmin2 = _userManager.AddToRoleAsync(admin, "admin").Result;
         }
-    }
 
-    public static void SeedAddresses(ApplicationDbContext _context)
-    {
-
-        var addrs = _context.Set<Address>().ToList();
-
-        if (addrs.Count > 0)
-        {
-            return;
-        }
-
-        Faker<Address> addressFaker = new Faker<Address>()
-            .RuleFor(a => a.IdAddress, f => f.UniqueIndex.ToString())
-            .RuleFor(a => a.Street, f => f.Address.StreetName())
-            .RuleFor(a => a.Number, f => f.Address.BuildingNumber())
-            .RuleFor(a => a.Locality, f => f.Address.City())
-            .RuleFor(a => a.LocalityCode, f => f.Address.ZipCode())
-            .RuleFor(a => a.Country, f => f.Address.Country());
-
-        List<Address> addresses = new List<Address>();
-
-
-        for (int i = 0; i < 10; i++)
-        {
-            var address = addressFaker.Generate();
-
-            _context.Addresses.Add(address);
-        }
         _context.SaveChanges();
-
     }
 
     public static void SeedVehicles(ApplicationDbContext _context)

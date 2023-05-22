@@ -14,6 +14,8 @@ public class Client : User
     [StringLength(50)]
     public string? Number { get; set; }
 
+    public bool IsBagPayer { get; set; } = false;
+
     public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
 
 }
