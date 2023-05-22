@@ -180,7 +180,7 @@ namespace HELMo_bilite.Controllers
             newDelivery.Driver = await _context.Drivers.Include(d => d.Licenses).FirstOrDefaultAsync(d => d.Id == delivery.IdDriver);//.FindAsync(delivery.IdDriver);
 
             newDelivery.IdVehicle = delivery.IdVehicle;
-            newDelivery.Vehicle = await _context.Vehicles.Include(v => v.License).FirstOrDefaultAsync(v => v.Plate == delivery.IdVehicle);//.FindAsync(delivery.IdVehicle);
+            newDelivery.Vehicle = await _context.Vehicles.Include(v => v.License).FirstOrDefaultAsync(v => v.VIN == delivery.IdVehicle);//.FindAsync(delivery.IdVehicle);
 
             newDelivery.Status = Delivery.State.InProgress;
 
@@ -432,12 +432,12 @@ namespace HELMo_bilite.Controllers
 
             var availableVehicles = _context.Vehicles
                 .Where(v => !_context.Deliveries.Any(d =>
-                    d.IdVehicle == v.Plate &&
+                    d.IdVehicle == v.VIN &&
                     (d.LoadDate <= endDate && d.UnloadingDate >= startDate.AddHours(1)))) //les véhicules on ils aussi un délai de 1h supp
                 .Select(v => new SelectListItem
                 {
-                    Value = v.Plate.ToString(),
-                    Text = $"{v.Brand} {v.Model}, {v.Plate} : Permis {v.License.Name}"
+                    Value = v.LicensePlate.ToString(),
+                    Text = $"{v.Brand} {v.Model}, {v.LicensePlate} : Permis {v.License.Name}"
                 }).ToList();
 
             ViewData["Drivers"] = availableDrivers;

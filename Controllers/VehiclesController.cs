@@ -29,7 +29,7 @@ namespace HELMo_bilite.Controllers
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Vehicles.Include(v => v.Licenses);
+            var applicationDbContext = _context.Vehicles.Include(v => v.License);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -42,7 +42,7 @@ namespace HELMo_bilite.Controllers
             }
 
             var vehicle = await _context.Vehicles
-                .Include(v => v.Licenses)
+                .Include(v => v.License)
                 .FirstOrDefaultAsync(m => m.VIN == id);
             if (vehicle == null)
             {
@@ -77,7 +77,7 @@ namespace HELMo_bilite.Controllers
                     LicensePlate = vehicleInput.Plate,
                     Brand = vehicleInput.Brand,
                     Model = vehicleInput.Model,
-                    IdLicenses = vehicleInput.IdLicenses,
+                    IdLicense = vehicleInput.IdLicenses,
                     Payload = vehicleInput.Payload
                 };
                 if (vehicle.Picture != null)
@@ -106,14 +106,14 @@ namespace HELMo_bilite.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdLicenses"] = new SelectList(_context.Licenses, "Id", "Name", vehicle.IdLicenses);
+            ViewData["IdLicenses"] = new SelectList(_context.Licenses, "Id", "Name", vehicle.IdLicense);
             return View(new VehicleVM
             {
                 PictureScr = vehicle.Picture == null ? "defaultTucksPicture.png" : ("vehicules/" + vehicle.Picture),
                 Plate = vehicle.LicensePlate,
                 Brand = vehicle.Brand,
                 Model = vehicle.Model,
-                IdLicenses = vehicle.IdLicenses,
+                IdLicenses = vehicle.IdLicense,
                 Payload = vehicle.Payload
             });
         }
@@ -139,7 +139,7 @@ namespace HELMo_bilite.Controllers
                     }
                     vehicleToUpdate.Brand = vehicle.Brand;
                     vehicleToUpdate.Model = vehicle.Model;
-                    vehicleToUpdate.IdLicenses = vehicle.IdLicenses;
+                    vehicleToUpdate.IdLicense = vehicle.IdLicenses;
                     vehicleToUpdate.Payload = vehicle.Payload;
                     if(vehicle.Picture != null)
                         vehicleToUpdate.Picture =  await SavePicture(vehicle.Picture, "vehicules", 400, 400, id);
@@ -174,7 +174,7 @@ namespace HELMo_bilite.Controllers
             }
 
             var vehicle = await _context.Vehicles
-                .Include(v => v.Licenses)
+                .Include(v => v.License)
                 .FirstOrDefaultAsync(m => m.VIN == id);
             if (vehicle == null)
             {
