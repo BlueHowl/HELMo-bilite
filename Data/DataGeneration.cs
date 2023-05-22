@@ -37,26 +37,19 @@ public class DataGeneration
 
     }
 
-    public static async void SeedUser(UserManager<User> _userManager)
+    public static async void SeedUser(UserManager<User> _userManager, ApplicationDbContext _context)
     {
 
         if (_userManager.Users.Count() != 0)
             return;
 
+        var lisences = _context.Licenses.ToList();
         for (int i = 0; i < 10; i++)
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@helmobilite.be";
             var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
-            var licenses = new List<License>();
-
-            int n = Randomizer.Seed.Next(0, 2);
-
-            for(int j = 0; j < n; ++j)
-            {
-                licenses.Add(licenses[j]);
-            }
 
             var driver = new Driver()
             {
@@ -65,7 +58,9 @@ public class DataGeneration
                 Name = lastName,
                 Email = email,
                 UserName = email,
-                Licenses = licenses,
+
+                Licenses = new List<License>{ lisences[0] },
+
             };
 
             var result = _userManager.CreateAsync(driver, "Test@123").Result;
@@ -80,43 +75,16 @@ public class DataGeneration
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
-            var email = $"{surName}.{lastName}@une-companie.be";
-            var client = new Client()
-            {
-                Email = email,
-                UserName = email,
-                CompanyName = "test"
-
-            };
-            var result = _userManager.CreateAsync(client, "Test@123").Result;
-            if (result.Succeeded)
-            {
-                var result2 = _userManager.AddToRoleAsync(client, "client").Result;
-            }
-
-        }
-
-
-        /*List<Certification> certifications = new List<Certification>
-        {
-            new Certification { Id = 1, Name = "CESS" },
-            new Certification { Id = 2, Name = "Bachelier" },
-            new Certification { Id = 3, Name = "Master" }
-        };*/
-        for (int i = 0; i < 10; i++)
-        {
-            var surName = new Bogus.Person().FirstName;
-            var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@helmobilite.be";
-            var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
-            var dispatcher = new Models.Dispatcher()
+            var matricule = "DI" + Randomizer.Seed.Next(100000, 1000000);
+            var dispatcher = new Dispatcher()
             {
                 Matricule = matricule,
                 FirstName = surName,
                 Name = lastName,
                 Email = email,
                 UserName = email,
-
+                IdCertification = 1
             };
             var result = _userManager.CreateAsync(dispatcher, "Test@123").Result;
             if (result.Succeeded)
@@ -124,29 +92,6 @@ public class DataGeneration
                 var result2 = _userManager.AddToRoleAsync(dispatcher, "dispatcher").Result;
             }
 
-        }
-
-        Admin admin = new Admin
-        {
-            Email = "valentin.lopez1109@gmail.com",
-            UserName = "valentin.lopez1109@gmail.com"
-        };
-
-        var resultAdmin = _userManager.CreateAsync(admin, "Test@123").Result;
-        if (resultAdmin.Succeeded)
-        {
-            var resultAdmin2 = _userManager.AddToRoleAsync(admin, "admin").Result;
-        }
-    }
-
-    public static void SeedAddresses(ApplicationDbContext _context)
-    {
-
-        var addrs = _context.Set<Address>().ToList();
-
-        if (addrs.Count > 0)
-        {
-            return;
         }
 
         Faker<Address> addressFaker = new Faker<Address>()
@@ -159,18 +104,48 @@ public class DataGeneration
 
         for (int i = 0; i < 10; i++)
         {
-            var address = addressFaker.Generate();
+            var surName = new Bogus.Person().FirstName;
+            var lastName = new Bogus.Person().LastName;
+            var company = new Bogus.Faker().Company.CompanyName();
+            var email = $"{surName}.{lastName}@une.companie.be";
 
-            _context.Addresses.Add(address);
+            var addressCompany =  addressFaker.Generate();
+
+            _context.Addresses.Add(addressCompany);
+            var client = new Client()
+            {
+                Email = email,
+                UserName = email,
+                CompanyName = company,
+                CompanyAddressId = addressCompany.IdAddress
+            };
+
+            var result = _userManager.CreateAsync(client, "Test@123").Result;
+            if (result.Succeeded)
+            {
+                var result2 = _userManager.AddToRoleAsync(client, "client").Result;
+            }
+
         }
-        _context.SaveChanges();
+        Admin admin = new Admin
+        {
+            Email = "valentin.lopez1109@gmail.com",
+            UserName = "valentin.lopez1109@gmail.com"
+        };
 
+        var resultAdmin = _userManager.CreateAsync(admin, "Test@123").Result;
+        if (resultAdmin.Succeeded)
+        {
+            var resultAdmin2 = _userManager.AddToRoleAsync(admin, "admin").Result;
+        }
+
+        _context.SaveChanges();
     }
 
     public static void SeedVehicles(ApplicationDbContext _context)
     {
 
-        var vehicles = _context.Set<Models.Vehicle>().ToList();
+        var vehicles = _context.Vehicles.ToList();
 
         if (vehicles.Count > 0)
         {
@@ -178,7 +153,8 @@ public class DataGeneration
         }
 
         Faker<Models.Vehicle> truckFraker = new Faker<Models.Vehicle>()
-            .RuleFor(t => t.Plate, f => f.Vehicle.Vin().Substring(0,6))
+            .RuleFor(t => t.VIN, f => f.Vehicle.Vin())
+            .RuleFor(t=> t.LicensePlate, f=> "a-111-aaa")
             .RuleFor(t => t.Model, f => f.Vehicle.Model())
             .RuleFor(t => t.Brand, f => f.Vehicle.Manufacturer())
             .RuleFor(t => t.Payload, f => f.Random.Int(1, 40) * 1000);

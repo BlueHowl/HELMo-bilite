@@ -9,4 +9,12 @@ public class Driver : HelmoMember
 
     public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
 
+
+    public bool HasLicense(int id)
+    {
+
+        return Licenses != null && Licenses.Any(l => l.Id == id);
+    }
+
+
 }
