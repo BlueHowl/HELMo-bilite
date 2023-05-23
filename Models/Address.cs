@@ -13,6 +13,8 @@ public class Address
     [Required][StringLength(10)] public string LocalityCode { get; set; }
     [Required][StringLength(100)] public string Country { get; set; }
 
+    public string Details => $"{Street} {Number}, {Locality} {LocalityCode}";
+
     public Address() { }
 
     public Address(string locality, string number, string street, string localityCode, string country)
@@ -25,5 +27,9 @@ public class Address
     }
 
 
-    
+    public string getDetails()
+    {
+        return $"{Street} {Number}, {Locality} {LocalityCode}";
+    }
+
 }

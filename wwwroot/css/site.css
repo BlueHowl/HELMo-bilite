@@ -116,3 +116,28 @@ main section:not(:first-child) {
 .icon-color-black{
 color: black;
 }
+
+
+/**/
+
+
+.line-separator {
+    border-bottom-width: 4px;
+    border-bottom-color: black;
+}
+
+
+/*Rotate refresh btn*/
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate-icon {
+    animation: rotate 2s linear infinite;
+}

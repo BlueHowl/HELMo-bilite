@@ -21,14 +21,12 @@ public class Delivery
     [Required]
     [ForeignKey(nameof(Client))]
     public string IdClient { get; set; }
-    public string ClientDetails => $"{Client?.CompanyName}\n{Client?.Email}\n{Client?.PhoneNumber}";
 
 
     [DisplayName("Chauffeur")]
     public Driver Driver { get; set; }
     [ForeignKey(nameof(Driver))]
     public string? IdDriver { get; set; }
-    public string DriverDetails => $"{Driver?.FirstName} {Driver?.Name}\n{Driver?.Email}";
 
 
     [DisplayName("Contenu")]
@@ -41,7 +39,6 @@ public class Delivery
     [Required]
     [ForeignKey(nameof(LoadAddress))]
     public string LoadAddressId { get; set; }
-    public string LoadAddressDetails => $"{LoadAddress?.Street} {LoadAddress?.Number}, {LoadAddress?.Locality} {LoadAddress?.LocalityCode}";
 
     [DisplayName("Date de chargement")]
     [Required]
@@ -53,7 +50,6 @@ public class Delivery
     [Required]
     [ForeignKey(nameof(UnloadingAddress))]
     public string UnloadingAddressId { get; set; }
-    public string UnloadAddressDetails => $"{UnloadingAddress?.Street} {UnloadingAddress?.Number}, {UnloadingAddress?.Locality} {UnloadingAddress?.LocalityCode}";
 
     [DisplayName("Date de déchargement")]
     [Required]
@@ -67,7 +63,6 @@ public class Delivery
     public Vehicle Vehicle { get; set; }
     [ForeignKey(nameof(Vehicle))]
     public string? IdVehicle { get; set; }
-    public string VehicleDetails => $"{Vehicle?.Brand} {Vehicle?.Model}\n{Vehicle?.VIN}";
 
     public Delivery()
     {
@@ -78,8 +73,8 @@ public class Delivery
     {
         Client = client;
         IdClient = client.Id;
-        Driver = driver;/*
-        IdDriver = driver?.Id;*/
+        Driver = driver;
+        IdDriver = driver?.Id; //pq était en comm ?
         Content = content;
         LoadAddress = loadAddress;
         LoadAddressId = loadAddress.IdAddress;

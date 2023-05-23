@@ -43,13 +43,22 @@ public class DataGeneration
         if (_userManager.Users.Count() != 0)
             return;
 
-        var lisences = _context.Licenses.ToList();
+        var licenses = _context.Licenses.ToList();
         for (int i = 0; i < 10; i++)
         {
             var surName = new Bogus.Person().FirstName;
             var lastName = new Bogus.Person().LastName;
             var email = $"{surName}.{lastName}@helmobilite.be";
             var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
+
+            var licenseList = new List<License>();
+
+            int n = Randomizer.Seed.Next(1, 4);
+
+            for (int j = 0; j < n; ++j)
+            {
+                licenseList.Add(licenses[j]);
+            }
 
             var driver = new Driver()
             {
@@ -59,7 +68,7 @@ public class DataGeneration
                 Email = email,
                 UserName = email,
 
-                Licenses = new List<License>{ lisences[0] },
+                Licenses = licenseList,
 
             };
 
