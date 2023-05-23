@@ -57,7 +57,7 @@ public class DataGeneration
     private static void SeedDriver(UserManager<User> _userManager, ApplicationDbContext _context)
     {
 
-        var lisences = _context.Licenses.ToList();
+        var licenses = _context.Licenses.ToList();
         for (int i = 0; i < nbDriver; i++)
         {
             var surName = new Bogus.Person().FirstName;
