@@ -64,10 +64,11 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
     //lancement de la creation des donnees de test
+    DataGeneration.SeedAddresses(dbContext);
     DataGeneration.SeedRole(roleManager);
     DataGeneration.SeedUser(userManager, dbContext);
-    //DataGeneration.SeedAddresses(dbContext);
     DataGeneration.SeedVehicles(dbContext);
+    DataGeneration.SeedDelivery(dbContext);
 
 }
 

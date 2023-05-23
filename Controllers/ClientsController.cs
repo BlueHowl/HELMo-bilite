@@ -176,13 +176,20 @@ namespace HELMo_bilite.Controllers
                 return NotFound();
             }
             ViewData["CompanyAddressId"] = new SelectList(_context.Addresses, "IdAddress", "IdAddress", client.CompanyAddressId);
-            return View(client);
+            return View(new ClientVM
+            {
+                Id = client.Id,
+                CompanyName = client.CompanyName,
+                IsBadPayer = client.IsBagPayer
+            });
         }
 
         [HttpPost, ActionName("EditBadPayer")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditBadPayerConfirmed(string id)
         {
+
+
             if (_context.Clients == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Clients'  is null.");

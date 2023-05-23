@@ -16,7 +16,7 @@ public class Client : User
 
     public bool IsBagPayer { get; set; } = false;
 
-    public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
+    public ICollection<Delivery>? Deliveries { get; set; } = new List<Delivery>();
 
     public string Details => $"{CompanyName}\n{Email}\n{PhoneNumber}";
 }
