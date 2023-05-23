@@ -22,10 +22,17 @@ namespace HELMo_bilite.Controllers
             };
             return View(statsVM);
         }
-
+        public IActionResult Next()  // This method is not used anywhere
+        {
+            var statsVM = new StatsVM
+            {
+                AllClientStats = GetClientStats()
+            };
+            return View(statsVM);
+        }
         private List<ClientStatsVM> GetClientStats()
         {
-            var allClient = _dbContext.Clients.Include(c => c.Deliveries).ToList();
+            var allClient = _dbContext.Clients.Include(c => c.Deliveries).Take(10).ToList();
             List<ClientStatsVM> clientStats = new List<ClientStatsVM>();
             foreach (var client in allClient)
             {
