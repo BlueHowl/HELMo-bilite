@@ -18,4 +18,5 @@ public class Client : User
 
     public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
 
+    public string Details => $"{CompanyName}\n{Email}\n{PhoneNumber}";
 }
