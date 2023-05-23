@@ -1,0 +1,50 @@
+﻿@model HELMo_bilite.Controllers.ViewModels.StatsVM
+
+
+<h1>Statistique du site</h1>
+<hr />
+<div >
+    <h2>Statistique par client</h2>
+    <div class="d-flex flex-column justify-content-center align-items-center mt-3">
+        <div class="table-80">
+            <table class="table">
+                <thead class="thead-dark table-borderless">
+                    <tr>
+                        <th colspan="5" class="rounded-top"><h1 class="text-center">Liste des membres helmo</h1></th>
+                    </tr>
+                    <tr>
+                        <th scope="col">
+                            Nom de la companie
+                        </th>
+                        <th scope="col">
+                            Nombre de livraison
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AllClientStats)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CompanyName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeliveryCountTotal)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div>
+    <h2>Statistique par jour</h2>
+
+</div>
+<div>
+    <h2>Statistique pour conducteur</h2>
+
+</div>
+

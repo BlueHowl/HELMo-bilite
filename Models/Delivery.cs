@@ -12,7 +12,7 @@ public class Delivery
         public static readonly string IsEnded = "Terminé";
     }
 
-
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public int Id { get; set; }
 

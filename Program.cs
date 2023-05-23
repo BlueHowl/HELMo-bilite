@@ -8,8 +8,8 @@ using System.Reflection.Emit;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var connectionString = builder.Configuration.GetConnectionString("ValentinConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//var connectionString = builder.Configuration.GetConnectionString("ValentinConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -64,10 +64,11 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
     //lancement de la creation des donnees de test
+    DataGeneration.SeedAddresses(dbContext);
     DataGeneration.SeedRole(roleManager);
     DataGeneration.SeedUser(userManager, dbContext);
-    //DataGeneration.SeedAddresses(dbContext);
     DataGeneration.SeedVehicles(dbContext);
+    DataGeneration.SeedDelivery(dbContext);
 
 }
 
