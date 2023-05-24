@@ -1,7 +1,7 @@
 ﻿@model HELMo_bilite.Models.Delivery
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails commande";
 }
 
 <h1>Details</h1>
@@ -69,6 +69,17 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editer</a> |
+    @if (Model.Status == Delivery.State.Waiting)
+    {
+        @if (User.IsInRole("dispatcher"))
+        {
+            <a asp-action="Assign" asp-route-id="@Model.Id">Assigner</a>
+        }
+        else if (User.IsInRole("client"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id">Editer</a>
+        }
+    }
+
     <a asp-action="Index">Retour à la liste</a>
 </div>
