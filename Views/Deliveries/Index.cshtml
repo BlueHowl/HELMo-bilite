@@ -6,16 +6,14 @@
     ViewData["Title"] = "Commandes";
     string currentUserId = userManager.GetUserId(User);
 
+    var currentDate = DateTime.Today;
+    var startDate = currentDate.AddDays(-(int)currentDate.DayOfWeek).AddDays(1); // premier jour de la semaine
+
     int row = 0;
 }
-
+<script src="~/js/calendar.js"></script>
 <h1>Commandes</h1>
-@foreach (var item in Model) {
-    @if ((User.IsInRole("driver") && item.IdDriver == currentUserId && item.Status == Delivery.State.InProgress))
-    {
-        <a asp-action="Finish" asp-route-id="@item.Id">test</a>
-    }
-}
+
 @if (User.IsInRole("client"))
 {
     <p>
@@ -30,6 +28,12 @@ else if(User.IsInRole("dispatcher"))
 }
 
 @if(User.IsInRole("driver")) {
+    <div class="calendar-header">
+        <h3>@startDate.ToString("MMMM dd, yyyy")</h3>
+        <button type="button" id="prevWeekBtn">Semaine précédente</button>
+        <button type="button" id="nextWeekBtn">Semaine suivante</button>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
@@ -56,6 +60,35 @@ else if(User.IsInRole("dispatcher"))
                 </th>
             </tr>
         </thead>
+
+        <tbody>
+            @for (int i = 0; i < 7; i++)
+            {
+                currentDate = startDate.AddDays(i);
+
+                <td class="day">
+                    <div class="day-number">@currentDate.ToString("dd/MM")</div>
+                    <ul>
+                        @*
+                        @foreach (var delivery in Model)
+                        {
+                        if ((delivery.LoadDate.Date == currentDate.Date || delivery.UnloadingDate.Date == currentDate.Date) &&
+                        delivery.IdDriver == currentUserId && 
+                            delivery.Status == Delivery.State.InProgress)
+                            {
+                                <li>Client : @delivery.Client.CompanyName</li>
+                                <li>Contenu : @delivery.Content</li>
+                                <li>Date de chargement : <br />@delivery.LoadDate</li>
+                                <li>Date de déchargement : <br />@delivery.UnloadingDate</li>
+                                <a asp-action="Details" asp-route-id="@delivery.Id">Détails</a>
+                                <a asp-action="Finish" asp-route-id="@delivery.Id">Terminer</a>
+                            }
+                        }
+                        *@
+                    </ul>
+                </td>
+            }
+        </tbody>
 
     </table>
 } 
@@ -95,7 +128,6 @@ else
             </tr>
         </thead>
         <tbody>
-            //(User.IsInRole("driver") && item.IdDriver == currentUserId && item.Status == Delivery.State.InProgress)
 
             @foreach (var item in Model) {
                 @if ((User.IsInRole("dispatcher") && item.Status == Delivery.State.Waiting) || 

@@ -6,6 +6,8 @@ using HELMo_bilite.Models;
 using HELMo_bilite.Controllers.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace HELMo_bilite.Controllers
 {
@@ -398,7 +400,6 @@ namespace HELMo_bilite.Controllers
 
             newDelivery.Status = Delivery.State.IsEnded;
 
-                //si bon alors update new delivery avec nouveau resultats et update status
 
             if (ModelState.IsValid)
             {
@@ -520,6 +521,23 @@ namespace HELMo_bilite.Controllers
             return View(address);
         }
 
+        //GET: Deliveries/GetDeliveries
+        public ActionResult GetDeliveries()
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            
+            var deliveries = _context.Deliveries
+                .Include(d => d.Client)
+                .Where(d => d.IdDriver == user.Id);
+
+            var serializerOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64 // Set the maximum depth as needed
+            };
+
+            return Json(deliveries.ToList(), serializerOptions);
+        }
 
 
         private void setViewAddressList()
