@@ -13,16 +13,38 @@ namespace HELMo_bilite.Controllers
         {
             _dbContext = dbContext;
         }
+
+       
         public IActionResult Index()
         {
             
             var statsVM = new StatsVM
             {
-                AllClientStats  = GetClientStats()
+                AllClientStats  = GetClientStats(),
+                AllDayStats = GetDayStats(),
+                AllDriverStats = GetDriverStats(),
+
             };
             return View(statsVM);
         }
 
+
+        [HttpPost]
+        public ActionResult GetClientStatsAjax(string sortParam)
+        {
+            var clientStats = GetClientStats();
+
+            switch (sortParam)
+            {
+                case "CompanyName":
+                    clientStats.Sort((c, c2) => c.CompanyName.CompareTo(c2.CompanyName));
+                    break;
+                case "DeliveryCountTotal":
+                    clientStats.Sort((c, c2) => c.DeliveryCountTotal.CompareTo(c2.DeliveryCountTotal));
+                    break;
+            }
+            return Json(clientStats);
+        }
         private List<ClientStatsVM> GetClientStats()
         {
             var allClient = _dbContext.Clients.Include(c => c.Deliveries).ToList();
@@ -33,6 +55,7 @@ namespace HELMo_bilite.Controllers
                 {
                     CompanyName = client.CompanyName,
                     DeliveryCountTotal = client.Deliveries.Count,
+                    DeliveryWaitingCount = client.Deliveries.Count(d => d.Status == State.Waiting),
                     DeliveryInProgressCount = client.Deliveries.Count(d => d.Status == State.InProgress),
                     DeliveryTerminedCount = client.Deliveries.Count(d => d.Status == State.IsEnded)
                 };
@@ -40,6 +63,74 @@ namespace HELMo_bilite.Controllers
             }
 
             return clientStats;
+        }
+        private List<DayStatsVM> GetDayStats()
+        {
+            var allDeliveries = _dbContext.Deliveries.ToList();
+            List<DayStatsVM> dayStats = new List<DayStatsVM>();
+            foreach (var delivery in allDeliveries)
+            {
+                if(!dayStats.Exists(d=> d.Day == delivery.LoadDate))
+                {
+                    var deliveriesBetweenDay = allDeliveries.Where(d => IsDaybetween(delivery.LoadDate, d.LoadDate, d.UnloadingDate));
+
+                    //date depart
+                    var dayStat = new DayStatsVM
+                    {
+                        Day = delivery.LoadDate,
+                        DeliveryCount = deliveriesBetweenDay.Count(),
+                        DeliveryStartCount = deliveriesBetweenDay.Count(d => d.LoadDate == delivery.LoadDate),
+                        DeliveryInProgressCount = deliveriesBetweenDay.Count(d => d.LoadDate != delivery.LoadDate && d.UnloadingDate != delivery.LoadDate),
+                        DeliveryTerminedCount = deliveriesBetweenDay.Count(d => d.UnloadingDate == delivery.LoadDate)
+                    };
+                    dayStats.Add(dayStat);
+                }
+
+               
+
+                if (!dayStats.Exists(d => d.Day == delivery.UnloadingDate))
+                {
+                    var deliveriesBetweenDay = allDeliveries.Where(d => IsDaybetween(delivery.UnloadingDate, d.LoadDate, d.UnloadingDate));
+                    var dayStat2 = new DayStatsVM
+                    {
+                        Day = delivery.UnloadingDate,
+                        DeliveryCount = deliveriesBetweenDay.Count(),
+                        DeliveryStartCount = deliveriesBetweenDay.Count(d => d.LoadDate == delivery.UnloadingDate),
+                        DeliveryInProgressCount = deliveriesBetweenDay.Count(d => d.LoadDate != delivery.UnloadingDate && d.UnloadingDate != delivery.UnloadingDate),
+                        DeliveryTerminedCount = deliveriesBetweenDay.Count(d => d.UnloadingDate == delivery.UnloadingDate)
+                    };
+                    dayStats.Add(dayStat2);
+                }
+                
+            }
+            dayStats.Sort((d, d2) => d.Day.CompareTo(d2.Day));
+
+
+            return dayStats; 
+        }
+        [HttpPost]
+        private List<DriverStatsVM> GetDriverStats()
+        {
+            var allDrivers = _dbContext.Drivers.Include(d => d.Deliverys).ToList();
+            List<DriverStatsVM> driverStats = new List<DriverStatsVM>();
+            foreach (var driver in allDrivers)
+            {
+                var driverStat = new DriverStatsVM
+                {
+                    DriverName = driver.FirstName + " " + driver.Name,
+                    DeliveryCountTotal = driver.Deliverys.Count,
+                    DeliveryInProgressCount = driver.Deliverys.Count(d => d.Status == State.InProgress),
+                    DeliveryTerminedCount = driver.Deliverys.Count(d => d.Status == State.IsEnded)
+                };
+                driverStats.Add(driverStat);
+            }
+            return driverStats;
+
+        }
+
+        private bool IsDaybetween(DateTime day, DateTime start, DateTime end)
+        {
+            return day >= start && day <= end;
         }
 
     }

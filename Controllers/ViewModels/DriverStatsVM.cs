@@ -1,10 +1,9 @@
 ﻿namespace HELMo_bilite.Controllers.ViewModels
 {
-    public class ClientStatsVM
+    public class DriverStatsVM
     {
-        public string CompanyName { get; set; }
+        public string DriverName { get; set; }
         public int DeliveryCountTotal { get; set; }
-        public int DeliveryWaitingCount { get; set; }
         public int DeliveryInProgressCount { get; set; }
         public int DeliveryTerminedCount { get; set; }
     }

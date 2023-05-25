@@ -151,3 +151,17 @@ color: black;
 .rotate-icon {
     animation: rotate 2s linear infinite;
 }
+
+
+.table-h-100 {
+    height: 90vh;
+}
+
+.table-h-100 > thead{
+    height: 10vh;
+}
+
+.table-h-100 > tbody{
+    height: 80vh;
+    overflow : scroll;
+}

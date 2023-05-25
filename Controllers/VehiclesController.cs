@@ -251,7 +251,6 @@ namespace HELMo_bilite.Controllers
             {
                 ModelState.AddModelError("VIN", "Ce VIN est appartient deja a autre vehicule");
             }
-
             if (vehicleInput.Plate == null)
             {
                 ModelState.AddModelError("Plate", "La plaque est obligatoire");

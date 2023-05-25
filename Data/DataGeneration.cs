@@ -9,12 +9,12 @@ namespace HELMo_bilite.Data;
 
 public class DataGeneration
 {
-    private static readonly int nbClient = 1000;
-    private static readonly int nbDelivery = 1000;
+    private static readonly int nbClient = 10;
+    private static readonly int nbDelivery = 100;
     private static readonly int nbAddress = 100;
     private static readonly int nbVehicule = 100;
-    private static readonly int nbDriver = 100;
-    private static readonly int nbDispatcher = 100;
+    private static readonly int nbDriver = 10;
+    private static readonly int nbDispatcher = 10;
 
     private static readonly Faker<Address> addressFaker = new Faker<Address>()
             .RuleFor(a => a.IdAddress, f => f.IndexGlobal.ToString())
@@ -71,7 +71,7 @@ public class DataGeneration
 
             for (int j = 0; j < n; ++j)
             {
-                licenseList.Add(licenses[j]);
+                licenseList.Add(lisences[j]);
             }
 
             var driver = new Driver()
