@@ -2,7 +2,7 @@
 
 namespace HELMo_bilite.Controllers.ViewModels
 {
-    public class LisencesEditVM
+    public class LicensesEditVM
     {
         public int Id { get; set; }
 

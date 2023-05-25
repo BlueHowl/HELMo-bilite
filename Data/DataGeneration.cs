@@ -56,6 +56,7 @@ public class DataGeneration
     }
     private static void SeedDriver(UserManager<User> _userManager, ApplicationDbContext _context)
     {
+
         var lisences = _context.Licenses.ToList();
         for (int i = 0; i < nbDriver; i++)
         {
@@ -64,6 +65,15 @@ public class DataGeneration
             var email = $"{surName}.{lastName}@helmobilite.be";
             var matricule = "DR" + Randomizer.Seed.Next(100000, 1000000);
 
+            var licenseList = new List<License>();
+
+            int n = Randomizer.Seed.Next(1, 4);
+
+            for (int j = 0; j < n; ++j)
+            {
+                licenseList.Add(licenses[j]);
+            }
+
             var driver = new Driver()
             {
                 Matricule = matricule,
@@ -71,8 +81,7 @@ public class DataGeneration
                 Name = lastName,
                 Email = email,
                 UserName = email,
-
-                Licenses = new List<License> { lisences[0] },
+                Licenses = licenseList,
 
             };
 

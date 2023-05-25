@@ -30,6 +30,6 @@ public class Vehicle
     [StringLength(150)]
     public string ?Picture { get; set; }
 
-
+    public string Details => $"{Brand} {Model}\n{VIN}";
 
 }

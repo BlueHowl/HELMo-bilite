@@ -10,6 +10,12 @@
 <hr />
 <div class="row d-flex justify-content-center">
     <div class="col-md-4">
+        @if ((string)ViewData["Unavailable"] == "true")
+        {
+            <h3>Aucun chauffeur et/ou véhicule disponibles aux dates données par le client !</h3>
+            <h4>Contacter le client par téléphone afin de l'informer'</h4>
+        }
+
         <form asp-action="Assign">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
