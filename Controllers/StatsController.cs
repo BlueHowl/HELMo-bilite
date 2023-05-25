@@ -47,7 +47,7 @@ namespace HELMo_bilite.Controllers
         }
         private List<ClientStatsVM> GetClientStats()
         {
-            var allClient = _dbContext.Clients.Include(c => c.Deliveries).ToList();
+            var allClient = _dbContext.Clients.Include(c => c.Deliveries).Take(10).ToList();
             List<ClientStatsVM> clientStats = new List<ClientStatsVM>();
             foreach (var client in allClient)
             {
