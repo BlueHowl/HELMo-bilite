@@ -3,6 +3,10 @@
 
 <h1>Statistique du site</h1>
 <hr />
+
+<div id="chartjs-bar">
+
+</div>
 <div>
     <div class="d-flex flex-column justify-content-center align-items-center mt-3">
         <div class="table-80">
@@ -162,4 +166,21 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="~/js/statsScript.js"></script>
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <div class="card flex-fill w-100">
+            <div class="card-header">
+                <h5 class="card-title">Line Chart</h5>
+                <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart">
+                    <canvas id="chartjs-line"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="/js/appStats.js"></script>
+

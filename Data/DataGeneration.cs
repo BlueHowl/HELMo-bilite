@@ -35,21 +35,21 @@ public class DataGeneration
         }
         if (roleManager.RoleExistsAsync("client").Result == false)
         {
-            IdentityRole admin = new IdentityRole() { Name = "client" };
-            var result = roleManager.CreateAsync(admin);
+            IdentityRole client = new IdentityRole() { Name = "client" };
+            var result = roleManager.CreateAsync(client);
             result.Wait();
         }
         if (roleManager.RoleExistsAsync("dispatcher").Result == false)
         {
-            IdentityRole admin = new IdentityRole() { Name = "dispatcher" };
-            var result = roleManager.CreateAsync(admin);
+            IdentityRole dispatcher = new IdentityRole() { Name = "dispatcher" };
+            var result = roleManager.CreateAsync(dispatcher);
             result.Wait();
         }
 
         if (roleManager.RoleExistsAsync("driver").Result == false)
         {
-            IdentityRole admin = new IdentityRole() { Name = "driver" };
-            var result = roleManager.CreateAsync(admin);
+            IdentityRole driver = new IdentityRole() { Name = "driver" };
+            var result = roleManager.CreateAsync(driver);
             result.Wait();
         }
 

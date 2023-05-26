@@ -26,11 +26,14 @@ nav {
 }
 
 
-/*HomePage*/
 
-#cover {
-    position: relative;
-}
+
+
+
+    /*HomePage*/
+    #cover {
+        position: relative;
+    }
 
     #cover > img {
         width: 100%;
@@ -115,6 +118,7 @@ main section:not(:first-child) {
 .icon-color-black {
     color: black;
 }
+
 .icon-color-white {
     color: white;
 }
@@ -123,8 +127,8 @@ main section:not(:first-child) {
     width: 80%;
 }
 
-.icon-color-black{
-color: black;
+.icon-color-black {
+    color: black;
 }
 
 
@@ -157,11 +161,12 @@ color: black;
     height: 90vh;
 }
 
-.table-h-100 > thead{
-    height: 10vh;
-}
+    .table-h-100 > thead {
+        height: 10vh;
+    }
 
-.table-h-100 > tbody{
-    height: 80vh;
-    overflow : scroll;
-}
+    .table-h-100 > tbody {
+        height: 80vh;
+        overflow: scroll;
+    }
+

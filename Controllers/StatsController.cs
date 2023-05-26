@@ -28,7 +28,6 @@ namespace HELMo_bilite.Controllers
             return View(statsVM);
         }
 
-
         [HttpPost]
         public ActionResult GetClientStatsAjax(string sortParam)
         {
@@ -45,9 +44,58 @@ namespace HELMo_bilite.Controllers
             }
             return Json(clientStats);
         }
+        [HttpPost]
+        public ActionResult GetDriverStatsAjax(string matricule)
+        {
+            var driver = _dbContext.Drivers.Include(d => d.Deliverys).FirstOrDefault(d=> d.Matricule == matricule);
+            
+            List<StatsDriverPerDayVM> statsDriverPerDay = new List<StatsDriverPerDayVM>();
+
+            foreach (var delivery in driver.Deliverys)
+            {
+                if (!statsDriverPerDay.Exists(d => d.Day == delivery.LoadDate))
+                {
+                    var deliveriesBetweenDay = driver.Deliverys.Where(d => IsDaybetween(delivery.LoadDate, d.LoadDate, d.UnloadingDate));
+
+                    //date depart
+                    var dayStat = new StatsDriverPerDayVM
+                    {
+                        Day = delivery.LoadDate,
+                        DeliveryCount = deliveriesBetweenDay.Count(),
+                    };
+                    statsDriverPerDay.Add(dayStat);
+                }
+
+                if (!statsDriverPerDay.Exists(d => d.Day == delivery.UnloadingDate))
+                {
+                    var deliveriesBetweenDay = driver.Deliverys.Where(d => IsDaybetween(delivery.UnloadingDate, d.LoadDate, d.UnloadingDate));
+                    var dayStat2 = new StatsDriverPerDayVM
+                    {
+                        Day = delivery.UnloadingDate,
+                        DeliveryCount = deliveriesBetweenDay.Count()
+                    };
+                    statsDriverPerDay.Add(dayStat2);
+                }
+
+
+            }
+           
+            
+            return Json(new
+            {
+                driverMatricul = driver.Matricule,
+                deliveryPerDayCount = Json(statsDriverPerDay)
+               
+            });
+        }
+
+       
+        
+
+
         private List<ClientStatsVM> GetClientStats()
         {
-            var allClient = _dbContext.Clients.Include(c => c.Deliveries).Take(10).ToList();
+            var allClient = _dbContext.Clients.Include(c => c.Deliveries).ToList();
             List<ClientStatsVM> clientStats = new List<ClientStatsVM>();
             foreach (var client in allClient)
             {
