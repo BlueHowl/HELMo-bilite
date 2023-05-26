@@ -33,25 +33,96 @@
                     <a class="sidebar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="align-middle">HELMo_bilite</span></a>
 
                     <ul class="sidebar-nav">
-                        <li class="sidebar-item active">
-                            <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
+                        @if (ViewContext.View.Path.Contains("Home"))
+                        {
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
+                                </a>
+                            </li>
+                        }
+                        @if (ViewContext.View.Path.Contains("HelmoMembers"))
+                        {
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link active" asp-area="" asp-controller="HelmoMembers" asp-action="Index">
+                                    <i class="align-middle" data-feather="users"></i>
+                                    <span class="align-middle">Membre Helmo</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link active" asp-area="" asp-controller="HelmoMembers" asp-action="Index">
+                                    <i class="align-middle" data-feather="users"></i>
+                                    <span class="align-middle">Membre Helmo</span>
+                                </a>
+                            </li>
+                        }
+                        @if (ViewContext.View.Path.Contains("Vehicles"))
+                        {
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link" asp-area="" asp-controller="Vehicles" asp-action="Index">
+                                    <i class="align-middle" data-feather="truck"></i>
+                                    <span class="align-middle">Vehicule</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Vehicles" asp-action="Index">
+                                    <i class="align-middle" data-feather="truck"></i>
+                                    <span class="align-middle">Vehicule</span>
+                                </a>
+                            </li>
+                        }
+                        @if (ViewContext.View.Path.Contains("Clients"))
+                        {
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link" asp-area="" asp-controller="Clients" asp-action="Index">
+                                    <i class="align-middle" data-feather="list"></i>
+                                    <span class="align-middle">Clients</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Clients" asp-action="Index">
+                                    <i class="align-middle" data-feather="list"></i>
+                                    <span class="align-middle">Clients</span>
+                                </a>
+                            </li>
+                        }
+                        @if (ViewContext.View.Path.Contains("Stats"))
+                        {
+                            
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link" asp-area="" asp-controller="Stats" asp-action="Index">
+                                    <i class="align-middle" data-feather="pie-chart"></i>
+                                    <span class="align-middle">Statistiques</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Stats" asp-action="Index">
+                                    <i class="align-middle" data-feather="pie-chart"></i>
+                                    <span class="align-middle">Statistiques</span>
+                                </a>
+                            </li>
+                        }
 
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="" asp-controller="HelmoMembers" asp-action="Index">Membre Helmo</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="" asp-controller="Vehicles" asp-action="Index">Vehicles</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="" asp-controller="Clients" asp-action="Index">Client</a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-area="" asp-controller="Stats" asp-action="Index">Statistiques</a>
-                        </li>
-                        
                     </ul>
                 </div>
             </nav>
@@ -62,6 +133,9 @@
         <div class="main">
             <partial name="_LoginPartial" />
             <main role="main" class="content">
+                <p>
+
+                </p>
                 @RenderBody()
             </main>
             <footer class="footer">
@@ -74,7 +148,7 @@
         </div>
     </div>
 
-    
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/theme/dist/js/app.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

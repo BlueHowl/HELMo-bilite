@@ -7,9 +7,9 @@ public class Vehicle
     /// <summary>
     /// le numero de chassi du véhicule ne peut pas être modifié
     /// </summary>
-    [Key]
-    [StringLength(17)]
-    public string VIN { get; set; }
+     
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key] public string VIN { get; set; }
 
     [StringLength(10)]
     public string LicensePlate  { get; set; }
