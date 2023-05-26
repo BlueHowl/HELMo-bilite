@@ -1,33 +1,20 @@
-﻿@model HELMo_bilite.Controllers.ViewModels.AssignOrderVM
+﻿@model HELMo_bilite.Controllers.ViewModels.TerminateDeliveryVM
 
 @{
-    ViewData["Title"] = "Assigner commande";
+    ViewData["Title"] = "Terminer commande";
 }
 
-<h1>Assignation</h1>
+<h1>Terminer une commande</h1>
 
-<h4>Commande</h4>
 <hr />
 <div class="row d-flex justify-content-center">
     <div class="col-md-4">
-        @if ((string)ViewData["Unavailable"] == "true")
-        {
-            <h3>Aucun chauffeur et/ou véhicule disponibles aux dates données par le client !</h3>
-            <h4>Contacter le client par téléphone afin de l'informer'</h4>
-        }
 
-        <form asp-action="Assign">
+        <form asp-action="Finish">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Client" class="control-label"></label>
                 <input asp-for="Client" class="form-control" disabled>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdDriver" class="control-label"></label>
-                <select asp-for="IdDriver" class="form-control" asp-items="ViewBag.Drivers">
-                    <option value="">-- Choisir un chauffeur --</option>
-                </select>
-                <span asp-validation-for="IdDriver" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
@@ -35,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="LoadAddress" class="control-label">Addresse de chargement</label>
-                <input asp-for="LoadAddress" class="form-control" disabled >
+                <input asp-for="LoadAddress" class="form-control" disabled>
             </div>
             <div class="form-group">
                 <label asp-for="LoadDate" class="control-label"></label>
@@ -52,17 +39,30 @@
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <input asp-for="Status" class="form-control" disabled />
-                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdVehicle" class="control-label"></label>
-                <select asp-for="IdVehicle" class="form-control" asp-items="ViewBag.Vehicles">
-                    <option value="">-- Choisir un véhicule --</option>
-                </select>
-                <span asp-validation-for="IdVehicle" class="text-danger"></span>
+                <input asp-for="IdVehicle" class="form-control" disabled />
             </div>
+
+            <button type="button" id="switchButton" class="btn btn-success w-100">Livraison Effectuee</button>
+
+            <div id="reasonSelector" class="form-group d-none">
+                <label asp-for="Reason" class="control-label"></label>
+
+                <select asp-for="Reason" class="form-control" asp-items="ViewBag.Reasons">
+                    <option value="">-- Choisir un motif --</option>
+                </select>
+            </div>
+
             <div class="form-group">
-                <input type="submit" value="Sauvegarder" class="btn btn-primary w-100 p-2" />
+                <label asp-for="Comment" class="control-label"></label>
+                <input id="commentField" asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Terminer" class="btn btn-primary w-100 p-2" />
             </div>
         </form>
     </div>
@@ -72,6 +72,10 @@
     <a asp-action="Index">Retour à la liste</a>
 </div>
 
+<script src="~/js/switchButton.js"></script>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

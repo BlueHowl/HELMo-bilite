@@ -1,9 +1,6 @@
 ﻿using Bogus;
-using HELMo_bilite.Controllers.ViewModels;
 using HELMo_bilite.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Primitives;
 
 namespace HELMo_bilite.Data;
 
@@ -57,7 +54,7 @@ public class DataGeneration
     private static void SeedDriver(UserManager<User> _userManager, ApplicationDbContext _context)
     {
 
-        var lisences = _context.Licenses.ToList();
+        var licenses = _context.Licenses.ToList();
         for (int i = 0; i < nbDriver; i++)
         {
             var surName = new Bogus.Person().FirstName;
@@ -143,7 +140,7 @@ public class DataGeneration
             };
 
 
-            var result =  _userManager.CreateAsync(client, "Test@123").Result;            
+            var result = _userManager.CreateAsync(client, "Test@123").Result;            
             if (result.Succeeded)
             {
                 var result2 = _userManager.AddToRoleAsync(client, "client").Result;

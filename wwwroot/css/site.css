@@ -140,7 +140,6 @@ main section:not(:first-child) {
     border-bottom-color: black;
 }
 
-
 /*Rotate refresh btn*/
 @keyframes rotate {
     from {
