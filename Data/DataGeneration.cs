@@ -68,7 +68,7 @@ public class DataGeneration
 
             for (int j = 0; j < n; ++j)
             {
-                licenseList.Add(lisences[j]);
+                licenseList.Add(licenses[j]);
             }
 
             var driver = new Driver()

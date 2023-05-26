@@ -71,7 +71,7 @@ public class Delivery
     public string Status { get; set; }
 
     [DisplayName("Commentaire")]
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
 
     [DisplayName("Véhicule")]
     public Vehicle Vehicle { get; set; }

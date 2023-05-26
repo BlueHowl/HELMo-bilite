@@ -25,30 +25,35 @@
 </head>
 <body>
     <div class="wrapper">
-        @if (User.IsInRole("admin"))
+
+
+        @if (User.IsInRole("driver") || User.IsInRole("dispatcher") || User.IsInRole("client")|| User.IsInRole("admin"))
         {
-            <nav id="sidebar" class="sidebar js-sidebar">
-                <div class="sidebar-content js-simplebar">
+       
+        <nav id="sidebar" class="sidebar js-sidebar">
+            <div class="sidebar-content js-simplebar">
 
-                    <a class="sidebar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="align-middle">HELMo_bilite</span></a>
+                <a class="sidebar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="align-middle">HELMo_bilite</span></a>
 
-                    <ul class="sidebar-nav">
-                        @if (ViewContext.View.Path.Contains("Home"))
-                        {
-                            <li class="sidebar-item active">
-                                <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
-                                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
-                                </a>
-                            </li>
-                        }
+                <ul class="sidebar-nav">
+                    @if (ViewContext.View.Path.Contains("Home"))
+                    {
+                        <li class="sidebar-item active">
+                            <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Accueil</span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole("admin"))
+                    {
                         @if (ViewContext.View.Path.Contains("HelmoMembers"))
                         {
                             <li class="sidebar-item active">
@@ -105,7 +110,7 @@
                         }
                         @if (ViewContext.View.Path.Contains("Stats"))
                         {
-                            
+
                             <li class="sidebar-item active">
                                 <a class="sidebar-link" asp-area="" asp-controller="Stats" asp-action="Index">
                                     <i class="align-middle" data-feather="pie-chart"></i>
@@ -122,20 +127,41 @@
                                 </a>
                             </li>
                         }
+                    }
+                    @if (User.IsInRole("driver") || User.IsInRole("dispatcher") || User.IsInRole("client"))
+                    {
+                        @if (ViewContext.View.Path.Contains("Deliveries"))
+                        {
 
-                    </ul>
-                </div>
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link" asp-area="" asp-controller="Deliveries" asp-action="Index">
+                                    Commandes
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Deliveries" asp-action="Index">
+                                    Commandes
+                                </a>
+                            </li>
+                        }
+                    }
+
+
+                </ul>
+            </div>
             </nav>
-
-
         }
+        
+
+
+
 
         <div class="main">
             <partial name="_LoginPartial" />
             <main role="main" class="content">
-                <p>
-
-                </p>
                 @RenderBody()
             </main>
             <footer class="footer">

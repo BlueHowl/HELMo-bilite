@@ -10,6 +10,14 @@
             <i class="hamburger align-self-center"></i>
         </a>
     }
+    else
+    {
+        <a asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/images/Helmo-bilité.png" class="avatar img-fluid rounded me-1"
+                 alt="logo" />
+            <span class="align-middle font-color-black">Accueil</span>
+        </a>
+    }
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav navbar-align">
             @if (SignInManager.IsSignedIn(User))

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Text.RegularExpressions;
 
 namespace HELMo_bilite.Controllers
 {
@@ -128,7 +129,7 @@ namespace HELMo_bilite.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("Plate,Brand,Model,IdLicenses,Payload,Picture")] VehicleVM vehicle)
         {
 
-
+            VerifCreate(vehicle);   
             if (ModelState.IsValid)
             {
                 try
@@ -138,6 +139,7 @@ namespace HELMo_bilite.Controllers
                     {
                         return NotFound();
                     }
+                    vehicleToUpdate.LicensePlate = vehicle.Plate;
                     vehicleToUpdate.Brand = vehicle.Brand;
                     vehicleToUpdate.Model = vehicle.Model;
                     vehicleToUpdate.IdLicense = vehicle.IdLicenses;
@@ -149,7 +151,7 @@ namespace HELMo_bilite.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleExists(vehicle.Plate))
+                    if (!VehicleExists(vehicle.VIN))
                     {
                         return NotFound();
                     }
@@ -162,6 +164,8 @@ namespace HELMo_bilite.Controllers
             }
 
             ViewData["IdLicenses"] = new SelectList(_context.Licenses, "Id", "Name", vehicle.IdLicenses);
+            var vehiculeBd = _context.Vehicles.FirstOrDefault(v => v.VIN == id);
+            vehicle.PictureScr = vehiculeBd.Picture == null ? "defaultTucksPicture.png" : ("vehicules/" + vehiculeBd.Picture);
             return View(vehicle);
         }
 
@@ -248,6 +252,10 @@ namespace HELMo_bilite.Controllers
             {
                 ModelState.AddModelError("Plate", "La plaque est obligatoire");
             }
+            if(vehicleInput.Plate != null && !IsValidBelgianLicensePlate(vehicleInput.Plate))
+            {
+                ModelState.AddModelError("Plate", "La plaque n'est pas valide le formate doit respecter  \"1-ABC-123\"");
+            }
             var plateFound = _context.Vehicles.FirstOrDefault(v => v.LicensePlate == vehicleInput.Plate);
             if (plateFound != null)
             {
@@ -274,6 +282,13 @@ namespace HELMo_bilite.Controllers
                 ModelState.AddModelError("Payload", "La charge utile est obligatoire");
             }
 
+        }
+
+        public static bool IsValidBelgianLicensePlate(string licensePlate)
+        {
+            // Ce pattern couvre le format "1-ABC-123"
+            string pattern = @"^[1-9]-[A-Z]{3}-[0-9]{3}$";
+            return Regex.IsMatch(licensePlate, pattern);
         }
 
     }

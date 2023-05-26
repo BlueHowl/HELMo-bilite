@@ -1,26 +1,30 @@
 ﻿using HELMo_bilite.Controllers.ViewModels;
 using HELMo_bilite.Data;
+using HELMo_bilite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using static HELMo_bilite.Models.Delivery;
 
 namespace HELMo_bilite.Controllers
 {
+    [Authorize(Roles ="admin")]
     public class StatsController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
-        public StatsController( ApplicationDbContext dbContext)
+        public StatsController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-       
+
         public IActionResult Index()
         {
-            
+
             var statsVM = new StatsVM
             {
-                AllClientStats  = GetClientStats(),
+                AllClientStats = GetClientStats(),
                 AllDayStats = GetDayStats(),
                 AllDriverStats = GetDriverStats(),
 
@@ -28,69 +32,48 @@ namespace HELMo_bilite.Controllers
             return View(statsVM);
         }
 
+
         [HttpPost]
-        public ActionResult GetClientStatsAjax(string sortParam)
+        public ActionResult GetStatPerMonthDriver(int year, string[] matricules)
         {
-            var clientStats = GetClientStats();
 
-            switch (sortParam)
+            var listDriverStat = new List<StatsPerMonthDriver>();
+            foreach(var mat in matricules)
             {
-                case "CompanyName":
-                    clientStats.Sort((c, c2) => c.CompanyName.CompareTo(c2.CompanyName));
-                    break;
-                case "DeliveryCountTotal":
-                    clientStats.Sort((c, c2) => c.DeliveryCountTotal.CompareTo(c2.DeliveryCountTotal));
-                    break;
+                listDriverStat.Add(GetStatDriver(year, mat));
             }
-            return Json(clientStats);
-        }
-        [HttpPost]
-        public ActionResult GetDriverStatsAjax(string matricule)
-        {
-            var driver = _dbContext.Drivers.Include(d => d.Deliverys).FirstOrDefault(d=> d.Matricule == matricule);
-            
-            List<StatsDriverPerDayVM> statsDriverPerDay = new List<StatsDriverPerDayVM>();
-
-            foreach (var delivery in driver.Deliverys)
-            {
-                if (!statsDriverPerDay.Exists(d => d.Day == delivery.LoadDate))
-                {
-                    var deliveriesBetweenDay = driver.Deliverys.Where(d => IsDaybetween(delivery.LoadDate, d.LoadDate, d.UnloadingDate));
-
-                    //date depart
-                    var dayStat = new StatsDriverPerDayVM
-                    {
-                        Day = delivery.LoadDate,
-                        DeliveryCount = deliveriesBetweenDay.Count(),
-                    };
-                    statsDriverPerDay.Add(dayStat);
-                }
-
-                if (!statsDriverPerDay.Exists(d => d.Day == delivery.UnloadingDate))
-                {
-                    var deliveriesBetweenDay = driver.Deliverys.Where(d => IsDaybetween(delivery.UnloadingDate, d.LoadDate, d.UnloadingDate));
-                    var dayStat2 = new StatsDriverPerDayVM
-                    {
-                        Day = delivery.UnloadingDate,
-                        DeliveryCount = deliveriesBetweenDay.Count()
-                    };
-                    statsDriverPerDay.Add(dayStat2);
-                }
 
 
-            }
-           
-            
-            return Json(new
-            {
-                driverMatricul = driver.Matricule,
-                deliveryPerDayCount = Json(statsDriverPerDay)
-               
-            });
+            return Json(listDriverStat);
         }
 
-       
-        
+        private StatsPerMonthDriver GetStatDriver(int year, string matricule)
+        {
+            var idDriver  = _dbContext.Drivers.FirstOrDefault(d => d.Matricule == matricule).Id;
+            var allDeliveryOfYear = _dbContext.Deliveries.Where(
+                d => (d.LoadDate.Year == year || d.UnloadingDate.Year == year) 
+                        && d.IdDriver == idDriver).ToList();
+
+            var statPerMonth = new StatsPerMonthDriver();
+            statPerMonth.Matricule = matricule;
+            statPerMonth.StatsPerMonth = new List<StatsPerMonth>();
+            for (int i = 0; i < 12; i++)
+            {
+                var month = i + 1;
+                var deliverysOfMonth = allDeliveryOfYear.Where(d => d.LoadDate.Month == month || d.UnloadingDate.Month == month).ToList();
+                var stat = new StatsPerMonth
+                {
+                    Month = month,
+                    Count = allDeliveryOfYear.Where(d => d.LoadDate.Month == month || d.UnloadingDate.Month == month).Count(),
+                };
+                statPerMonth.StatsPerMonth.Add(stat);
+            }
+            return statPerMonth;
+
+        }
+
+
+
 
 
         private List<ClientStatsVM> GetClientStats()
@@ -156,7 +139,6 @@ namespace HELMo_bilite.Controllers
 
             return dayStats; 
         }
-        [HttpPost]
         private List<DriverStatsVM> GetDriverStats()
         {
             var allDrivers = _dbContext.Drivers.Include(d => d.Deliverys).ToList();
@@ -165,6 +147,7 @@ namespace HELMo_bilite.Controllers
             {
                 var driverStat = new DriverStatsVM
                 {
+                    Matricule = driver.Matricule,
                     DriverName = driver.FirstName + " " + driver.Name,
                     DeliveryCountTotal = driver.Deliverys.Count,
                     DeliveryInProgressCount = driver.Deliverys.Count(d => d.Status == State.InProgress),

@@ -2,6 +2,7 @@
 {
     public class DriverStatsVM
     {
+        public string Matricule { get; set; }
         public string DriverName { get; set; }
         public int DeliveryCountTotal { get; set; }
         public int DeliveryInProgressCount { get; set; }

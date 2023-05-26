@@ -1,37 +1,100 @@
-﻿import { AddDriver } from './Chart.js';
-
-
+﻿
+/**
+ * load driver
+ */
 document.addEventListener("DOMContentLoaded", function () {
-    // Line chart
 
-    var chart = new Chart(document.getElementById("chartjs-line"), {
+
+
+    recreateGraph();
+    //doncument.getElementById("tboby-stat-driver").
+
+    $(".chekbox-driver-stat").on("change", function (event) {
+        recreateGraph();
+    });
+    $("#col-mat-stat-driver").on("click", function (event) {
+        var children = $("#tboby-stat-driver").children();
+        $("#tboby-stat-driver").children().remove();
+        children = children.sort(function (a, b) {
+            console.log(a);
+
+           
+        });
+
+
+        $("#tboby-stat-driver").append(children);
+        console.log();
+
+    });
+
+
+});
+function onAddDriver(matricule) {
+    getDeliveryDriver(2023, matricule)
+        .then(function (data) {
+            var chart = createChart(data);
+        }).catch(function (error) { });
+
+}
+
+
+function getDeliveryDriver(year, matricules) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: 'POST',
+            url: '/Stats/GetStatPerMonthDriver',
+            data: { year: year, matricules: matricules },
+            success: function (data) {
+                resolve(data);
+            },
+            error: function () {
+                reject('Une erreur est survenue lors de la récupération des statistiques du chauffeur');
+            }
+        });
+    });
+}
+
+
+
+function recreateGraph() {
+    let list = []
+    $(".chekbox-driver-stat").each(function () {
+        var isChecked = $(this).is(":checked");
+        if (isChecked) {
+            list.push($(this).data('mat'));
+        }
+    });
+    getDeliveryDriver(2023, list)
+        .then(function (data) {
+
+            var chart = createChart(data);
+        }).catch(function (error) { });
+
+
+
+}
+
+
+
+
+function createChart(data) {
+    var dataSetChart = data.map(d => {
+        return {
+            label: d.matricule,
+            fill: true,
+            backgroundColor: "transparent",
+            borderColor: "#" + Math.floor(Math.random() * 16777215).toString(16),
+            data: d.statsPerMonth.map(d => d.count)
+
+        };
+    });
+    return new Chart(document.getElementById("chartjs-line"), {
         type: "line",
         data: {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [{
-                label: "Moyen",
-                fill: true,
-                backgroundColor: "transparent",
-                borderColor: window.theme.primary,
-                data: [2115, 1562, 1584, 1892, 1487, 2223, 2966, 2448, 2905, 3838, 2917, 3327]
-            }]
+            datasets: dataSetChart
         },
         options: {
-            maintainAspectRatio: false,
-            legend: {
-                display: false
-            },
-            tooltips: {
-                intersect: false
-            },
-            hover: {
-                intersect: true
-            },
-            plugins: {
-                filler: {
-                    propagate: false
-                }
-            },
             scales: {
                 xAxes: [{
                     reverse: true,
@@ -40,10 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }],
                 yAxes: [{
-                    ticks: {
-                        stepSize: 500
-                    },
-                    display: true,
                     borderDash: [5, 5],
                     gridLines: {
                         color: "rgba(0,0,0,0)",
@@ -51,27 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }]
             }
-        }
-    });
-
-    AddDriver("DR885379", chart);
-
-
-
-    console.log(chart.data);
-    //chart.update();
-
-});
-
-function getCLient() {
-    $.ajax({
-        type: 'POST',
-        url: '/Stats/GetClientStatsAjax',
-        success: function (data) {
-            recreateStatCLient(data);
-        },
-        error: function () {
-            alert('Une erreur est survenue');
         }
     });
 }

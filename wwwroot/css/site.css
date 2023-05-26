@@ -30,10 +30,10 @@ nav {
 
 
 
-    /*HomePage*/
-    #cover {
-        position: relative;
-    }
+/*HomePage*/
+#cover {
+    position: relative;
+}
 
     #cover > img {
         width: 100%;
@@ -169,3 +169,6 @@ main section:not(:first-child) {
         overflow: scroll;
     }
 
+.font-color-black {
+    color: black;
+}
