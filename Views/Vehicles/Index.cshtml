@@ -4,63 +4,71 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Votre flote</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Plaque
-            </th>
-            <th>
-                Maque
-            </th>
-            <th>
-                Modele
-            </th>
-            <th>
-                Permis nesesaire
-            </th>
-            <th>
-                Poids maximal
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @{
-                        var imageSrc = "/images/";
-                        if (item.Picture != null)
-                            imageSrc += "vehicules/" + item.Picture;
-                        else
-                            imageSrc += "defaultTucksPicture.png";
-                    }
-                    <img src="@imageSrc" class="border rounded-circle img-profile" width="32" height="32" />
-                    @Html.DisplayFor(modelItem => item.VIN)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Brand)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.License.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Payload)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.VIN"><span class="material-icons icon-color-black">&#xe5d3;</span></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="d-flex flex-column justify-content-center align-items-center mt-3">
+    <div class="table-80">
+        <table class="table">
+            <thead class="thead-dark table-borderless">
+                <tr>
+                    <th colspan="7" class="rounded-top"><h1 class="text-center">Votre flotte</h1></th>
+                </tr>
+                <tr>
+                    <th scope="col">
+                        <a asp-action="Create"><span class="material-icons icon-color-white">&#xe145;</span></a>
+                    </th>
+                    <th scope="col">
+                        Plaque
+                    </th>
+                    <th scope="col">
+                        Maque
+                    </th>
+                    <th scope="col">
+                        Modele
+                    </th scope="col">
+                    <th>
+                        Permis nesesaire
+                    </th>
+                    <th scope="col">
+                        Poids maximal
+                    </th>
+                    <th scope="col">Actions</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                var imageSrc = "/images/";
+                                if (item.Picture != null)
+                                    imageSrc += "vehicules/" + item.Picture;
+                                else
+                                    imageSrc += "defaultTucksPicture.png";
+                            }
+                            <img src="@imageSrc" class="border rounded-circle img-profile" width="32" height="32" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LicensePlate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Model)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.License.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Payload)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.VIN"><span class="material-icons icon-color-black">&#xe5d3;</span></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

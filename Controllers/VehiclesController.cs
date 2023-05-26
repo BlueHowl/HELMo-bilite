@@ -66,25 +66,26 @@ namespace HELMo_bilite.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Create([Bind("VIN,Plate,Brand,Model,IdLicenses,Payload,Picture")] VehicleVM vehicleInput)
+        public async Task<IActionResult> Create([Bind("Plate,Brand,Model,IdLicenses,Payload,Picture")] VehicleVM vehicleInput)
         {
             VerifCreate(vehicleInput);  
             if (ModelState.IsValid)
             {
                 var vehicle = new Vehicle
                 {
-                    VIN = vehicleInput.VIN,
                     LicensePlate = vehicleInput.Plate,
                     Brand = vehicleInput.Brand,
                     Model = vehicleInput.Model,
                     IdLicense = vehicleInput.IdLicenses,
                     Payload = vehicleInput.Payload
                 };
-                if (vehicle.Picture != null)
-                    vehicle.Picture = await SavePicture(vehicleInput.Picture, "vehicules", 400, 400, vehicle.VIN);
+                var vehicleStore = _context.Add(vehicle);
+                
+                if (vehicleInput.Picture != null)
+                    vehicle.Picture = await SavePicture(vehicleInput.Picture, "vehicules", 400, 400, vehicleStore.Entity.VIN);
 
 
-                _context.Add(vehicle);
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -242,15 +243,6 @@ namespace HELMo_bilite.Controllers
 
         private void VerifCreate(VehicleVM vehicleInput)
         {
-            if (vehicleInput.VIN == null)
-            {
-                ModelState.AddModelError("VIN", "Le VIN est obligatoire");
-            }
-            var vehiculeFound = _context.Vehicles.FirstOrDefault(v => v.VIN == vehicleInput.VIN);
-            if(vehiculeFound != null)
-            {
-                ModelState.AddModelError("VIN", "Ce VIN est appartient deja a autre vehicule");
-            }
 
             if (vehicleInput.Plate == null)
             {

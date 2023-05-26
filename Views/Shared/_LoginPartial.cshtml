@@ -2,58 +2,75 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<ul class="navbar-nav">
+
+<nav class="navbar navbar-expand navbar-light navbar-bg">
     @if (SignInManager.IsSignedIn(User))
     {
-        var user = await UserManager.GetUserAsync(User);
-        var roles = await UserManager.GetRolesAsync(user);
-        var role = roles.FirstOrDefault();
-        var Name = @User.Identity?.Name;
-        var imageSrc = "/images/defaultProfilePicture.jpg";
-        if (role == "driver" || role == "dispatcher")
-        {
-            Name = (user as HelmoMember).Matricule;
-        }
-        if (role == "client")
-        {
-            Name = (user as Client).CompanyName;
-        }
-        if (role == "admin")
-        {
-            //easter egg
-            if(User.Identity.Name == "valentin.lopez1109@gmail.com")
-                Name = "Le dieu qui controle toute chose";
-            else
-                Name = "Admin";
-        }
-        if (user.PictureScr != null)
-        {
-            imageSrc = "/images/" + (role == "client" ? "client" : "user") + "/" + user.PictureScr;
-        }
+        <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+        </a>
+    }
+    <div class="navbar-collapse collapse">
+        <ul class="navbar-nav navbar-align">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var user = await UserManager.GetUserAsync(User);
+                var roles = await UserManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault();
+                var Name = @User.Identity?.Name;
+                var imageSrc = "/images/defaultProfilePicture.jpg";
+                if (role == "driver" || role == "dispatcher")
+                {
+                    Name = (user as HelmoMember).Matricule;
+                }
+                if (role == "client")
+                {
+                    Name = (user as Client).CompanyName;
+                }
+                if (role == "admin")
+                {
+                    //easter egg
+                    if (User.Identity.Name == "valentin.lopez1109@gmail.com")
+                        Name = "Le dieu qui controle toute chose";
+                    else
+                        Name = "Admin";
+                }
+                if (user.PictureScr != null)
+                {
+                    imageSrc = "/images/" + (role == "client" ? "client" : "user") + "/" + user.PictureScr;
+                }
 
-        <li class="nav-item dropdown no-arrow">
-            <div class="nav-item dropdown no-arrow">
-                <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
-                    <span class="align-middle">@Name</span>
-                    <img src="@imageSrc" width="42" height="42" alt="" class="border rounded-circle img-profile">
-                </a>
-                <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <form class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="nav-link btn btn-link text-dark">Se deconnecter</button>
-                    </form>
-                </div>
-            </div>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">S'enregistrer</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
-        </li>
-    }
-</ul>
+
+                <li class="nav-item dropdown">
+                    
+                    <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
+                       data-bs-toggle="dropdown">
+                        <img src=@imageSrc class="avatar img-fluid rounded me-1"
+                             alt="Image profil" /> <span class="text-dark">@Name</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+
+                        <form class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <button type="submit" class="nav-link btn btn-link text-dark"><i class="align-middle me-1" data-feather="user"></i> Profile</button>
+                        </form>
+                       
+                        <div class="dropdown-divider"></div>
+                        <form class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="nav-link btn btn-link text-dark"><i class="align-middle me-1" data-feather="log-out"></i> Se deconnecter</button>
+                        </form>
+                    </div>
+                </li>
+            
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">S'enregistrer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

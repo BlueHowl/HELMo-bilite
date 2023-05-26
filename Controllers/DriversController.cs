@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
 using HELMo_bilite.Controllers.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using static HELMo_bilite.Models.Delivery;
 
 namespace HELMo_bilite.Controllers
 {
@@ -96,7 +93,7 @@ namespace HELMo_bilite.Controllers
 
             var allLisence = await _context.Licenses.ToListAsync();
 
-            return View(new EditDriverLisencesVM
+            return View(new EditDriverLicensesVM
             {
                 Matricule = driver.Matricule,
                 Licenses = allLisence
@@ -116,14 +113,17 @@ namespace HELMo_bilite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, EditDriverLisencesVM driver)
+        public async Task<IActionResult> Edit(string id,[Bind("IdsLicensesSelect")] EditDriverLicensesVM driver)
         {          
+            if(driver.IdsLicensesSelect?.Count == 0)
+            {
+                ModelState.AddModelError("IdsLicensesSelect", "Vous devez selectionner au moins une licence");
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-
                     var driverToUpdate = await _context.Drivers
                         .Include(d => d.Licenses)
                         .FirstOrDefaultAsync(m => m.Matricule == id);
@@ -134,17 +134,34 @@ namespace HELMo_bilite.Controllers
 
 
                     //on trouver le plus grand id de lisence et on le coverti en int
-                    var higthestLisenceId = int.Parse(driver.Licenses.OrderByDescending(l => l).FirstOrDefault().Value);
+                    var higthestLisenceId = driver.IdsLicensesSelect.Select(l => int.Parse(l))
+                                                                    .OrderByDescending(l => l).FirstOrDefault();
 
+                    
 
                     var lisences = _context.Licenses.ToList();
+                    var lisencesDriver = new List<License>();
                     foreach (var lisence in lisences)
                     {
                         if (higthestLisenceId >= lisence.Id)
                         {
-                            driverToUpdate.Licenses.Add(lisence);
+                            lisencesDriver.Add(lisence);
                         }
                     }
+                    driverToUpdate.Licenses = lisencesDriver;
+
+                    //on supprime toutes les livraison du chauffeur si le camion a un lisence non possedée par le chauffeur
+                    var deliveries = _context.Deliveries.Include(d => d.Vehicle).Where(d => d.IdDriver == driverToUpdate.Id);
+                    foreach (var delivery in deliveries)
+                    {
+                        if (!driverToUpdate.HasLicense(delivery.Vehicle.IdLicense))
+                        {
+                            delivery.IdDriver = null;
+                            delivery.Status = State.Waiting;
+                            _context.Update(delivery);
+                        }
+                    }
+                    _context.Update(driverToUpdate);
                     await _context.SaveChangesAsync();
                     
                 }
@@ -161,7 +178,7 @@ namespace HELMo_bilite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "HelmoMembers");
             }
             return View(driver);
         }

@@ -1,7 +1,12 @@
-﻿@model IEnumerable<HELMo_bilite.Models.Delivery>
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<HELMo_bilite.Models.Delivery>
+@inject UserManager<User> userManager
 
 @{
     ViewData["Title"] = "Index";
+    string currentUserId = userManager.GetUserId(User);
+
+    int row = 0;
 }
 
 <h1>Commandes</h1>
@@ -11,8 +16,14 @@
     <p>
         <a asp-action="Create">Créer une nouvelle commande</a>
     </p>
+} else if(User.IsInRole("dispatcher"))
+{
+    <a class="p-2" href="#" onclick="refreshTable()">
+        <asp:span id="activeRefresh" class="material-icons icon-color-black">&#xe863;</asp:span>
+    </a>
 }
-<table class="table">
+
+<table class="table" id="deliveryTable">
     <thead>
         <tr>
             <th>
@@ -46,54 +57,125 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        //if(item.IdClient == ) TODO afficher uniquement les commandes du clients dans le cas client
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClientDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoadAddressDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoadDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnloadAddressDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnloadingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DriverDetails)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VehicleDetails)
-            </td>
-            <td>
-                @if (item.Status == Delivery.State.Waiting)
-                {
-                    @if (User.IsInRole("dispatcher"))
-                    {
-                        <a asp-action="Assign" asp-route-id="@item.Id">Assigner</a>
-                    }
-                    else if (User.IsInRole("client"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editer</a>
-                    }
-                
-                }
 
-                <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+        @foreach (var item in Model) {
+            @if ((User.IsInRole("dispatcher") && item.Status == Delivery.State.Waiting) || (User.IsInRole("client") && item.IdClient == currentUserId && item.Status != Delivery.State.IsEnded))
+            {
+                
+                ++row;
+                
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Client.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LoadAddress.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LoadDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnloadingAddress.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnloadingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Driver.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vehicle.Details)
+                    </td>
+                    <td>
+                        @if (item.Status == Delivery.State.Waiting)
+                        {
+                            @if (User.IsInRole("dispatcher"))
+                            {
+                                <a asp-action="Assign" asp-route-id="@item.Id">Assigner</a>
+                            }
+                            else if (User.IsInRole("client"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id">Editer</a>
+                            }
+                        }
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        }
+
+        <tr class="line-separator">
+            <td colspan="10"></td>
+        </tr>
+        <tr>
+            <td class ="text-center" colspan="10">
+                <h4>Historique des commandes</h4>
             </td>
         </tr>
-}
+
+        @foreach (var item in Model) {
+            @if (User.IsInRole("client") && item.IdClient == currentUserId && item.Status == Delivery.State.IsEnded)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Client.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LoadAddress.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LoadDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnloadingAddress.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnloadingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Driver.Details)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Vehicle.Details)
+                    </td>
+                    <td>
+                        @if (item.Status == Delivery.State.Waiting)
+                        {
+                            @if (User.IsInRole("dispatcher"))
+                            {
+                                <a asp-action="Assign" asp-route-id="@item.Id">Assigner</a>
+                            }
+                            else if (User.IsInRole("client"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id">Editer</a>
+                            }
+                        }
+
+                        <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        }
+
     </tbody>
 </table>
+
+@if (User.IsInRole("dispatcher") && row == 0)
+{
+    <h4 class="text-center">Pas de commandes à attribuer en ce moment !</h4>
+}

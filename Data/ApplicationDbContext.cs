@@ -45,15 +45,16 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
         modelBuilder.Entity<Delivery>()
             .HasOne(d => d.LoadAddress)
-            .WithOne()
-            .HasForeignKey<Models.Address>("LoadAddressId")
+            .WithMany()
+            .HasForeignKey(d => d.LoadAddressId)
             .IsRequired(false);
 
         modelBuilder.Entity<Delivery>()
-           .HasOne(d => d.UnloadingAddress)
-           .WithOne()
-           .HasForeignKey<Models.Address>("UnloadingAddressId")
-           .IsRequired(false);
+            .HasOne(d => d.UnloadingAddress)
+            .WithMany()
+            .HasForeignKey(d => d.UnloadingAddressId)
+            .IsRequired(false);
+
 
 
         modelBuilder.Entity<License>().HasData(new License { Id = 1, Name = "B" });

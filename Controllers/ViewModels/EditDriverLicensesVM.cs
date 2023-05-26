@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HELMo_bilite.Controllers.ViewModels
 {
-    public class EditDriverLisencesVM
+    public class EditDriverLicensesVM
     {
-        public string Matricule { get; set; }
+        public string? Matricule { get; set; }
 
         public List<SelectListItem>? Licenses { get; set; }
 
