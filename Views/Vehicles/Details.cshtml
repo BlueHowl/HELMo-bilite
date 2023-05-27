@@ -52,7 +52,7 @@
             </dl>
             <div class="p-2 align-middle">
                 @{
-                    var imageSrc = "/images/";
+                    var imageSrc = Url.Content("~/") + "images/";
                     
                     if (Model.Picture != null)
                         imageSrc += "vehicules/" + Model.Picture;

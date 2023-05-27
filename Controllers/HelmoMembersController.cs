@@ -33,31 +33,6 @@ namespace HELMo_bilite.Controllers
                           Problem("Entity set 'ApplicationDbContext.HelmoMembers'  is null.");
         }
 
-        // GET: HelmoMembers/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null || _context.HelmoMembers == null)
-            {
-                return NotFound();
-            }
-
-            var helmoMember = await _context.HelmoMembers
-                .FirstOrDefaultAsync(m => m.Matricule == id);
-            if (helmoMember == null)
-            {
-                return NotFound();
-            }
-
-            return View(helmoMember);
-        }
-
-        // GET: HelmoMembers/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-       
 
         private List<HelmoMemberVM> TransformListOfMember(List<HelmoMember> helmoMembers)
         {

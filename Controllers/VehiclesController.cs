@@ -69,7 +69,7 @@ namespace HELMo_bilite.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create([Bind("Plate,Brand,Model,IdLicenses,Payload,Picture")] VehicleVM vehicleInput)
         {
-            VerifCreate(vehicleInput);  
+            VerifCreate(vehicleInput, null);  
             if (ModelState.IsValid)
             {
                 var vehicle = new Vehicle
@@ -129,7 +129,7 @@ namespace HELMo_bilite.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("Plate,Brand,Model,IdLicenses,Payload,Picture")] VehicleVM vehicle)
         {
 
-            VerifCreate(vehicle);   
+            VerifCreate(vehicle, id);   
             if (ModelState.IsValid)
             {
                 try
@@ -245,9 +245,9 @@ namespace HELMo_bilite.Controllers
             return fileName;
         }
 
-        private void VerifCreate(VehicleVM vehicleInput)
+        private void VerifCreate(VehicleVM vehicleInput, string id)
         {
-
+          
             if (vehicleInput.Plate == null)
             {
                 ModelState.AddModelError("Plate", "La plaque est obligatoire");
@@ -256,10 +256,10 @@ namespace HELMo_bilite.Controllers
             {
                 ModelState.AddModelError("Plate", "La plaque n'est pas valide le formate doit respecter  \"1-ABC-123\"");
             }
-            var plateFound = _context.Vehicles.FirstOrDefault(v => v.LicensePlate == vehicleInput.Plate);
+            var plateFound = _context.Vehicles.FirstOrDefault(v => v.LicensePlate == vehicleInput.Plate && id != v.VIN);
             if (plateFound != null)
             {
-                ModelState.AddModelError("Plate", "Cette plaque est appartient deja a autre vehicule");
+                ModelState.AddModelError("Plate", "Cette plaque appartient deja a autre vehicule");
             }
 
             if (vehicleInput.Brand == null)
