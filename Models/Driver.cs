@@ -9,6 +9,7 @@ public class Driver : HelmoMember
 
     public ICollection<Delivery>? Deliverys { get; set; } = new List<Delivery>();
 
+    public string Details => $"{FirstName} {Name}\n{Email}";
 
     public bool HasLicense(int id)
     {

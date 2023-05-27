@@ -1,7 +1,7 @@
 ﻿@model HELMo_bilite.Models.Delivery
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails commande";
 }
 
 <h1>Details</h1>
@@ -14,14 +14,14 @@
             @Html.DisplayNameFor(model => model.Client)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ClientDetails)
+            @Html.DisplayFor(model => model.Client.Details)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Driver)
         </dt>
 
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DriverDetails)
+            @Html.DisplayFor(model => model.Driver.Details)
         </dd>
 
         <dt class = "col-sm-2">
@@ -34,7 +34,7 @@
             @Html.DisplayNameFor(model => model.LoadAddressId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoadAddressDetails)
+            @Html.DisplayFor(model => model.LoadAddress.Details)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LoadDate)
@@ -46,7 +46,7 @@
             @Html.DisplayNameFor(model => model.UnloadingAddressId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UnloadAddressDetails)
+            @Html.DisplayFor(model => model.UnloadingAddress.Details)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.UnloadingDate)
@@ -64,11 +64,22 @@
             @Html.DisplayNameFor(model => model.Vehicle)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VehicleDetails)
+            @Html.DisplayFor(model => model.Vehicle.Details)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editer</a> |
+    @if (Model.Status == Delivery.State.Waiting)
+    {
+        @if (User.IsInRole("dispatcher"))
+        {
+            <a asp-action="Assign" asp-route-id="@Model.Id">Assigner</a>
+        }
+        else if (User.IsInRole("client"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id">Editer</a>
+        }
+    }
+
     <a asp-action="Index">Retour à la liste</a>
 </div>

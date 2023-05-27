@@ -12,7 +12,18 @@ public class Delivery
         public static readonly string IsEnded = "Terminé";
     }
 
+    public class FailReason
+    {
+        public static readonly string Sickness = "Maladie";
 
+        public static readonly string Accident = "Accident";
+
+        public static readonly string MisingClient = "Client absent / Livraison impossible";
+
+        public static List<string> All => new List<string> { Sickness, Accident, MisingClient };
+    }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public int Id { get; set; }
 
@@ -21,14 +32,12 @@ public class Delivery
     [Required]
     [ForeignKey(nameof(Client))]
     public string IdClient { get; set; }
-    public string ClientDetails => $"{Client?.CompanyName}\n{Client?.Email}\n{Client?.PhoneNumber}";
 
 
     [DisplayName("Chauffeur")]
     public Driver Driver { get; set; }
     [ForeignKey(nameof(Driver))]
     public string? IdDriver { get; set; }
-    public string DriverDetails => $"{Driver?.FirstName} {Driver?.Name}\n{Driver?.Email}";
 
 
     [DisplayName("Contenu")]
@@ -41,7 +50,6 @@ public class Delivery
     [Required]
     [ForeignKey(nameof(LoadAddress))]
     public string LoadAddressId { get; set; }
-    public string LoadAddressDetails => $"{LoadAddress?.Street} {LoadAddress?.Number}, {LoadAddress?.Locality} {LoadAddress?.LocalityCode}";
 
     [DisplayName("Date de chargement")]
     [Required]
@@ -53,7 +61,6 @@ public class Delivery
     [Required]
     [ForeignKey(nameof(UnloadingAddress))]
     public string UnloadingAddressId { get; set; }
-    public string UnloadAddressDetails => $"{UnloadingAddress?.Street} {UnloadingAddress?.Number}, {UnloadingAddress?.Locality} {UnloadingAddress?.LocalityCode}";
 
     [DisplayName("Date de déchargement")]
     [Required]
@@ -63,23 +70,25 @@ public class Delivery
     [Required]
     public string Status { get; set; }
 
+    [DisplayName("Commentaire")]
+    public string? Comment { get; set; }
+
     [DisplayName("Véhicule")]
     public Vehicle Vehicle { get; set; }
     [ForeignKey(nameof(Vehicle))]
     public string? IdVehicle { get; set; }
-    public string VehicleDetails => $"{Vehicle?.Brand} {Vehicle?.Model}\n{Vehicle?.VIN}";
 
     public Delivery()
     {
 
     }
 
-    public Delivery(Client client, Driver driver, string content, Address loadAddress, DateTime loadDate, Address unloadingAddress, DateTime unloadingDate, string status, Vehicle vehicule)
+    public Delivery(Client client, Driver driver, string content, Address loadAddress, DateTime loadDate, Address unloadingAddress, DateTime unloadingDate, string status, string comment, Vehicle vehicule)
     {
         Client = client;
         IdClient = client.Id;
-        Driver = driver;/*
-        IdDriver = driver?.Id;*/
+        Driver = driver;
+        IdDriver = driver?.Id;
         Content = content;
         LoadAddress = loadAddress;
         LoadAddressId = loadAddress.IdAddress;
@@ -88,6 +97,7 @@ public class Delivery
         UnloadingAddressId = unloadingAddress.IdAddress;
         UnloadingDate = unloadingDate;
         Status = status;
+        Comment = comment;
         Vehicle = vehicule;
         IdVehicle = vehicule?.VIN;
     }

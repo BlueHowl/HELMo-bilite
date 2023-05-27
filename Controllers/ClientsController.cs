@@ -176,13 +176,20 @@ namespace HELMo_bilite.Controllers
                 return NotFound();
             }
             ViewData["CompanyAddressId"] = new SelectList(_context.Addresses, "IdAddress", "IdAddress", client.CompanyAddressId);
-            return View(client);
+            return View(new ClientVM
+            {
+                Id = client.Id,
+                CompanyName = client.CompanyName,
+                IsBadPayer = client.IsBadPayer
+            });
         }
 
         [HttpPost, ActionName("EditBadPayer")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditBadPayerConfirmed(string id)
         {
+
+
             if (_context.Clients == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Clients'  is null.");
@@ -190,7 +197,7 @@ namespace HELMo_bilite.Controllers
             var client = await _context.Clients.FindAsync(id);
             if (client != null)
             {
-                client.IsBagPayer = !client.IsBagPayer;
+                client.IsBadPayer = !client.IsBadPayer;
             }
 
             await _context.SaveChangesAsync();
@@ -217,7 +224,7 @@ namespace HELMo_bilite.Controllers
                     PhoneNumber = client.Number,
                     CompanyAddress = addressString,
                     Id = client.Id,
-                    IsBadPayer = client.IsBagPayer,
+                    IsBadPayer = client.IsBadPayer,
                     HasDelivery = false,
                     PictureSrc = srcImage,
                 });

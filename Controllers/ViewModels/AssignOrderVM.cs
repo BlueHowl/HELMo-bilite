@@ -1,5 +1,4 @@
-﻿using HELMo_bilite.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
 namespace HELMo_bilite.Controllers.ViewModels;

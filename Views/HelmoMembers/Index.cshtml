@@ -4,70 +4,73 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="d-flex flex-column justify-content-center" width="80%">
-    <h1 class="text-center">Liste des menbres helmo</h1>
-
-
-    <table class="table" >
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Matricule)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </th>
-                <th scope="col">
-                    @Html.DisplayNameFor(model => model.Role)
-                </th>
-                <th scope="col">
-                    Actions
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+<div class="d-flex flex-column justify-content-center align-items-center mt-3">
+    <div class="table-80">
+        <table class="table">
+            <thead class="thead-dark table-borderless">
                 <tr>
-                    <td>
-                        @{
-                            var imageSrc = "/images/";
-                            if (item.PictureScr != null)
-                                imageSrc += "user/" + item.PictureScr;
-                            else
-                                imageSrc += "defaultProfilePicture.jpg";
-                        }
-
-                        <img src="@imageSrc" class="border rounded-circle img-profile" width="32" height="32" />
-                        @Html.DisplayFor(modelItem => item.Matricule)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @{
-                            var classForBadge = (item.Role == "Driver") ? "badge-dark" : "badge-warning";
-                        }
-                        <span class="badge badge-pill @classForBadge">
-                            @item.Role
-                        </span>
-
-                    </td>
-                    <td>
-                        @if (item.Role == "Driver")
-                        {
-                            <a asp-controller="Drivers" asp-action="Edit" asp-route-id="@item.Matricule">Modifier les permis</a>
-                        }
-
-                    </td>
+                    <th colspan="5" class="rounded-top"><h1 class="text-center">Liste des membres helmo</h1></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+                <tr>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Matricule)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Role)
+                    </th>
+                    <th scope="col">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @{
+                                var imageSrc = Url.Content("~/") + "/images/";
+                                if (item.PictureScr != null)
+                                    imageSrc += "user/" + item.PictureScr;
+                                else
+                                    imageSrc += "defaultProfilePicture.jpg";
+                            }
+
+                            <img src="@imageSrc" class="border rounded-circle img-profile" width="32" height="32" />
+                            @Html.DisplayFor(modelItem => item.Matricule)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @{
+                                var classForBadge = (item.Role == "Driver") ? "badge-dark" : "badge-warning";
+                            }
+                            <span class="badge badge-pill @classForBadge">
+                                @item.Role
+                            </span>
+
+                        </td>
+                        <td>
+                            @if (item.Role == "Driver")
+                            {
+                                <a asp-controller="Drivers" asp-action="Edit" asp-route-id="@item.Matricule">Modifier les permis</a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
 </div>

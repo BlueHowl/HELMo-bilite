@@ -2,15 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using Bogus.DataSets;
+using System.Text.RegularExpressions;
 using HELMo_bilite.Controllers.ViewModels;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,13 +28,13 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ApplicationDbContext dbContext, 
+            ApplicationDbContext dbContext,
             IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _dbContext = dbContext;
-             _webHostEnvironment = webHostEnvironment;
+            _webHostEnvironment = webHostEnvironment;
 
         }
 
@@ -112,8 +109,12 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Le nom de votre companie")]
             public string CompanyName { get; set; }
 
-        
 
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Numéro de téléphone")]
+            public string PhoneNumber { get; set; }
+
+            public bool Loaded { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -140,6 +141,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             {
                 LoadClient(user);
             }
+            Input.Loaded = true;
 
         }
 
@@ -165,18 +167,25 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             }
 
             var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            if (!Input.Loaded)
+            {
+                
+                LoadAsync(user);
+                return Page();
+            }
 
             ModelErrorApplied(role, user);
 
             if (!ModelState.IsValid)
             {
+                
                 LoadAsync(user);
                 return Page();
             }
 
 
             if (role == "driver")
-            {               
+            {
                 StoreDriver(user);
             }
 
@@ -201,17 +210,21 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         {
             var client = _dbContext.Clients.Find(user.Id);
             client.CompanyName = Input.CompanyName;
-
-            string pathFileSave = await SaveFile(Input.ProfilePicture, "client", 200, 200, user.Id);
-            if (pathFileSave != null)
+            client.Number = Input.PhoneNumber;
+            if (Input.ProfilePicture != null)
             {
-                client.PictureScr = pathFileSave;
-                Input.LogoSrc = getPicture("client", pathFileSave);
+                string pathFileSave = await SavePicture(Input.ProfilePicture, "client", 200, 200, user.Id);
+                if (pathFileSave != null)
+                {
+                    client.PictureScr = pathFileSave;
+                    Input.LogoSrc = getPicture("client", pathFileSave);
+                }
             }
+
 
             var address = _dbContext.Addresses.Find(client.CompanyAddressId);
 
-            address.Number = ""+ ClientCompanyAdress.Number;
+            address.Number = "" + ClientCompanyAdress.Number;
             address.Street = ClientCompanyAdress.Street;
             address.Locality = ClientCompanyAdress.Locality;
             address.LocalityCode = "" + ClientCompanyAdress.LocalityCode;
@@ -223,12 +236,14 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         private async void StoreDriver(User user)
         {
             var driver = _dbContext.Drivers.Find(user.Id);
-
-            string pathFileSave = await SaveFile(Input.ProfilePicture, "user", 200, 200, user.Id);
-            if(pathFileSave != null)
+            if (Input.ProfilePicture != null)
             {
-                driver.PictureScr = pathFileSave;
-                Input.PictureSrc = getPicture("user", pathFileSave);
+                string pathFileSave = await SavePicture(Input.ProfilePicture, "user", 200, 200, user.Id);
+                if (pathFileSave != null)
+                {
+                    driver.PictureScr = pathFileSave;
+                    Input.PictureSrc = getPicture("user", pathFileSave);
+                }
             }
 
             driver.BirthDate = Input.BirthDate;
@@ -241,12 +256,14 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         {
             var dispatcher = _dbContext.Dispatchers.Find(user.Id);
             dispatcher.Name = Input.Name;
-
-            string pathFileSave = await SaveFile(Input.ProfilePicture, "user", 200, 200, user.Id);
-            if (pathFileSave != null)
+            if (Input.ProfilePicture != null)
             {
-                dispatcher.PictureScr = pathFileSave;
-                Input.PictureSrc = getPicture("user", pathFileSave);
+                string pathFileSave = await SavePicture(Input.ProfilePicture, "user", 200, 200, user.Id);
+                if (pathFileSave != null)
+                {
+                    dispatcher.PictureScr = pathFileSave;
+                    Input.PictureSrc = getPicture("user", pathFileSave);
+                }
             }
 
             dispatcher.FirstName = Input.FirstName;
@@ -268,7 +285,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
                 if (string.IsNullOrEmpty(Input.FirstName))
                     ModelState.AddModelError(nameof(Input.FirstName), "votre prenom ne peut pas etre vide");
                 var member = _dbContext.HelmoMembers.Find(user.Id);
-                if(member.Matricule != Input.Matricule)
+                if (member.Matricule != Input.Matricule)
                 {
                     var userFind = _dbContext.HelmoMembers.Where(hm => Input.Matricule == hm.Matricule).FirstOrDefault(); ;
                     if (userFind != null)
@@ -277,6 +294,31 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
                     }
 
                 }
+
+            }
+            if(role == "client")
+            {
+                Regex regex = new Regex(@"^\+32\d{9}$");
+                if(Input.PhoneNumber != null && !regex.IsMatch(Input.PhoneNumber))
+                    ModelState.AddModelError(nameof(Input.PhoneNumber), "le numero de telephone doit etre de la forme +32xxxxxxxxx");
+
+                if (string.IsNullOrEmpty(Input.CompanyName))
+                    ModelState.AddModelError(nameof(Input.CompanyName), "le nom de la societe ne peut pas etre vide");
+                
+                //validation de l'adresse client
+                if (ClientCompanyAdress.Number < 0)
+                    ModelState.AddModelError(nameof(ClientCompanyAdress.Number), "le numero de rue ne peut pas etre vide");
+                if (string.IsNullOrEmpty(ClientCompanyAdress.Street))
+                    ModelState.AddModelError(nameof(ClientCompanyAdress.Street), "le nom de la rue ne peut pas etre vide");
+                if (string.IsNullOrEmpty(ClientCompanyAdress.Locality))
+                    ModelState.AddModelError(nameof(ClientCompanyAdress.Locality), "le nom de la localite ne peut pas etre vide");
+                if (ClientCompanyAdress.LocalityCode < 0)
+                    ModelState.AddModelError(nameof(ClientCompanyAdress.LocalityCode), "le code postal ne peut pas etre vide");
+                if (string.IsNullOrEmpty(ClientCompanyAdress.Country))
+                    ModelState.AddModelError(nameof(ClientCompanyAdress.Country), "le nom du pays ne peut pas etre vide");
+
+
+
 
             }
             //obtention des erreurde validation
@@ -293,7 +335,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         }
 
 
-       
+
 
         private void LoadDispatcher(User user)
         {
@@ -336,18 +378,19 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             {
                 Input.PictureSrc = getPicture("user", driver.PictureScr);
             }
-            
+
         }
 
         private void LoadClient(User user)
         {
             var client = _dbContext.Clients.Include(c => c.CompanyAddress).FirstOrDefault(c => c.Id == user.Id);
+            Input.PhoneNumber = client.Number;
             if (client == null)
             {
                 return;
             }
             Input.CompanyName = client.CompanyName;
-            if(client.PictureScr != null)
+            if (client.PictureScr != null)
                 Input.LogoSrc = getPicture("client", client.PictureScr);
 
             ClientCompanyAdress = new CreationAddressInscriptionVM
@@ -363,10 +406,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
 
         private string getPicture(string folder, string name)
         {
-            return Path.Combine("/","images", folder, name);
+            return Path.Combine("/", "images", folder, name);
         }
 
-        private async Task<string> SaveFile(IFormFile profilePicture, string path, int maxWidth, int maxHeight, string nameFile)
+        private async Task<string> SavePicture(IFormFile profilePicture, string path, int maxWidth, int maxHeight, string nameFile)
         {
             var webRootPath = _webHostEnvironment.WebRootPath;
             var fileEnter = Path.GetFileName(profilePicture.FileName);

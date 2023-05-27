@@ -1,0 +1,81 @@
+﻿@model HELMo_bilite.Controllers.ViewModels.TerminateDeliveryVM
+
+@{
+    ViewData["Title"] = "Terminer commande";
+}
+
+<h1>Terminer une commande</h1>
+
+<hr />
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4">
+
+        <form asp-action="Finish">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Client" class="control-label"></label>
+                <input asp-for="Client" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="LoadAddress" class="control-label">Addresse de chargement</label>
+                <input asp-for="LoadAddress" class="form-control" disabled>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoadDate" class="control-label"></label>
+                <input asp-for="LoadDate" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="UnloadingAddress" class="control-label">Addresse de déchargement</label>
+                <input asp-for="UnloadingAddress" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="UnloadingDate" class="control-label"></label>
+                <input asp-for="UnloadingDate" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" disabled />
+            </div>
+            <div class="form-group">
+                <label asp-for="IdVehicle" class="control-label"></label>
+                <input asp-for="IdVehicle" class="form-control" disabled />
+            </div>
+
+            <button type="button" id="switchButton" class="btn btn-success w-100">Livraison Effectuee</button>
+
+            <div id="reasonSelector" class="form-group d-none">
+                <label asp-for="Reason" class="control-label"></label>
+
+                <select asp-for="Reason" class="form-control" asp-items="ViewBag.Reasons">
+                    <option value="">-- Choisir un motif --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label"></label>
+                <input id="commentField" asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Terminer" class="btn btn-primary w-100 p-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+<script src="~/js/switchButton.js"></script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

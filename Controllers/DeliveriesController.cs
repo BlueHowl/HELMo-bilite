@@ -6,6 +6,8 @@ using HELMo_bilite.Models;
 using HELMo_bilite.Controllers.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace HELMo_bilite.Controllers
 {
@@ -30,6 +32,7 @@ namespace HELMo_bilite.Controllers
                 .Include(d => d.Vehicle)
                 .Include(d => d.LoadAddress)
                 .Include(d => d.UnloadingAddress);
+
             return View(await deliveries.ToListAsync());
         }
 
@@ -86,22 +89,27 @@ namespace HELMo_bilite.Controllers
                     var loadAddress = await _context.Addresses.FindAsync(order.LoadAddressId);
                     var unloadAddress = await _context.Addresses.FindAsync(order.UnloadingAddressId);
 
-                    var newDelivery = new Delivery
-                    (
-                        client,
-                        null,
-                        order.Content,
-                        loadAddress,
-                        order.LoadDate,
-                        unloadAddress,
-                        order.UnloadingDate,
-                        Delivery.State.Waiting,
-                        null
-                    );
+                    if (loadAddress != null && unloadAddress != null)
+                    {
 
-                    _context.Add(newDelivery);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                        var newDelivery = new Delivery
+                        (
+                            client,
+                            null,
+                            order.Content,
+                            loadAddress,
+                            order.LoadDate,
+                            unloadAddress,
+                            order.UnloadingDate,
+                            Delivery.State.Waiting,
+                            null,
+                            null
+                        );
+
+                        _context.Add(newDelivery);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
                 } 
                 
             }
@@ -129,21 +137,17 @@ namespace HELMo_bilite.Controllers
                 return NotFound();
             }
 
-            /*delivery.Client = await _context.Clients.FindAsync(delivery.IdClient);
-            delivery.LoadAddress = await _context.Addresses.FindAsync(delivery.LoadAddressId);
-            delivery.UnloadingAddress = await _context.Addresses.FindAsync(delivery.UnloadingAddressId);
-            */
             var assignOrderVM = new AssignOrderVM(
                 delivery.Id, 
-                delivery.ClientDetails, 
-                delivery.DriverDetails,
+                delivery.Client.Details, 
+                delivery.Driver?.Details,
                 delivery.Content,
-                delivery.LoadAddressDetails, 
+                delivery.LoadAddress.Details, 
                 delivery.LoadDate,
-                delivery.UnloadAddressDetails,
+                delivery.UnloadingAddress.Details,
                 delivery.UnloadingDate,
                 delivery.Status,
-                delivery.VehicleDetails);
+                delivery.Vehicle?.Details);
 
             setViewDataList(delivery.LoadDate, delivery.UnloadingDate);
 
@@ -177,10 +181,10 @@ namespace HELMo_bilite.Controllers
             }
             
             newDelivery.IdDriver = delivery.IdDriver;
-            newDelivery.Driver = await _context.Drivers.Include(d => d.Licenses).FirstOrDefaultAsync(d => d.Id == delivery.IdDriver);//.FindAsync(delivery.IdDriver);
+            newDelivery.Driver = await _context.Drivers.Include(d => d.Licenses).FirstOrDefaultAsync(d => d.Id == delivery.IdDriver);
 
             newDelivery.IdVehicle = delivery.IdVehicle;
-            newDelivery.Vehicle = await _context.Vehicles.Include(v => v.License).FirstOrDefaultAsync(v => v.VIN == delivery.IdVehicle);//.FindAsync(delivery.IdVehicle);
+            newDelivery.Vehicle = await _context.Vehicles.Include(v => v.License).FirstOrDefaultAsync(v => v.VIN == delivery.IdVehicle);
 
             newDelivery.Status = Delivery.State.InProgress;
 
@@ -213,15 +217,15 @@ namespace HELMo_bilite.Controllers
 
             var assignOrderVM = new AssignOrderVM(
                 newDelivery.Id,
-                newDelivery.ClientDetails,
-                newDelivery.DriverDetails,
+                newDelivery.Client.Details,
+                newDelivery.Driver.Details,
                 newDelivery.Content,
-                newDelivery.LoadAddressDetails,
+                newDelivery.LoadAddress.Details,
                 newDelivery.LoadDate,
-                newDelivery.UnloadAddressDetails,
+                newDelivery.UnloadingAddress.Details,
                 newDelivery.UnloadingDate,
                 newDelivery.Status,
-                newDelivery.VehicleDetails);
+                newDelivery.Vehicle.Details);
 
             setViewDataList(newDelivery.LoadDate, newDelivery.UnloadingDate);
 
@@ -321,6 +325,121 @@ namespace HELMo_bilite.Controllers
             return View(order);
         }
 
+        // GET: Deliveries/Finish/5
+        [Authorize(Roles = "driver,admin")]
+        public async Task<IActionResult> Finish(int? id)
+        {
+            if (id == null || _context.Deliveries == null)
+            {
+                return NotFound();
+            }
+
+            var delivery = await _context.Deliveries
+                .Include(d => d.Client)
+                .Include(d => d.LoadAddress)
+                .Include(d => d.UnloadingAddress)
+                .Include(d => d.Vehicle)
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (delivery == null)
+            {
+                return NotFound();
+            }
+
+            var terminateDeliveryVM = new TerminateDeliveryVM(
+                delivery.Id,
+                delivery.Client.Details,
+                delivery.Content,
+                delivery.LoadAddress.Details,
+                delivery.LoadDate,
+                delivery.UnloadingAddress.Details,
+                delivery.UnloadingDate,
+                delivery.Status,
+                null,
+                null,
+                delivery.Vehicle.Details);
+
+            setViewfailReasonsList();
+
+            return View(terminateDeliveryVM);
+        }
+
+        // POST: Deliveries/Finish/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "driver,admin")]
+        public async Task<IActionResult> Finish(int id, [Bind("Comment, Reason")] TerminateDeliveryVM delivery)
+        {
+            var newDelivery = await _context.Deliveries
+                .Include(d => d.Client)
+                .Include(d => d.Driver)
+                .Include(d => d.Vehicle)
+                .Include(d => d.LoadAddress)
+                .Include(d => d.UnloadingAddress)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (newDelivery == null)
+            {
+                return NotFound();
+            }
+            Console.WriteLine("test " + delivery.Comment + " " + delivery.Reason);
+            if(delivery.Comment == null && delivery.Reason == null)
+            {
+                ModelState.AddModelError("Comment", "Vous devez ajouter un commentaire ou une raison !");
+            }
+
+            if(delivery.Comment == null)
+            {
+                newDelivery.Comment = delivery.Reason;
+            } else
+            {
+                newDelivery.Comment = delivery.Comment;
+            }
+
+            newDelivery.Status = Delivery.State.IsEnded;
+
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(newDelivery);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DeliveryExists(delivery.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            var terminateDeliveryVM = new TerminateDeliveryVM(
+                newDelivery.Id,
+                newDelivery.Client.Details,
+                newDelivery.Content,
+                newDelivery.LoadAddress.Details,
+                newDelivery.LoadDate,
+                newDelivery.UnloadingAddress.Details,
+                newDelivery.UnloadingDate,
+                newDelivery.Status,
+                delivery.Comment,
+                delivery.Reason,
+                newDelivery.Vehicle?.Details);
+
+            setViewfailReasonsList();
+
+            return View(terminateDeliveryVM);
+        }
+
         // GET: Deliveries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -360,7 +479,7 @@ namespace HELMo_bilite.Controllers
                 .Include(d => d.Vehicle)
                 .Include(d => d.LoadAddress)
                 .Include(d => d.UnloadingAddress)
-                .FirstOrDefaultAsync(m => m.Id == id);//.FindAsync(id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (delivery != null)
             {
@@ -402,6 +521,23 @@ namespace HELMo_bilite.Controllers
             return View(address);
         }
 
+        //GET: Deliveries/GetDeliveries
+        public ActionResult GetDeliveries()
+        {
+            var user = _userManager.GetUserAsync(User).Result;
+            
+            var deliveries = _context.Deliveries
+                .Include(d => d.Client)
+                .Where(d => d.IdDriver == user.Id);
+
+            var serializerOptions = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                MaxDepth = 64 
+            };
+
+            return Json(deliveries.ToList(), serializerOptions);
+        }
 
 
         private void setViewAddressList()
@@ -415,6 +551,16 @@ namespace HELMo_bilite.Controllers
             ViewData["Addresses"] = addressList;
         }
 
+        private void setViewfailReasonsList()
+        {
+            List<SelectListItem> reasonsList = Delivery.FailReason.All.Select(fr => new SelectListItem
+            {
+                Value = fr,
+                Text = fr
+            }).ToList();
+
+            ViewData["Reasons"] = reasonsList;
+        }
 
         private void setViewDataList(DateTime startDate, DateTime endDate)
         {
@@ -436,12 +582,17 @@ namespace HELMo_bilite.Controllers
                     (d.LoadDate <= endDate && d.UnloadingDate >= startDate.AddHours(1)))) //les véhicules on ils aussi un délai de 1h supp
                 .Select(v => new SelectListItem
                 {
-                    Value = v.LicensePlate.ToString(),
+                    Value = v.VIN,
                     Text = $"{v.Brand} {v.Model}, {v.LicensePlate} : Permis {v.License.Name}"
                 }).ToList();
 
             ViewData["Drivers"] = availableDrivers;
             ViewData["Vehicles"] = availableVehicles;
+
+            if(availableDrivers.Count == 0 || availableVehicles.Count == 0)
+            {
+                ViewData["Unavailable"] = "true";
+            }
         }
 
     }

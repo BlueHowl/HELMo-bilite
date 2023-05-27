@@ -13,7 +13,8 @@
 
         <form id="profile-form g-2" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+           
+            <input type="hidden" asp-for="Input.Loaded" />
 
 
             <div class="form-floating mb-3">
@@ -107,7 +108,10 @@
             @if (User.IsInRole("client"))
             {
                 <div class="form-floating mb-3">
-                    <img src="@Model.Input.LogoSrc" />
+                    @{
+                        var pictureSrc = Url.Content("~/") + Model.Input.LogoSrc;
+                    }
+                    <img src="@pictureSrc" />
                     <input type="file" class="form-control" asp-for="Input.ProfilePicture" />
                     <span asp-validation-for="Input.LogoPicture" class="text-danger"></span>
                 </div>
@@ -116,6 +120,11 @@
                     <input asp-for="Input.CompanyName" class="form-control" autocomplete="on" aria-required="true" />
                     <label asp-for="Input.CompanyName"></label>
                     <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 client">
+                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="on" aria-required="true" />
+                    <label asp-for="Input.PhoneNumber"></label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="client">
                     <partial name="_CreateAddressForm" model="@Model.ClientCompanyAdress" />

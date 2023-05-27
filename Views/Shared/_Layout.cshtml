@@ -5,8 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - HELMo_bilite</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/HELMo_bilite.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/theme/dist/css/app.css">
+
+    <environment names="Development">
+        <link href="~/css/site.css" rel="stylesheet" />
+        <script type="module" src="~/js/appStats.js"></script>
+        <script src="~/js/autoRefresh.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <link href="~/mylib/style.css" rel="stylesheet">
+        <script src="~/mylib/all.min.js"></script>
+    </environment>
+
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
@@ -15,70 +25,172 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
-
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HELMo_bilite</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <div class="wrapper">
 
 
+        @if (User.IsInRole("driver") || User.IsInRole("dispatcher") || User.IsInRole("client") || User.IsInRole("admin"))
+        {
 
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
-                        </li>
-                        @if (User.IsInRole("admin"))
+            <nav id="sidebar" class="sidebar js-sidebar">
+                <div class="sidebar-content js-simplebar">
+
+                    <a class="sidebar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="align-middle">HELMo_bilite</span></a>
+
+                    <ul class="sidebar-nav">
+                        @if (ViewContext.View.Path.Contains("Home"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="HelmoMembers" asp-action="Index">Membre Helmo</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Index">Vehicles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Client</a>
+                            <li class="sidebar-item active">
+                                <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="align-middle" data-feather="home"></i> <span class="align-middle">Accueil</span>
+                                </a>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Deliveries" asp-action="Index">Commandes</a>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <i class="align-middle" data-feather="home"></i> <span class="align-middle">Accueil</span>
+                                </a>
                             </li>
                         }
+                        @if (User.IsInRole("admin"))
+                        {
+                            @if (ViewContext.View.Path.Contains("HelmoMembers"))
+                            {
+                                <li class="sidebar-item active">
+                                    <a class="sidebar-link active" asp-area="" asp-controller="HelmoMembers" asp-action="Index">
+                                        <i class="align-middle" data-feather="users"></i>
+                                        <span class="align-middle">Membre Helmo</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link active" asp-area="" asp-controller="HelmoMembers" asp-action="Index">
+                                        <i class="align-middle" data-feather="users"></i>
+                                        <span class="align-middle">Membre Helmo</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (ViewContext.View.Path.Contains("Vehicles"))
+                            {
+                                <li class="sidebar-item active">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Vehicles" asp-action="Index">
+                                        <i class="align-middle" data-feather="truck"></i>
+                                        <span class="align-middle">Vehicule</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Vehicles" asp-action="Index">
+                                        <i class="align-middle" data-feather="truck"></i>
+                                        <span class="align-middle">Vehicule</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (ViewContext.View.Path.Contains("Clients"))
+                            {
+                                <li class="sidebar-item active">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Clients" asp-action="Index">
+                                        <i class="align-middle" data-feather="list"></i>
+                                        <span class="align-middle">Clients</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Clients" asp-action="Index">
+                                        <i class="align-middle" data-feather="list"></i>
+                                        <span class="align-middle">Clients</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (ViewContext.View.Path.Contains("Stats"))
+                            {
 
-                       
-                        
+                                <li class="sidebar-item active">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Stats" asp-action="Index">
+                                        <i class="align-middle" data-feather="pie-chart"></i>
+                                        <span class="align-middle">Statistiques</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Stats" asp-action="Index">
+                                        <i class="align-middle" data-feather="pie-chart"></i>
+                                        <span class="align-middle">Statistiques</span>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        @if (User.IsInRole("driver") || User.IsInRole("dispatcher") || User.IsInRole("client"))
+                        {
+                            @if (ViewContext.View.Path.Contains("Deliveries"))
+                            {
+
+                                <li class="sidebar-item active">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Deliveries" asp-action="Index">
+                                        Commandes
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-area="" asp-controller="Deliveries" asp-action="Index">
+                                        Commandes
+                                    </a>
+                                </li>
+                            }
+                        }
 
 
                     </ul>
-                    <partial name="_LoginPartial" />
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            </nav>
+        }
+
+
+
+
+
+        <div class="main">
+            <partial name="_LoginPartial" />
+            <main role="main" class="content">
+                @RenderBody()
+            </main>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="align-content-center">
+                        &copy; 2023 - HELMo_bilite - Lopez Lopez Valentin & Barthélemy Quentin
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - HELMo_bilite - Lopez Lopez Valentin & Barthélemy Quentin
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <environment include="Developement">
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/theme/dist/js/app.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    </environment>
+    <environment exclude="Developement">
+        <script src="~/mylib/all.min.js" asp-append-version="true"></script>
+        <script src="~/theme/dist/js/app.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    </environment>
+    
 
+    @*en commentaire car casse le theme*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
