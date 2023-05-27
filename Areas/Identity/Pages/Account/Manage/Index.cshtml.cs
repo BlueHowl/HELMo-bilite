@@ -3,6 +3,8 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using Bogus.DataSets;
+using System.Text.RegularExpressions;
 using HELMo_bilite.Controllers.ViewModels;
 using HELMo_bilite.Data;
 using HELMo_bilite.Models;
@@ -66,6 +68,8 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public ICollection<string> Licenses { get; set; } = new List<string>();
 
+        private bool IsAleradySubmit = false;
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -112,6 +116,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Numéro de téléphone")]
             public string PhoneNumber { get; set; }
 
+            public bool Loaded { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -138,6 +143,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             {
                 LoadClient(user);
             }
+            Input.Loaded = true;
 
         }
 
@@ -163,11 +169,18 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             }
 
             var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            if (!Input.Loaded)
+            {
+                IsAleradySubmit = true;
+                LoadAsync(user);
+                return Page();
+            }
 
             ModelErrorApplied(role, user);
 
             if (!ModelState.IsValid)
             {
+                IsAleradySubmit = true;
                 LoadAsync(user);
                 return Page();
             }
@@ -287,6 +300,10 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             }
             if(role == "client")
             {
+                Regex regex = new Regex(@"^\+32\d{9}$");
+                if(Input.PhoneNumber != null && !regex.IsMatch(Input.PhoneNumber))
+                    ModelState.AddModelError(nameof(Input.PhoneNumber), "le numero de telephone doit etre de la forme +32xxxxxxxxx");
+
                 if (string.IsNullOrEmpty(Input.CompanyName))
                     ModelState.AddModelError(nameof(Input.CompanyName), "le nom de la societe ne peut pas etre vide");
                 

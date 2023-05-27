@@ -1,7 +1,9 @@
 ﻿@model HELMo_bilite.Controllers.ViewModels.StatsVM
 
 
-<h1>Statistique du site</h1>
+<h1 class="text-center">
+    Statistiques du site
+</h1>
 <hr />
 
 <div id="chartjs-bar">
@@ -9,27 +11,30 @@
 
 <div class="row">
     <div class="col-12 col-lg-6">
-         <div class="table-80">
+        <div class="table-80">
             <table class="table">
                 <thead class="thead-dark table-borderless">
                     <tr>
                         <th colspan="5" class="rounded-top"><h1 class="text-center">Statistique par Client</h1></th>
                     </tr>
                     <tr>
+                        <th colspan="6" class="rounded-top">Recherche<input type="text" id="cLient-seacrh"></th>
+                    </tr>
+                    <tr>
                         <th scope="col" id="col-companie-client">
+
                             Nom de la companie
-                            <span class="material-icons icon-color-white"></span>
                         </th>
                         <th scope="col" id="col-livraison-tot-client">
                             Nombre de livraison
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-livraison-wait-client">
                             Nombre de livraison en attente de dispatche
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-livraison-pross-client">
                             Nombre de livraison en cours
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-livraison-end-client">
                             Nombre de livraison terminée
                         </th>
                     </tr>
@@ -68,24 +73,24 @@
                         <th colspan="5" class="rounded-top"><h1 class="text-center">Statistique par date</h1></th>
                     </tr>
                     <tr>
-                        <th scope="col">
+                        <th scope="col" id="col-date">
                             Date
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-tot-date">
                             nombre de livrasion
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-start-date">
                             nombre de livrasion qui commence commencée
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-livraison-pross-date">
                             nombre de en cours ce jour la
                         </th>
-                        <th scope="col">
+                        <th scope="col" id="col-livraison-end-date">
                             nombre de ternimer qui doive etre livrer ce jour la
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tboby-stat-date">
                     @foreach (var item in Model.AllDayStats)
                     {
                         <tr>
@@ -119,6 +124,9 @@
                 <thead class="thead-dark table-borderless">
                     <tr>
                         <th colspan="6" class="rounded-top"><h1 class="text-center">Statistique par livreur</h1></th>
+                    </tr>
+                    <tr>
+                        <th colspan="6" class="rounded-top">Recherche<input type="text" id="driver-seacrh"></th>
                     </tr>
                     <tr>
                         <th scope="col">

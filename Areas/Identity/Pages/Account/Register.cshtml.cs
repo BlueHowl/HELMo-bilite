@@ -246,9 +246,9 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account
 
                         return client;
                     default:
-                        var user = Activator.CreateInstance<User>();
-
-                        return user;
+                        throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
+                           $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                           $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
                 }
 
             }

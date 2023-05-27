@@ -99,9 +99,11 @@ namespace HELMo_bilite.Controllers
         {
             var allDeliveries = _dbContext.Deliveries.ToList();
             List<DayStatsVM> dayStats = new List<DayStatsVM>();
+            HashSet<DateTime> addedDates = new HashSet<DateTime>(); // Ensemble pour stocker les dates ajoutées
+
             foreach (var delivery in allDeliveries)
             {
-                if(!dayStats.Exists(d=> d.Day == delivery.LoadDate))
+                if (!addedDates.Contains(delivery.LoadDate))
                 {
                     var deliveriesBetweenDay = allDeliveries.Where(d => IsDaybetween(delivery.LoadDate, d.LoadDate, d.UnloadingDate));
 
@@ -115,11 +117,10 @@ namespace HELMo_bilite.Controllers
                         DeliveryTerminedCount = deliveriesBetweenDay.Count(d => d.UnloadingDate == delivery.LoadDate)
                     };
                     dayStats.Add(dayStat);
+                    addedDates.Add(delivery.LoadDate); // Ajouter la date à l'ensemble des dates ajoutées
                 }
 
-               
-
-                if (!dayStats.Exists(d => d.Day == delivery.UnloadingDate))
+                if (!addedDates.Contains(delivery.UnloadingDate))
                 {
                     var deliveriesBetweenDay = allDeliveries.Where(d => IsDaybetween(delivery.UnloadingDate, d.LoadDate, d.UnloadingDate));
                     var dayStat2 = new DayStatsVM
@@ -131,13 +132,12 @@ namespace HELMo_bilite.Controllers
                         DeliveryTerminedCount = deliveriesBetweenDay.Count(d => d.UnloadingDate == delivery.UnloadingDate)
                     };
                     dayStats.Add(dayStat2);
+                    addedDates.Add(delivery.UnloadingDate); // Ajouter la date à l'ensemble des dates ajoutées
                 }
-                
             }
+
             dayStats.Sort((d, d2) => d.Day.CompareTo(d2.Day));
-
-
-            return dayStats; 
+            return dayStats;
         }
         private List<DriverStatsVM> GetDriverStats()
         {
