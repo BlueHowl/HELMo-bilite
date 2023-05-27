@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\images\client\NewFolder\" />
     <Folder Include="wwwroot\images\user\" />
     <Folder Include="wwwroot\images\vehicules\NewFolder\" />
     <Folder Include="wwwroot\theme\" />

@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
     var prevWeekBtn = document.getElementById('prevWeekBtn');
     var nextWeekBtn = document.getElementById('nextWeekBtn');
     var deliveries;
-
+    var currentURL = window.location.href;
+    var currentDirectory = currentURL.substring(0, currentURL.lastIndexOf('/'));
     $.ajax({
-        url: '/Deliveries/GetDeliveries',
+        url: currentDirectory + '/Deliveries/GetDeliveries',
         type: 'GET',
         dataType: 'json',
         success: function (response) {

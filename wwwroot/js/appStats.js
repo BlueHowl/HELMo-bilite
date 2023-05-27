@@ -308,10 +308,13 @@ function onAddDriver(matricule) {
 
 
 function getDeliveryDriver(year, matricules) {
+
+    var currentURL = window.location.href;
+    var currentDirectory = currentURL.substring(0, currentURL.lastIndexOf('/'));
     return new Promise(function (resolve, reject) {
         $.ajax({
             type: 'POST',
-            url: '/Stats/GetStatPerMonthDriver',
+            url: currentDirectory+'/Stats/GetStatPerMonthDriver',
             data: { year: year, matricules: matricules },
             success: function (data) {
                 resolve(data);
