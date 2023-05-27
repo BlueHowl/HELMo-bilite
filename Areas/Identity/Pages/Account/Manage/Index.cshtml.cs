@@ -68,8 +68,6 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public ICollection<string> Licenses { get; set; } = new List<string>();
 
-        private bool IsAleradySubmit = false;
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -171,7 +169,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
             var role = _userManager.GetRolesAsync(user).Result.FirstOrDefault();
             if (!Input.Loaded)
             {
-                IsAleradySubmit = true;
+                
                 LoadAsync(user);
                 return Page();
             }
@@ -180,7 +178,7 @@ namespace HELMo_bilite.Areas.Identity.Pages.Account.Manage
 
             if (!ModelState.IsValid)
             {
-                IsAleradySubmit = true;
+                
                 LoadAsync(user);
                 return Page();
             }

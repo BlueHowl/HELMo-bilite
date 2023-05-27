@@ -533,7 +533,7 @@ namespace HELMo_bilite.Controllers
             var serializerOptions = new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
-                MaxDepth = 64 // Set the maximum depth as needed
+                MaxDepth = 64 
             };
 
             return Json(deliveries.ToList(), serializerOptions);

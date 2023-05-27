@@ -22,11 +22,14 @@
         <ul class="navbar-nav navbar-align">
             @if (SignInManager.IsSignedIn(User))
             {
+                var currentURL = Url.Content("~/");
+
+
                 var user = await UserManager.GetUserAsync(User);
                 var roles = await UserManager.GetRolesAsync(user);
                 var role = roles.FirstOrDefault();
                 var Name = @User.Identity?.Name;
-                var imageSrc = "/images/defaultProfilePicture.jpg";
+                var imageSrc = currentURL + "/images/defaultProfilePicture.jpg";
                 if (role == "driver" || role == "dispatcher")
                 {
                     Name = (user as HelmoMember).Matricule;
@@ -45,9 +48,8 @@
                 }
                 if (user.PictureScr != null)
                 {
-                    imageSrc = "/images/" + (role == "client" ? "client" : "user") + "/" + user.PictureScr;
+                    imageSrc = currentURL + "images/" + (role == "client" ? "client" : "user") + "/" + user.PictureScr;
                 }
-
 
                 <li class="nav-item dropdown">
                     

@@ -108,7 +108,10 @@
             @if (User.IsInRole("client"))
             {
                 <div class="form-floating mb-3">
-                    <img src="@Model.Input.LogoSrc" />
+                    @{
+                        var pictureSrc = Url.Content("~/") + Model.Input.LogoSrc;
+                    }
+                    <img src="@pictureSrc" />
                     <input type="file" class="form-control" asp-for="Input.ProfilePicture" />
                     <span asp-validation-for="Input.LogoPicture" class="text-danger"></span>
                 </div>
