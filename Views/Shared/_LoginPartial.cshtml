@@ -29,7 +29,7 @@
                 var roles = await UserManager.GetRolesAsync(user);
                 var role = roles.FirstOrDefault();
                 var Name = @User.Identity?.Name;
-                var imageSrc = currentURL + "/images/defaultProfilePicture.jpg";
+                var imageSrc = currentURL + "images/defaultProfilePicture.jpg";
                 if (role == "driver" || role == "dispatcher")
                 {
                     Name = (user as HelmoMember).Matricule;

@@ -50,7 +50,10 @@
     </div>
 
     <div class="p-2">
-        <img src="~/images/@Model.PictureScr" alt="image Camion" width="auto" height="200" />
+        @{
+            var srcPicture = Url.Content("~/") + "images/" + @Model.PictureScr;
+        }
+        <img src=@srcPicture alt="image Camion" width="auto" height="200" />
     </div>
     
 </div>
