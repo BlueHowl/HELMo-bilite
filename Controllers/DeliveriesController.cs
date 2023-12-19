@@ -522,7 +522,7 @@ namespace HELMo_bilite.Controllers
         }
 
         //GET: Deliveries/GetDeliveries
-        public ActionResult GetDeliveries()
+        public JsonResult GetDeliveries() //JsonResult car pas besoin de retourner d'autres actions et donc pas besoin de prendre l'interface ActionResult
         {
             var user = _userManager.GetUserAsync(User).Result;
             
@@ -591,7 +591,7 @@ namespace HELMo_bilite.Controllers
 
             if(availableDrivers.Count == 0 || availableVehicles.Count == 0)
             {
-                ViewData["Unavailable"] = "true";
+                ViewData["Unavailable"] = "true"; //TempData
             }
         }
 
